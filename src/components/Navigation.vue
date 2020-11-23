@@ -36,11 +36,8 @@
     font-size: 30px;
     }
 
-    .navbar .navbar-nav .nav-item:active .nav-link,
     .navbar .navbar-nav .nav-item:hover .nav-link {
         color: #96be0d;
     }
-
-
 
 </style>
