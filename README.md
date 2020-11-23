@@ -1,8 +1,5 @@
-# ip5_megalog
-
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
 
 # ip5-eMobility
 
@@ -18,7 +15,7 @@ IP5 eMobility: Nutzerportal
 
 ## Technologies
 
-- Frontend: HTML / CSS / Bootstrap CSS
+- Frontend: HTML / CSS / View.js
 - Database: MariaDB / MySQL
 
 ## Installation
