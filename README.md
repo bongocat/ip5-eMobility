@@ -1,11 +1,10 @@
 # ip5-eMobility
 IP5 eMobility: Nutzerportal
 
-# Used technologies
+# Used Technologies
 
-- HTML / CSS
-- MariaDB/MySQL
-- Bootstrap CSS
+- Frontend: HTML / CSS / Bootstrap CSS
+- Databese: MariaDB / MySQL
 
 # Repo By
 @Bongocat & @Rhiyeszeros
