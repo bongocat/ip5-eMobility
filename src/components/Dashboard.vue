@@ -8,8 +8,8 @@
                  :headers="columnNames"
                  :items="upcomingInvoices"
                  class="elevation-1">
-            <template v-slot:item.actions="{  }">
-               <v-btn color="success">
+            <template v-slot:item.actions="{}">
+               <v-btn color="success" @click="showModal = true">
                   Rechnung generieren
                </v-btn>
             </template>
@@ -41,15 +41,29 @@
             Markierte als bezahlt markieren
          </v-btn>
       </div>
+      <transition name="fade" appear>
+         <div class = "modal-overlay" v-if="showModal" @click="showModal = false"></div>
+      </transition>
+      <transition name="slide" appear>
+         <div class="modalPresentation" v-if="showModal">
+            <GenerateInvoice></GenerateInvoice>
+            <v-btn @click="showModal = false">
+               Abbrechen
+            </v-btn>
+         </div>
+      </transition>
    </div>
 </template>
 
 <script>
 
+   import GenerateInvoice from "./GenerateInvoice";
    export default {
       name: "Dashboard",
+      components: {GenerateInvoice},
       data() {
          return {
+            showModal: false,
             selected: [],
             page: 1,
             pageCount: 0,
@@ -169,6 +183,8 @@
                {text: 'Actions', value: 'actions', sortable: false },
             ],
          };
+      },
+      methods: {
       }
    }
 
@@ -183,6 +199,46 @@
 
    div.dataTable {
       max-width: 1800px;
+   }
+
+   .modal-overlay{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 98;
+      background-color: rgba(3, 12, 3, 0.11);
+   }
+
+   .modalPresentation{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 99;
+      width: 100%;
+      max-width: 800px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 25px;
+      padding: 20px;
+   }
+
+   .fade-enter-active, .fade-leave-active{
+      transition: opacity 0.5s;
+   }
+
+   .fade-enter, .fade-leave-to{
+      opacity: 0;
+   }
+
+   .slide-enter-active, .slide-leave-active{
+      transition: opacity 0.5s;
+   }
+
+   .slide-enter, .slide-leave-to{
+      opacity: 0;
+      transform: translateY(-50%) translateX(100vw);
    }
 
 </style>
