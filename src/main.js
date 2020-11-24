@@ -8,6 +8,7 @@ import Facilities from "./components/Facilities";
 import Users from "./components/Users";
 import vuetify from './plugins/vuetify';
 
+
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false
@@ -28,5 +29,5 @@ const router = new VueRouter({
 new Vue({
   render: h => h(App),
   vuetify,
-  router
+  router,
 }).$mount('#app')

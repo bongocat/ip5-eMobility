@@ -14,4 +14,3 @@ conn.query("SELECT * FROM nutzertyp", function (err, result, fields) {
     if (err) throw err;
     console.log(result);
 });
-module.exports = conn;
