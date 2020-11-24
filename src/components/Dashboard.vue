@@ -19,9 +19,9 @@
       <div class = dataTable>
          <v-data-table
                  v-model="selected"
-                 item-key="Liegenschaft"
+                 item-key="ID"
                  show-select
-                 :single-select="true"
+                 :single-select="false"
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
@@ -37,6 +37,9 @@
                </v-btn>
             </template>
          </v-data-table>
+         <v-btn color="blue" @click="console.log(selected[0])">
+            Markierte als bezahlt markieren
+         </v-btn>
       </div>
    </div>
 </template>
@@ -47,6 +50,7 @@
       name: "Dashboard",
       data() {
          return {
+            selected: [],
             page: 1,
             pageCount: 0,
             itemsPerPage: 10,
@@ -55,6 +59,7 @@
             editedIndex: -1,
             upcomingInvoices: [
                {
+                  ID: 11,
                   Liegenschaft: "L1",
                   Betrag: 125,
                   Rechnungsart: "Serviceabo",
@@ -63,6 +68,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 10,
                   Liegenschaft: "L2",
                   Betrag: 144,
                   Rechnungsart: "Serviceabo",
@@ -71,6 +77,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 9,
                   Liegenschaft: "L3",
                   Betrag: 172,
                   Rechnungsart: "Serviceabo",
@@ -79,6 +86,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 8,
                   Liegenschaft: "L1",
                   Betrag: 125,
                   Rechnungsart: "Serviceabo",
@@ -87,6 +95,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 7,
                   Liegenschaft: "L2",
                   Betrag: 144,
                   Rechnungsart: "Serviceabo",
@@ -95,6 +104,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 6,
                   Liegenschaft: "L3",
                   Betrag: 172,
                   Rechnungsart: "Serviceabo",
@@ -103,6 +113,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 5,
                   Liegenschaft: "L1",
                   Betrag: 125,
                   Rechnungsart: "Serviceabo",
@@ -111,6 +122,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 4,
                   Liegenschaft: "L2",
                   Betrag: 144,
                   Rechnungsart: "Serviceabo",
@@ -119,6 +131,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 3,
                   Liegenschaft: "L3",
                   Betrag: 172,
                   Rechnungsart: "Serviceabo",
@@ -127,6 +140,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 2,
                   Liegenschaft: "L1",
                   Betrag: 125,
                   Rechnungsart: "Serviceabo",
@@ -135,6 +149,7 @@
                   fälligAm: "31.12.2020"
                },
                {
+                  ID: 1,
                   Liegenschaft: "L2",
                   Betrag: 144,
                   Rechnungsart: "Serviceabo",
@@ -142,104 +157,9 @@
                   Immobilienverwaltung: "Verwaltung 1",
                   fälligAm: "31.12.2020"
                },
-               {
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               },
-               {
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
-               }
             ],
             columnNames: [
+               {text: 'ID', value: 'ID'},
                {text: 'Liegenschaft', value: 'Liegenschaft'},
                {text: 'Betrag', value: 'Betrag'},
                {text: 'Rechnungsart', value: 'Rechnungsart'},
