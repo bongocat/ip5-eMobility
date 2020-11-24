@@ -8,7 +8,7 @@
           :items="Invoices"
           class="elevation-1">
         <template v-slot:item.actions="{item}">
-          <v-btn color="success">
+          <v-btn color="success" @click="toCSV(item)">
             Rechnung generieren
           </v-btn>
         </template>
