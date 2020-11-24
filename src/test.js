@@ -1,15 +1,17 @@
 let mysql = require('mysql');
 
-let con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "emobility"
+let conn = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'emobility'
 });
-
-con.connect(function(err) {
+conn.connect(function(err) {
     if (err) throw err;
-    con.query("SELECT * FROM nutzertyp", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-    });
+    console.log('Database is connected successfully !');
 });
+conn.query("SELECT * FROM nutzertyp", function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+});
+module.exports = conn;
