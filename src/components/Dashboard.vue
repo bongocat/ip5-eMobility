@@ -226,7 +226,29 @@
                {text: 'Actions', value: 'actions', sortable: false },
             ],
          };
-      }
+      },
+     methods: {
+        toCSV: function() {
+
+          const outputData = [
+            ["Liegenschaft", "Betrag", "Rechnungsart", "Mieter", "Immobilienverwaltung", "fälligAm"],
+            ["name2", "city2", "more info"]
+          ];
+
+          let csvContent = "data:text/csv;charset=utf-8,";
+
+          outputData.forEach(function(outputData) {
+            let row = outputData.join(",");
+            csvContent += row + "\r\n";
+          });
+
+          let encodedUri = encodeURI(csvContent);
+          window.open(encodedUri);
+        }
+     },
+     mounted:function(){
+       this.toCSV()
+     }
    }
 
 </script>
