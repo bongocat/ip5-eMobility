@@ -4,19 +4,19 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <router-link to="/dashboard" class="nav-link" >Dashboard</router-link>
+                        <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/invoices" class="nav-link" >Rechnungen</router-link>
+                        <router-link to="/invoices" class="nav-link">Rechnungen</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/loads" class="nav-link" >Loads</router-link>
+                        <router-link to="/loads" class="nav-link">Loads</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/facilities" class="nav-link" >Anlagen</router-link>
+                        <router-link to="/facilities" class="nav-link">Anlagen</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/users" class="nav-link" >Nutzer</router-link>
+                        <router-link to="/users" class="nav-link">Nutzer</router-link>
                     </li>
                 </ul>
             </div>
@@ -32,7 +32,7 @@
 
 <style>
 
-    .nav-item{
+    .nav-item {
     font-size: 30px;
     }
 
@@ -41,7 +41,7 @@
     }
 
     .navbar .navbar-nav .nav-item.active .nav-link {
-        color: #96be0d !important;
+        color: #96be0d;
     }
 
 </style>
