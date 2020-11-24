@@ -1,6 +1,7 @@
 <template>
-   <div>
+   <div class="container-lg">
       <h1 id = invoices>Anstehende Rechnungen</h1>
+      <h5>(in den nächsten 30 Tagen)</h5>
       <div>
          <v-data-table
                  dense
@@ -239,8 +240,8 @@
 </script>
 
 <style scoped>
+
    h1, h5 {
-      margin: 20px;
       vertical-align: center;
       clear:both !important;
    }

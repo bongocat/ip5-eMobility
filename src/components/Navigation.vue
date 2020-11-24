@@ -40,4 +40,8 @@
         color: #96be0d;
     }
 
+    .navbar .navbar-nav .nav-item.active .nav-link {
+        color: #96be0d !important;
+    }
+
 </style>
