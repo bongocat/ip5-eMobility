@@ -7,7 +7,7 @@
           :headers="columnNames"
           :items="Invoices"
           class="elevation-1">
-        <template v-slot:item.actions="{}">
+        <template v-slot:item.actions="{item}">
           <v-btn color="success">
             Rechnung generieren
           </v-btn>
@@ -64,6 +64,21 @@ export default {
     };
   },
   methods: {
+    toCSV: function(item) {
+
+      const outputData = [Object.keys(item), Object.values(item)];
+
+      console.log(outputData);
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      outputData.forEach(function(outputData) {
+        let row = outputData.join(",");
+        csvContent += row + ";\r\n";
+      });
+
+      let encodedUri = encodeURI(csvContent);
+      window.open(encodedUri);
+    }
   }
 }
 
