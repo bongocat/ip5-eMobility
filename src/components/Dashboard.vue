@@ -11,8 +11,13 @@
                  :items-per-page="itemsPerPage"
                  hide-default-footer
                  class="elevation-1"
-                 @page-count="pageCount = $event"
-         ></v-data-table>
+                 @page-count="pageCount = $event">
+            <template v-slot:item.actions="{  }">
+               <v-btn color="success">
+                  Rechnung generieren
+               </v-btn>
+            </template>
+         </v-data-table>
          <div class="text-center pt-2">
             <v-pagination
                     v-model="page"
@@ -32,6 +37,7 @@
 </template>
 
 <script>
+
    export default {
       name: "Dashboard",
       data() {
@@ -39,6 +45,9 @@
             page: 1,
             pageCount: 0,
             itemsPerPage: 10,
+            dialog: false,
+            dialogDelete: false,
+            editedIndex: -1,
             upcomingInvoices: [
                {
                   Liegenschaft: "L1",
@@ -232,6 +241,7 @@
                {text: 'Mieter', value: 'Mieter'},
                {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
                {text: 'Fällig Am', value: 'fälligAm'},
+               { text: 'Actions', value: 'actions', sortable: false },
             ],
          };
       }
