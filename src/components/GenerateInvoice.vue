@@ -9,7 +9,7 @@
             <v-text-field
                     v-model="name"
                     :counter="10"
-                    label="Name"
+                    :label = invoice.ID
                     required
             ></v-text-field>
 
@@ -40,6 +40,9 @@
 
     export default {
         name: "GenerateInvoice",
+        props: {
+            invoice: Object
+        },
         data(){
             return{
                 name: '',

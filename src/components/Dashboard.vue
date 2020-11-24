@@ -8,8 +8,8 @@
                  :headers="columnNames"
                  :items="upcomingInvoices"
                  class="elevation-1">
-            <template v-slot:item.actions="{}">
-               <v-btn color="success" @click="showModal = true">
+            <template v-slot:item.actions="{item}">
+               <v-btn color="success" @click="generateModal(item)">
                   Rechnung generieren
                </v-btn>
             </template>
@@ -46,7 +46,7 @@
       </transition>
       <transition name="slide" appear>
          <div class="modalPresentation" v-if="showModal">
-            <GenerateInvoice></GenerateInvoice>
+            <GenerateInvoice :invoice="currentItem"></GenerateInvoice>
             <v-btn @click="showModal = false">
                Abbrechen
             </v-btn>
@@ -63,6 +63,7 @@
       components: {GenerateInvoice},
       data() {
          return {
+            currentItem: {},
             showModal: false,
             selected: [],
             page: 1,
@@ -185,6 +186,10 @@
          };
       },
       methods: {
+         generateModal: function(item){
+            this.showModal = true
+            this.currentItem = item
+         }
       }
    }
 
