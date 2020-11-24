@@ -2,36 +2,18 @@
    <div class="container-lg">
       <h1 id = invoices>Anstehende Rechnungen</h1>
       <h5>(in den nächsten 30 Tagen)</h5>
-      <div>
+      <div class = dataTable>
          <v-data-table
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
-                 :page.sync="page"
-                 :items-per-page="itemsPerPage"
-                 hide-default-footer
-                 class="elevation-1"
-                 @page-count="pageCount = $event">
+                 class="elevation-1">
             <template v-slot:item.actions="{  }">
                <v-btn color="success">
                   Rechnung generieren
                </v-btn>
             </template>
          </v-data-table>
-         <div class="text-center pt-2">
-            <v-pagination
-                    v-model="page"
-                    :length="pageCount"
-            ></v-pagination>
-            <v-text-field
-                    :value="itemsPerPage"
-                    label="Items per page"
-                    type="number"
-                    min="-1"
-                    max="15"
-                    @input="itemsPerPage = parseInt($event, 10)"
-            ></v-text-field>
-         </div>
       </div>
    </div>
 </template>
@@ -241,7 +223,7 @@
                {text: 'Mieter', value: 'Mieter'},
                {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
                {text: 'Fällig Am', value: 'fälligAm'},
-               { text: 'Actions', value: 'actions', sortable: false },
+               {text: 'Actions', value: 'actions', sortable: false },
             ],
          };
       }
@@ -254,6 +236,10 @@
    h1, h5 {
       vertical-align: center;
       clear:both !important;
+   }
+
+   div.dataTable {
+      max-width: 1800px;
    }
 
 </style>
