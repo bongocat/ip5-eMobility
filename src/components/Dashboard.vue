@@ -8,8 +8,8 @@
                  :headers="columnNames"
                  :items="upcomingInvoices"
                  class="elevation-1">
-            <template v-slot:item.actions="{  }">
-               <v-btn color="success">
+            <template v-slot:item.actions="{item}">
+               <v-btn color="success" @click="toCSV(item)">
                   Rechnung generieren
                </v-btn>
             </template>
@@ -228,26 +228,21 @@
          };
       },
      methods: {
-        toCSV: function() {
+        toCSV: function(item) {
 
-          const outputData = [
-            ["Liegenschaft", "Betrag", "Rechnungsart", "Mieter", "Immobilienverwaltung", "fälligAm"],
-            ["name2", "city2", "more info"]
-          ];
+          const outputData = [Object.keys(item), Object.values(item)];
 
+          console.log(outputData);
           let csvContent = "data:text/csv;charset=utf-8,";
 
           outputData.forEach(function(outputData) {
             let row = outputData.join(",");
-            csvContent += row + "\r\n";
+            csvContent += row + ";\r\n";
           });
 
           let encodedUri = encodeURI(csvContent);
           window.open(encodedUri);
         }
-     },
-     mounted:function(){
-       this.toCSV()
      }
    }
 
