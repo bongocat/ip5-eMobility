@@ -15,6 +15,29 @@
             </template>
          </v-data-table>
       </div>
+      <h1>Offene Zahlungen</h1>
+      <div class = dataTable>
+         <v-data-table
+                 v-model="selected"
+                 item-key="Liegenschaft"
+                 show-select
+                 :single-select="true"
+                 dense
+                 :headers="columnNames"
+                 :items="upcomingInvoices"
+                 class="elevation-1">
+            <template v-slot:item.actions="{  }">
+               <v-btn color="warning">
+                  Mahnung
+               </v-btn>
+            </template>
+            <template v-slot:item.actions="{  }">
+               <v-btn color="warning">
+                  Als Bezahlt markieren
+               </v-btn>
+            </template>
+         </v-data-table>
+      </div>
    </div>
 </template>
 
