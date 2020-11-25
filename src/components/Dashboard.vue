@@ -7,11 +7,15 @@
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
-                 class="elevation-1">
-            <template v-slot:item.actions="{}">
-               <v-btn color="success" @click="showModal = true">
-                  Rechnung generieren
-               </v-btn>
+                 class="elevation-1"
+                 :items-per-page="5">
+            <template v-slot:item.actions="{item}">
+               <v-dialog max-width="800px" v-model="showModal" appendTo="@(body)">
+                  <v-btn slot="activator" color="success" @click="showModal = true" x-small>
+                     Rechnung generieren
+                  </v-btn>
+                  <GenerateInvoice :invoice="item"></GenerateInvoice>
+               </v-dialog>
             </template>
          </v-data-table>
       </div>
@@ -25,33 +29,35 @@
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
-                 class="elevation-1">
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Mahnung
-               </v-btn>
-            </template>
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Als Bezahlt markieren
-               </v-btn>
-            </template>
+                 class="elevation-1"
+                 :items-per-page="5">
+               <template v-slot:item.actions="{item}">
+                  <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
+                     Als Bezahlt markieren
+                  </v-btn>
+                  <v-btn color="warning" x-small class="mr-2">
+                     Mahnung
+                  </v-btn>
+               </template>
          </v-data-table>
-         <v-btn color="blue" @click="console.log(selected[0])">
-            Markierte als bezahlt markieren
-         </v-btn>
-      </div>
-      <transition name="fade" appear>
-         <div class = "modal-overlay" v-if="showModal" @click="showModal = false"></div>
-      </transition>
-      <transition name="slide" appear>
-         <div class="modalPresentation" v-if="showModal">
-            <GenerateInvoice></GenerateInvoice>
-            <v-btn @click="showModal = false">
-               Abbrechen
+         <div class="text-center pt-2">
+            <v-btn color="blue" @click="markAsPaid(selected), resetSelected()">
+               Markierte als bezahlt markieren
             </v-btn>
          </div>
-      </transition>
+         <h1>Kürzlich bezahlte Rechnungen</h1>
+         <v-data-table
+                 v-model="selected"
+                 item-key="ID"
+                 show-select
+                 :single-select="false"
+                 dense
+                 :headers="columnNames"
+                 :items="paidInvoices"
+                 class="elevation-1"
+                 :items-per-page="5">
+         </v-data-table>
+      </div>
    </div>
 </template>
 
@@ -67,10 +73,10 @@
             selected: [],
             page: 1,
             pageCount: 0,
-            itemsPerPage: 10,
+            itemsPerPage: 5,
             dialog: false,
-            dialogDelete: false,
             editedIndex: -1,
+            paidInvoices: [],
             upcomingInvoices: [
                {
                   ID: 11,
@@ -79,7 +85,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 10,
@@ -88,7 +94,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 9,
@@ -97,7 +103,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 8,
@@ -106,7 +112,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 7,
@@ -115,7 +121,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 6,
@@ -124,7 +130,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 5,
@@ -133,7 +139,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 4,
@@ -142,7 +148,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 3,
@@ -151,7 +157,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 2,
@@ -160,7 +166,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 1,
@@ -169,22 +175,32 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
-            ],
-            columnNames: [
-               {text: 'ID', value: 'ID'},
-               {text: 'Liegenschaft', value: 'Liegenschaft'},
-               {text: 'Betrag', value: 'Betrag'},
-               {text: 'Rechnungsart', value: 'Rechnungsart'},
-               {text: 'Mieter', value: 'Mieter'},
-               {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
-               {text: 'Fällig Am', value: 'fälligAm'},
-               {text: 'Actions', value: 'actions', sortable: false },
             ],
          };
       },
       methods: {
+         markAsPaid(items){
+            for (var i = 0; i < items.length; i++){
+               this.paidInvoices.push(items[i])
+               this.upcomingInvoices.splice(this.upcomingInvoices.indexOf(items[i]), 1)
+               console.log(items[i])
+            }
+         },
+         resetSelected(){
+            this.selected = []
+         }
+      },
+      computed: {
+         columnNames() {
+            var computedColumnnames  = []
+            Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
+               computedColumnnames.push({text: item, value: item})
+            })
+            computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+            return computedColumnnames
+         }
       }
    }
 
@@ -194,51 +210,6 @@
 
    h1, h5 {
       vertical-align: center;
-      clear:both !important;
+      clear:both;
    }
-
-   div.dataTable {
-      max-width: 1800px;
-   }
-
-   .modal-overlay{
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 98;
-      background-color: rgba(3, 12, 3, 0.11);
-   }
-
-   .modalPresentation{
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 99;
-      width: 100%;
-      max-width: 800px;
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 25px;
-      padding: 20px;
-   }
-
-   .fade-enter-active, .fade-leave-active{
-      transition: opacity 0.5s;
-   }
-
-   .fade-enter, .fade-leave-to{
-      opacity: 0;
-   }
-
-   .slide-enter-active, .slide-leave-active{
-      transition: opacity 0.5s;
-   }
-
-   .slide-enter, .slide-leave-to{
-      opacity: 0;
-      transform: translateY(-50%) translateX(100vw);
-   }
-
 </style>
