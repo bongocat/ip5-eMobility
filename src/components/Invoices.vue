@@ -67,24 +67,7 @@ export default {
           Vorname: "Peter",
           Nachname: "Karachi",
           Firma: "",
-          actions: "",
         },
-      ],
-      columnNames: [
-        {text: 'ID', value: 'RechnungsID'},
-        {text: 'Rechnung', value: 'RechnungsNr'},
-        {text: 'Rechnungsart', value: 'RechnungsTyp'},
-        {text: 'Load', value: 'LoadID'},
-        {text: 'Mieter Referenz', value: 'MieterReferenz'},
-        {text: 'Vermieter Referenz', value: 'VermieterReferenz'},
-        {text: 'Rechnung an', value: 'RechnungAn'},
-        {text: 'Vorname', value: 'Vorname'},
-        {text: 'Nachname', value: 'Nachname'},
-        {text: 'Rechungsdatum', value: 'RechnungGestellt'},
-        {text: 'Zahlungsfrist', value: 'ZuZahlenBis'},
-        {text: 'Bezahlt am', value: 'RechungBezahlt'},
-        {text: 'Firma', value: 'Firma'},
-        {text: 'Actions', value: 'actions', sortable: false },
       ],
       vorlagen: [
         { text: 'Installation', icon: 'mdi-folder-open' },
@@ -108,6 +91,16 @@ export default {
 
       let encodedUri = encodeURI(csvContent);
       window.open(encodedUri);
+    }
+  },
+  computed: {
+    columnNames() {
+      var computedColumnnames  = []
+      Object.keys(this.Invoices[0]).forEach(function (item) {
+        computedColumnnames.push({text: item, value: item})
+      })
+      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      return computedColumnnames
     }
   }
 }
