@@ -6,6 +6,7 @@
           :headers="columnNames"
           :items="Loads"
           :single-expand="singleExpand"
+          :expanded.sync="expanded"
           show-expand
           class="elevation-1">
         <template v-slot:item.actions="{item}">
