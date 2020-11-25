@@ -64,6 +64,13 @@ export default {
           Firma: "",
         },
       ],
+      inner: [
+        {
+          LoadID: "001",
+          Loaded: "001",
+        },
+
+      ],
     };
   },
   methods: {
