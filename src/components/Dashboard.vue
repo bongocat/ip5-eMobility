@@ -7,9 +7,10 @@
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
-                 class="elevation-1">
+                 class="elevation-1"
+                 :items-per-page="5">
             <template v-slot:item.actions="{item}">
-               <v-btn color="success" @click="generateModal(item)">
+               <v-btn color="success" @click="generateModal(item)" x-small>
                   Rechnung generieren
                </v-btn>
             </template>
@@ -25,21 +26,22 @@
                  dense
                  :headers="columnNames"
                  :items="upcomingInvoices"
-                 class="elevation-1">
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Mahnung
-               </v-btn>
-            </template>
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Als Bezahlt markieren
-               </v-btn>
-            </template>
+                 class="elevation-1"
+                 :items-per-page="5">
+               <template v-slot:item.actions="{item}">
+                  <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
+                     Als Bezahlt markieren
+                  </v-btn>
+                  <v-btn color="warning" x-small class="mr-2">
+                     Mahnung
+                  </v-btn>
+               </template>
          </v-data-table>
-         <v-btn color="blue" @click="console.log(selected[0])">
-            Markierte als bezahlt markieren
-         </v-btn>
+         <div class="text-center pt-2">
+            <v-btn color="blue" @click="markAsPaid(selected), resetSelected()">
+               Markierte als bezahlt markieren
+            </v-btn>
+         </div>
          <h1>Kürzlich bezahlte Rechnungen</h1>
          <v-data-table
                  v-model="selected"
@@ -48,18 +50,9 @@
                  :single-select="false"
                  dense
                  :headers="columnNames"
-                 :items="upcomingInvoices"
-                 class="elevation-1">
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Mahnung
-               </v-btn>
-            </template>
-            <template v-slot:item.actions="{  }">
-               <v-btn color="warning">
-                  Als Bezahlt markieren
-               </v-btn>
-            </template>
+                 :items="paidInvoices"
+                 class="elevation-1"
+                 :items-per-page="5">
          </v-data-table>
       </div>
       <transition name="fade" appear>
@@ -89,7 +82,7 @@
             selected: [],
             page: 1,
             pageCount: 0,
-            itemsPerPage: 10,
+            itemsPerPage: 5,
             dialog: false,
             dialogDelete: false,
             editedIndex: -1,
@@ -201,6 +194,16 @@
          generateModal: function(item){
             this.showModal = true
             this.currentItem = item
+         },
+         markAsPaid(items){
+            for (var i = 0; i < items.length; i++){
+               this.paidInvoices.push(items[i])
+               this.upcomingInvoices.splice(this.upcomingInvoices.indexOf(items[i]), 1)
+               console.log(items[i])
+            }
+         },
+         resetSelected(){
+            this.selected = []
          }
       },
       computed: {
@@ -222,10 +225,6 @@
    h1, h5 {
       vertical-align: center;
       clear:both !important;
-   }
-
-   div.dataTable {
-      max-width: 1800px;
    }
 
    .modal-overlay{
