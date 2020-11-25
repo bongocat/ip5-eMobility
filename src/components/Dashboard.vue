@@ -40,6 +40,27 @@
          <v-btn color="blue" @click="console.log(selected[0])">
             Markierte als bezahlt markieren
          </v-btn>
+         <h1>Kürzlich bezahlte Rechnungen</h1>
+         <v-data-table
+                 v-model="selected"
+                 item-key="ID"
+                 show-select
+                 :single-select="false"
+                 dense
+                 :headers="columnNames"
+                 :items="upcomingInvoices"
+                 class="elevation-1">
+            <template v-slot:item.actions="{  }">
+               <v-btn color="warning">
+                  Mahnung
+               </v-btn>
+            </template>
+            <template v-slot:item.actions="{  }">
+               <v-btn color="warning">
+                  Als Bezahlt markieren
+               </v-btn>
+            </template>
+         </v-data-table>
       </div>
       <transition name="fade" appear>
          <div class = "modal-overlay" v-if="showModal" @click="showModal = false"></div>
@@ -72,6 +93,7 @@
             dialog: false,
             dialogDelete: false,
             editedIndex: -1,
+            paidInvoices: [],
             upcomingInvoices: [
                {
                   ID: 11,
@@ -186,7 +208,6 @@
             var computedColumnnames  = []
             Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
                computedColumnnames.push({text: item, value: item})
-               console.log(item)
             })
             computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
             return computedColumnnames
