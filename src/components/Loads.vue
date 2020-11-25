@@ -20,7 +20,6 @@
               :headers="columnNames"
               :items="Loads"
           >
-
           </v-data-table>
         </template>
       </v-data-table>
