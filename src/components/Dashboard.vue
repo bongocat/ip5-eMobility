@@ -10,12 +10,7 @@
                  class="elevation-1"
                  :items-per-page="5">
             <template v-slot:item.actions="{item}">
-               <v-dialog max-width="800px" v-model="showModal" appendTo="@(body)">
-                  <v-btn slot="activator" color="success" @click="showModal = true" x-small>
-                     Rechnung generieren
-                  </v-btn>
-                  <GenerateInvoice :invoice="item"></GenerateInvoice>
-               </v-dialog>
+            <GenerateInvoice :invoice="item"></GenerateInvoice>
             </template>
          </v-data-table>
       </div>
@@ -69,6 +64,7 @@
       components: {GenerateInvoice},
       data() {
          return {
+            currentItem: {},
             showModal: false,
             selected: [],
             page: 1,

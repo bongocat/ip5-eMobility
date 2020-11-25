@@ -1,50 +1,47 @@
 <template>
-    <v-card style="padding: 20px">
-        <v-card-title>
-            <h1>Rechnung generieren</h1>
-        </v-card-title>
-        <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation
-        >
-            <v-text-field
-                    v-model="name"
-                    :counter="10"
-                    :label = invoice.ID
-                    required
-            ></v-text-field>
+        <v-dialog
+                v-model="dialog"
+                width="600px"
 
-            <v-text-field
-                    v-model="invoiceNumber"
-                    label="E-mail"
-                    required
-            ></v-text-field>
-            <v-card-actions>
+        >
+            <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                        color="error"
-                        class="mr-4"
-                        @click="reset"
-                >
-                    Reset Form
-                </v-btn>
-                <v-btn
-                        color="warning"
-                        class="mr-4"
-                        @click="generateInvoice"
+                        x-small
+                        color="success"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
                 >
                     Rechnung generieren
                 </v-btn>
-                <v-btn
-                        color="error"
-                        class="mr-4"
-                        @click="generateInvoice"
-                >
-                    Rechnung generieren
-                </v-btn>
-            </v-card-actions>
-        </v-form>
-    </v-card>
+            </template>
+            <v-card style="padding: 20px">
+                <v-card-title>
+                    <h1 class="headline">Rechnung generieren</h1>
+                </v-card-title>
+                <v-form>
+                    <v-text-field  label="Rechnungsnummer"></v-text-field>
+                    <v-text-field  label="Kommentar"></v-text-field>
+                </v-form>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            color="success"
+                            text
+                            @click="dialog = false"
+                    >
+                        Generieren
+                    </v-btn>
+                    <v-btn
+                            color="error"
+                            text
+                            @click="dialog = false"
+                    >
+                        Schliessen
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 </template>
 
 <script>
@@ -56,6 +53,7 @@
         },
         data(){
             return{
+                dialog: false,
                 name: '',
                 invoiceNumber: 0
             }
