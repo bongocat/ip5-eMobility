@@ -80,7 +80,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 10,
@@ -89,7 +89,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 9,
@@ -98,7 +98,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 8,
@@ -107,7 +107,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 7,
@@ -116,7 +116,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 6,
@@ -125,7 +125,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 5,
@@ -134,7 +134,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 4,
@@ -143,7 +143,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 3,
@@ -152,7 +152,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 2,
@@ -161,7 +161,7 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
                {
                   ID: 1,
@@ -170,18 +170,8 @@
                   Rechnungsart: "Serviceabo",
                   Mieter: "Mietermann",
                   Immobilienverwaltung: "Verwaltung 1",
-                  fälligAm: "31.12.2020"
+                  ['Fällig Am']: "31.12.2020"
                },
-            ],
-            columnNames: [
-               {text: 'ID', value: 'ID'},
-               {text: 'Liegenschaft', value: 'Liegenschaft'},
-               {text: 'Betrag', value: 'Betrag'},
-               {text: 'Rechnungsart', value: 'Rechnungsart'},
-               {text: 'Mieter', value: 'Mieter'},
-               {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
-               {text: 'Fällig Am', value: 'fälligAm'},
-               {text: 'Actions', value: 'actions', sortable: false },
             ],
          };
       },
@@ -189,6 +179,17 @@
          generateModal: function(item){
             this.showModal = true
             this.currentItem = item
+         }
+      },
+      computed: {
+         columnNames() {
+            var computedColumnnames  = []
+            Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
+               computedColumnnames.push({text: item, value: item})
+               console.log(item)
+            })
+            computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+            return computedColumnnames
          }
       }
    }
