@@ -68,6 +68,16 @@ export default {
       let encodedUri = encodeURI(csvContent);
       window.open(encodedUri);
     }
+  },
+  computed: {
+    columnNames() {
+      var computedColumnnames  = []
+      Object.keys(this.Users[0]).forEach(function (item) {
+        computedColumnnames.push({text: item, value: item})
+      })
+      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      return computedColumnnames
+    }
   }
 }
 
