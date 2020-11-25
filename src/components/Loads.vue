@@ -16,9 +16,9 @@
         </template>
         <template v-slot:expanded-item="{ }">
           <v-data-table
-              :headers-length="columnNames.length"
-              :headers="columnNames"
-              :items="Loads"
+              :headers-length="innerNames.length"
+              :headers="innerNames"
+              :items="inner"
           >
           </v-data-table>
         </template>
