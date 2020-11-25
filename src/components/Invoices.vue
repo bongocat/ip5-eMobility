@@ -8,15 +8,34 @@
           class="elevation-1">
         <template v-slot:item.actions="{item}">
           <v-btn @click="toCSV(item)">
-            ↓
-          </v-btn>
-          <v-btn color="success">
-            Rechnung generieren
+            <v-icon>mdi-file-download</v-icon>
           </v-btn>
         </template>
       </v-data-table>
+      <v-card max-width="300">
+        <v-list dense>
+          <v-subheader>Rechnungsvorlagen</v-subheader>
+          <v-list-item-group
+              v-model="selectedItem"
+              color="primary"
+          >
+            <v-list-item
+                v-for="(vorlagen, i) in vorlagen"
+                :key="i"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="vorlagen.text"></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-icon v-text="vorlagen.icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -66,6 +85,11 @@ export default {
         {text: 'Bezahlt am', value: 'RechungBezahlt'},
         {text: 'Firma', value: 'Firma'},
         {text: 'Actions', value: 'actions', sortable: false },
+      ],
+      vorlagen: [
+        { text: 'Installation', icon: 'mdi-folder-open' },
+        { text: 'Strom', icon: 'mdi-folder-open' },
+        { text: 'Serviceabonnement', icon: 'mdi-folder-open' },
       ],
     };
   },
