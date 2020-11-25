@@ -3,12 +3,14 @@
     <h1 id = invoices>Rechnungen</h1>
     <div class = dataTable>
       <v-data-table
-          dense
           :headers="columnNames"
           :items="Invoices"
           class="elevation-1">
         <template v-slot:item.actions="{item}">
-          <v-btn color="success" @click="toCSV(item)">
+          <v-btn @click="toCSV(item)">
+            ↓
+          </v-btn>
+          <v-btn color="success">
             Rechnung generieren
           </v-btn>
         </template>
@@ -33,32 +35,36 @@ export default {
       editedIndex: -1,
       Invoices: [
         {
-          ID: 11,
-          Liegenschaft: "L1",
-          Betrag: 125,
-          Rechnungsart: "Serviceabo",
-          Mieter: "Mietermann",
-          Immobilienverwaltung: "Verwaltung 1",
-          fälligAm: "31.12.2020"
-        },
-        {
-          ID: 10,
-          Liegenschaft: "L2",
-          Betrag: 144,
-          Rechnungsart: "Serviceabo",
-          Mieter: "Mietermann",
-          Immobilienverwaltung: "Verwaltung 1",
-          fälligAm: "31.12.2020"
+          RechnungsID: "001",
+          RechnungsNr: "ABCD",
+          RechnungsTyp: "Strom",
+          MieterReferenz: "1001",
+          VermieterReferenz: "2001",
+          RechnungAn: "Mieter",
+          LoadID: "2222",
+          RechnungGestellt: "25.11.2020",
+          ZuZahlenBis: "25.12.2020",
+          RechungBezahlt: "Nein",
+          Vorname: "Peter",
+          Nachname: "Karachi",
+          Firma: "",
+          actions: "",
         },
       ],
       columnNames: [
-        {text: 'ID', value: 'ID'},
-        {text: 'Liegenschaft', value: 'Liegenschaft'},
-        {text: 'Betrag', value: 'Betrag'},
-        {text: 'Rechnungsart', value: 'Rechnungsart'},
-        {text: 'Mieter', value: 'Mieter'},
-        {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
-        {text: 'Fällig Am', value: 'fälligAm'},
+        {text: 'ID', value: 'RechnungsID'},
+        {text: 'Rechnung', value: 'RechnungsNr'},
+        {text: 'Rechnungsart', value: 'RechnungsTyp'},
+        {text: 'Load', value: 'LoadID'},
+        {text: 'Mieter Referenz', value: 'MieterReferenz'},
+        {text: 'Vermieter Referenz', value: 'VermieterReferenz'},
+        {text: 'Rechnung an', value: 'RechnungAn'},
+        {text: 'Vorname', value: 'Vorname'},
+        {text: 'Nachname', value: 'Nachname'},
+        {text: 'Rechungsdatum', value: 'RechnungGestellt'},
+        {text: 'Zahlungsfrist', value: 'ZuZahlenBis'},
+        {text: 'Bezahlt am', value: 'RechungBezahlt'},
+        {text: 'Firma', value: 'Firma'},
         {text: 'Actions', value: 'actions', sortable: false },
       ],
     };
