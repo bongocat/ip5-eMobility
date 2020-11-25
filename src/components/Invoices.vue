@@ -3,18 +3,39 @@
     <h1 id = invoices>Rechnungen</h1>
     <div class = dataTable>
       <v-data-table
-          dense
           :headers="columnNames"
           :items="Invoices"
           class="elevation-1">
         <template v-slot:item.actions="{item}">
-          <v-btn color="success" @click="toCSV(item)">
-            Rechnung generieren
+          <v-btn @click="toCSV(item)">
+            <v-icon>mdi-file-download</v-icon>
           </v-btn>
         </template>
       </v-data-table>
+      <v-card max-width="300">
+        <v-list dense>
+          <v-subheader>Rechnungsvorlagen</v-subheader>
+          <v-list-item-group
+              v-model="selectedItem"
+              color="primary"
+          >
+            <v-list-item
+                v-for="(vorlagen, i) in vorlagen"
+                :key="i"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="vorlagen.text"></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-icon v-text="vorlagen.icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -33,33 +54,25 @@ export default {
       editedIndex: -1,
       Invoices: [
         {
-          ID: 11,
-          Liegenschaft: "L1",
-          Betrag: 125,
-          Rechnungsart: "Serviceabo",
-          Mieter: "Mietermann",
-          Immobilienverwaltung: "Verwaltung 1",
-          fälligAm: "31.12.2020"
-        },
-        {
-          ID: 10,
-          Liegenschaft: "L2",
-          Betrag: 144,
-          Rechnungsart: "Serviceabo",
-          Mieter: "Mietermann",
-          Immobilienverwaltung: "Verwaltung 1",
-          fälligAm: "31.12.2020"
+          RechnungsID: "001",
+          RechnungsNr: "ABCD",
+          RechnungsTyp: "Strom",
+          MieterReferenz: "1001",
+          VermieterReferenz: "2001",
+          RechnungAn: "Mieter",
+          LoadID: "2222",
+          RechnungGestellt: "25.11.2020",
+          ZuZahlenBis: "25.12.2020",
+          RechungBezahlt: "Nein",
+          Vorname: "Peter",
+          Nachname: "Karachi",
+          Firma: "",
         },
       ],
-      columnNames: [
-        {text: 'ID', value: 'ID'},
-        {text: 'Liegenschaft', value: 'Liegenschaft'},
-        {text: 'Betrag', value: 'Betrag'},
-        {text: 'Rechnungsart', value: 'Rechnungsart'},
-        {text: 'Mieter', value: 'Mieter'},
-        {text: 'Immobilienverwaltung', value: 'Immobilienverwaltung'},
-        {text: 'Fällig Am', value: 'fälligAm'},
-        {text: 'Actions', value: 'actions', sortable: false },
+      vorlagen: [
+        { text: 'Installation', icon: 'mdi-folder-open' },
+        { text: 'Strom', icon: 'mdi-folder-open' },
+        { text: 'Serviceabonnement', icon: 'mdi-folder-open' },
       ],
     };
   },
@@ -78,6 +91,16 @@ export default {
 
       let encodedUri = encodeURI(csvContent);
       window.open(encodedUri);
+    }
+  },
+  computed: {
+    columnNames() {
+      var computedColumnnames  = []
+      Object.keys(this.Invoices[0]).forEach(function (item) {
+        computedColumnnames.push({text: item, value: item})
+      })
+      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      return computedColumnnames
     }
   }
 }
