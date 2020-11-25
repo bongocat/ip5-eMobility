@@ -98,6 +98,14 @@ export default {
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
       return computedColumnnames
+    },
+    innerNames() {
+      var computedinnernnames  = []
+      Object.keys(this.inner[0]).forEach(function (item) {
+        computedinnernnames.push({text: item, value: item})
+      })
+      computedinnernnames.push({text: 'Actions', value: 'actions', sortable: false })
+      return computedinnernnames
     }
   }
 }
