@@ -110,5 +110,4 @@
         opacity: 0;
         transform: translateY(-50%) translateX(100vw);
     }
-
 </style>
