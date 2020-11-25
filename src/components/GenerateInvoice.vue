@@ -28,7 +28,7 @@
                     <v-btn
                             color="success"
                             text
-                            @click="dialog = false"
+                            @click="dialog = false, toCSV(invoice)"
                     >
                         Generieren
                     </v-btn>
@@ -62,6 +62,21 @@
             reset () {
                 this.$refs.form.reset()
             },
+            toCSV: function(item) {
+
+              const outputData = [Object.keys(item), Object.values(item)];
+
+              console.log(outputData);
+              let csvContent = "data:text/csv;charset=utf-8,";
+
+              outputData.forEach(function(outputData) {
+                let row = outputData.join(",");
+                csvContent += row + ";\r\n";
+              });
+
+              let encodedUri = encodeURI(csvContent);
+              window.open(encodedUri);
+            }
         },
         watch: {
         }
