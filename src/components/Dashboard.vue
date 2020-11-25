@@ -10,9 +10,12 @@
                  class="elevation-1"
                  :items-per-page="5">
             <template v-slot:item.actions="{item}">
-               <v-btn color="success" @click="generateModal(item)" x-small>
-                  Rechnung generieren
-               </v-btn>
+               <v-dialog max-width="800px" v-model="showModal" appendTo="@(body)">
+                  <v-btn slot="activator" color="success" @click="showModal = true" x-small>
+                     Rechnung generieren
+                  </v-btn>
+                  <GenerateInvoice :invoice="item"></GenerateInvoice>
+               </v-dialog>
             </template>
          </v-data-table>
       </div>
@@ -55,17 +58,6 @@
                  :items-per-page="5">
          </v-data-table>
       </div>
-      <transition name="fade" appear>
-         <div class = "modal-overlay" v-if="showModal" @click="showModal = false"></div>
-      </transition>
-      <transition name="slide" appear>
-         <div class="modalPresentation" v-if="showModal">
-            <GenerateInvoice :invoice="currentItem"></GenerateInvoice>
-            <v-btn @click="showModal = false">
-               Abbrechen
-            </v-btn>
-         </div>
-      </transition>
    </div>
 </template>
 
@@ -77,14 +69,12 @@
       components: {GenerateInvoice},
       data() {
          return {
-            currentItem: {},
             showModal: false,
             selected: [],
             page: 1,
             pageCount: 0,
             itemsPerPage: 5,
             dialog: false,
-            dialogDelete: false,
             editedIndex: -1,
             paidInvoices: [],
             upcomingInvoices: [
@@ -191,10 +181,6 @@
          };
       },
       methods: {
-         generateModal: function(item){
-            this.showModal = true
-            this.currentItem = item
-         },
          markAsPaid(items){
             for (var i = 0; i < items.length; i++){
                this.paidInvoices.push(items[i])
@@ -224,47 +210,6 @@
 
    h1, h5 {
       vertical-align: center;
-      clear:both !important;
+      clear:both;
    }
-
-   .modal-overlay{
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 98;
-      background-color: rgba(3, 12, 3, 0.11);
-   }
-
-   .modalPresentation{
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 99;
-      width: 100%;
-      max-width: 800px;
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 25px;
-      padding: 20px;
-   }
-
-   .fade-enter-active, .fade-leave-active{
-      transition: opacity 0.5s;
-   }
-
-   .fade-enter, .fade-leave-to{
-      opacity: 0;
-   }
-
-   .slide-enter-active, .slide-leave-active{
-      transition: opacity 0.5s;
-   }
-
-   .slide-enter, .slide-leave-to{
-      opacity: 0;
-      transform: translateY(-50%) translateX(100vw);
-   }
-
 </style>

@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h1>Rechnung generieren</h1>
+    <v-card style="padding: 20px">
+        <v-card-title>
+            <h1>Rechnung generieren</h1>
+        </v-card-title>
         <v-form
                 ref="form"
                 v-model="valid"
@@ -14,26 +16,35 @@
             ></v-text-field>
 
             <v-text-field
-                    v-model="email"
+                    v-model="invoiceNumber"
                     label="E-mail"
                     required
             ></v-text-field>
-            <v-btn
-                    color="error"
-                    class="mr-4"
-                    @click="reset"
-            >
-                Reset Form
-            </v-btn>
-            <v-btn
-                    color="success"
-                    class="mr-4"
-                    @click="generateInvoice"
-            >
-                Rechnung generieren
-            </v-btn>
+            <v-card-actions>
+                <v-btn
+                        color="error"
+                        class="mr-4"
+                        @click="reset"
+                >
+                    Reset Form
+                </v-btn>
+                <v-btn
+                        color="warning"
+                        class="mr-4"
+                        @click="generateInvoice"
+                >
+                    Rechnung generieren
+                </v-btn>
+                <v-btn
+                        color="error"
+                        class="mr-4"
+                        @click="generateInvoice"
+                >
+                    Rechnung generieren
+                </v-btn>
+            </v-card-actions>
         </v-form>
-    </div>
+    </v-card>
 </template>
 
 <script>
@@ -46,6 +57,7 @@
         data(){
             return{
                 name: '',
+                invoiceNumber: 0
             }
         },
         methods: {
