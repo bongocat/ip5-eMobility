@@ -90,6 +90,7 @@ export default {
       Object.keys(this.anlage[0]).forEach(function (item) {
         anlageHeaders.push({text: item, value: item},)
       })
+      anlageHeaders.push({text: 'Actions', value: 'actions', sortable: false })
       anlageHeaders.push({ text: '', value: 'data-table-expand' })
       return anlageHeaders
     },
