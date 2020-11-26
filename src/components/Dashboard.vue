@@ -1,21 +1,25 @@
 <template>
-   <div class="container-lg">
-      <h1 id = invoices>Anstehende Rechnungen</h1>
-      <h5>(in den nächsten 30 Tagen)</h5>
-      <div class = dataTable>
-         <v-data-table
-                 dense
-                 :headers="columnNames"
-                 :items="upcomingInvoices"
-                 class="elevation-1"
-                 :items-per-page="5">
-            <template v-slot:item.actions="{item}">
-            <GenerateInvoice :invoice="item"></GenerateInvoice>
-            </template>
-         </v-data-table>
-      </div>
-      <h1>Offene Zahlungen</h1>
-      <div class = dataTable>
+   <v-main>
+      <v-container fluid>
+         <v-card style="margin-top: 20px">
+            <v-card-title>
+               <h1>Kürzlich bezahlte Rechnungen</h1>
+            </v-card-title>
+            <v-data-table
+                    dense
+                    :headers="columnNames"
+                    :items="upcomingInvoices"
+                    class="elevation-1"
+                    :items-per-page="5">
+               <template v-slot:item.actions="{item}">
+                  <GenerateInvoice :invoice="item"></GenerateInvoice>
+               </template>
+            </v-data-table>
+         </v-card>
+      <v-card style="margin-top: 20px">
+         <v-card-title>
+            <h1>Offene Rechnungen</h1>
+         </v-card-title>
          <v-data-table
                  v-model="selected"
                  item-key="ID"
@@ -30,30 +34,37 @@
                   <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
                      Als Bezahlt markieren
                   </v-btn>
-                  <v-btn color="warning" x-small class="mr-2">
-                     Mahnung
-                  </v-btn>
                </template>
          </v-data-table>
-         <div class="text-center pt-2">
-            <v-btn color="blue" @click="markAsPaid(selected), resetSelected()">
-               Markierte als bezahlt markieren
+         <v-card-actions>
+            <v-btn small color="blue" @click="markAsPaid(selected), resetSelected()">
+               Ausgewählte als bezahlt markieren
             </v-btn>
-         </div>
-         <h1>Kürzlich bezahlte Rechnungen</h1>
+         </v-card-actions>
+         </v-card>
+      <v-card style="margin-top: 20px">
+         <v-card-title>
+            <h1>Kürzlich bezahlte Rechnungen</h1>
+         </v-card-title>
          <v-data-table
                  v-model="selected"
                  item-key="ID"
-                 show-select
-                 :single-select="false"
                  dense
                  :headers="columnNames"
                  :items="paidInvoices"
                  class="elevation-1"
                  :items-per-page="5">
-         </v-data-table>
-      </div>
-   </div>
+            <template v-slot:item.actions="{}">
+               <v-btn color="light-blue" x-small @click="{}">
+                  <v-icon light>
+                     mdi-file-download-outline
+                  </v-icon>
+               </v-btn>
+            </template>
+            </v-data-table>
+         </v-card>
+      </v-container>
+   </v-main>
 </template>
 
 <script>
