@@ -19,10 +19,19 @@
                 <v-card-title>
                     <h1 class="headline">Rechnung generieren</h1>
                 </v-card-title>
-                <v-form>
-                    <v-text-field  label="Rechnungsnummer"></v-text-field>
-                    <v-text-field  label="Kommentar"></v-text-field>
-                </v-form>
+                <v-card-text>
+                    <v-form>
+                        <v-text-field  label="Rechnungsnummer"></v-text-field>
+                                <v-overflow-btn style="width: 400px"
+                                                dense
+                                                editable
+                                                :items="[10, 20, 30]"
+                                                label="Zahlungsfrist"
+                                                item-value="number"
+                                ></v-overflow-btn>
+                        <v-text-field  label="Kommentar"></v-text-field>
+                    </v-form>
+                </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
