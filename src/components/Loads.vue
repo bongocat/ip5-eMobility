@@ -15,17 +15,6 @@
             <v-icon>mdi-file-download</v-icon>
           </v-btn>
         </template>
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>Expandable Table</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-switch
-                v-model="singleExpand"
-                label="Single expand"
-                class="mt-2"
-            ></v-switch>
-          </v-toolbar>
-        </template>
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length">
             <v-data-table
