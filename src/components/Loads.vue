@@ -137,7 +137,7 @@ export default {
 
 h1, h5 {
   vertical-align: center;
-  clear: both !important;
+  clear: both;
 }
 
 </style>
