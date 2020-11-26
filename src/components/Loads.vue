@@ -1,115 +1,108 @@
-<template v-slot:top>
-  <div class="container-lg">
-    <h1 id = invoices>Loads</h1>
-    <div class = dataTable>
-      <v-data-table
-          :headers="columnNames"
-          :items="Loads"
-          :single-expand="singleExpand"
-          :expanded.sync="expanded"
-          show-expand
-          class="elevation-1">
-        <template v-slot:item.actions="{item}">
-          <v-btn @click="toCSV(item)">
-            <v-icon>mdi-file-download</v-icon>
-          </v-btn>
-        </template>
-        <template v-slot:expanded-item="{ }">
-          <v-data-table
-              :headers-length="innerNames.length"
-              :headers="innerNames"
-              :items="inner"
-          >
-          </v-data-table>
-        </template>
-      </v-data-table>
-    </div>
-  </div>
+<template>
+  <v-data-table
+      :headers="columnNames"
+      :items="anlage.filter(anlage => anlage.Count = loads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+      :single-expand="singleExpand"
+      :expanded.sync="expanded"
+      item-key="Anlage"
+      show-expand
+      class="elevation-1"
+  >
+    <template v-slot:top>
+      <v-toolbar flat>
+        <v-toolbar-title>Expandable Table</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-switch
+            v-model="singleExpand"
+            label="Single expand"
+            class="mt-2"
+        ></v-switch>
+      </v-toolbar>
+    </template>
+    <template v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length">
+        <v-data-table
+            :headers="columnInnerNames"
+            :items="loads.filter(loads => loads.Anlage == item.Anlage)"
+            item-key="inner"
+            class="elevation-1"
+        >
+        </v-data-table>
+      </td>
 
+    </template>
+  </v-data-table>
 </template>
 
 <script>
-
 export default {
-  name: "Loads",
-  data() {
+  data () {
     return {
-      showModal: false,
-      selected: [],
       expanded: [],
       singleExpand: false,
-      page: 1,
-      pageCount: 0,
-      itemsPerPage: 10,
-      dialog: false,
-      dialogDelete: false,
-      editedIndex: -1,
-      Loads: [
+      anlage: [
+        {
+          Anlage: "ABCD",
+          ['Anlage ID']: "1010",
+          Vermieter: "2001",
+          ['Rechnung an']: "Mieter",
+          Count: "",
+        },
+        {
+          Anlage: "XXXX",
+          ['Anlage ID']: "2020",
+          Vermieter: "2001",
+          ['Rechnung an']: "Mieter",
+          Count: "",
+        },
+      ],
+      loads: [
         {
           LoadID: "001",
           Anlage: "ABCD",
-          AnlageID: "Strom",
+          ['Anlage ID']: "1010",
           Mieter: "1001",
           Vermieter: "2001",
-          RechnungAn: "Mieter",
-          Firma: "",
+          ['Rechnung an']: "Mieter",
         },
         {
-          LoadID: "001",
+          LoadID: "002",
           Anlage: "ABCD",
-          AnlageID: "Strom",
+          ['Anlage ID']: "1010",
           Mieter: "1001",
           Vermieter: "2001",
-          RechnungAn: "Mieter",
-          Firma: "",
+          ['Rechnung an']: "Mieter",
         },
-      ],
-      inner: [
         {
-          LoadID: "001",
-          Loaded: "001",
+          LoadID: "003",
+          Anlage: "XXXX",
+          ['Anlage ID']: "2020",
+          Mieter: "1001",
+          Vermieter: "2001",
+          ['Rechnung an']: "Mieter",
         },
-
       ],
-    };
-  },
-  methods: {
-    toCSV: function(item) {
-
-      const outputData = [Object.keys(item), Object.values(item)];
-
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
-
-      outputData.forEach(function(outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-      window.open(encodedUri);
     }
   },
   computed: {
     columnNames() {
-      var computedColumnnames  = []
-      Object.keys(this.Loads[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
+      let anlageHeaders = []
+      Object.keys(this.anlage[0]).forEach(function (item) {
+        anlageHeaders.push({text: item, value: item},)
       })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
-      return computedColumnnames
+      anlageHeaders.push({ text: '', value: 'data-table-expand' })
+      return anlageHeaders
     },
-    innerNames() {
-      var computedinnernnames  = []
-      Object.keys(this.inner[0]).forEach(function (item) {
-        computedinnernnames.push({text: item, value: item})
+    columnInnerNames() {
+      let computeddessertHeaders = []
+      Object.keys(this.loads[0]).forEach(function (item) {
+        computeddessertHeaders.push({text: item, value: item},)
       })
-      computedinnernnames.push({text: 'Actions', value: 'actions', sortable: false })
-      return computedinnernnames
-    }
+      computeddessertHeaders.push({ text: '', value: 'data-table-expand' })
+      return computeddessertHeaders
+    },
   }
 }
-
 </script>
 
 <style scoped>
