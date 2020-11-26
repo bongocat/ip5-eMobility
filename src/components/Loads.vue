@@ -101,7 +101,24 @@ export default {
       computeddessertHeaders.push({ text: '', value: 'data-table-expand' })
       return computeddessertHeaders
     },
-  }
+  },
+  methods: {
+    toCSV: function(item) {
+
+      const outputData = [Object.keys(item), Object.values(item)];
+
+      console.log(outputData);
+      let csvContent = "data:text/csv;charset=utf-8,";
+
+      outputData.forEach(function(outputData) {
+        let row = outputData.join(",");
+        csvContent += row + ";\r\n";
+      });
+
+      let encodedUri = encodeURI(csvContent);
+      window.open(encodedUri);
+    }
+  },
 }
 </script>
 
