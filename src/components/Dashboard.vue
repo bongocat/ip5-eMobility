@@ -204,9 +204,9 @@
                     class="elevation-1"
                     :items-per-page="5">
                <template v-slot:item.actions="{}">
-                  <v-btn color="light-blue" x-small @click="{}">
-                     <v-icon light>
-                        mdi-file-download-outline
+                  <v-btn x-small @click="{}">
+                     <v-icon>
+                        mdi-file-download
                      </v-icon>
                   </v-btn>
                </template>
