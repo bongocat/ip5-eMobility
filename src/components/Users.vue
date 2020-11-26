@@ -1,20 +1,30 @@
-<template>
-  <div class="container-lg">
-    <h1 id = invoices>Nutzer</h1>
-    <div class = dataTable>
-      <v-data-table
-          :headers="columnNames"
-          :items="Users"
-          class="elevation-1">
-        <template v-slot:item.actions="{item}">
-          <v-btn @click="toCSV(item)">
-            <v-icon>mdi-file-download</v-icon>
-          </v-btn>
-        </template>
-      </v-data-table>
-    </div>
-  </div>
 
+
+<template>
+  <v-main>
+    <v-container fluid>
+      <v-card style="margin-top: 20px" :elevation="5">
+        <v-card-title>
+          <h1>Nutzer</h1>
+          <v-badge :content="Users.length" :value="Users.length" color="success" inline/>
+        </v-card-title>
+        <v-card-text>
+          <v-data-table
+              dense
+              :headers="columnNames"
+              :items="Users"
+              class="elevation-1"
+              :items-per-page="5">
+            <template v-slot:item.actions="{item}">
+              <v-btn @click="toCSV(item)">
+                <v-icon>mdi-file-download</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
