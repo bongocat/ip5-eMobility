@@ -220,6 +220,7 @@
 <script>
 
    import GenerateInvoice from "./GenerateInvoice";
+
    export default {
       name: "Dashboard",
       components: {GenerateInvoice},
