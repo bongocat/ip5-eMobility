@@ -1,5 +1,9 @@
 <template>
   <v-card style="margin-top: 20px" :elevation="5">
+    <v-card-title>
+      <h1>Loads</h1>
+      <v-badge :content="loads.length" :value="loads.length" color="success" inline/>
+    </v-card-title>
     <v-card-text>
       <v-data-table
           :headers="columnNames"
