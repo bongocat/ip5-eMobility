@@ -8,6 +8,11 @@
       show-expand
       class="elevation-1"
   >
+    <template v-slot:item.actions="{item}">
+      <v-btn @click="toCSV(item)">
+        <v-icon>mdi-file-download</v-icon>
+      </v-btn>
+    </template>
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Expandable Table</v-toolbar-title>
