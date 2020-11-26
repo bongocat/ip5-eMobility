@@ -99,7 +99,7 @@ export default {
       Object.keys(this.loads[0]).forEach(function (item) {
         computeddessertHeaders.push({text: item, value: item},)
       })
-      computeddessertHeaders.push({ text: '', value: 'data-table-expand' })
+      computeddessertHeaders.push({text: 'Actions', value: 'actions', sortable: false })
       return computeddessertHeaders
     },
   },
