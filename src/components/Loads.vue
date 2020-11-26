@@ -1,44 +1,47 @@
 <template>
   <v-card style="margin-top: 20px" :elevation="5">
-    <v-card-title>
-      <h1>Loads</h1>
-      <v-badge :content="loads.length" :value="loads.length" color="success" inline/>
-    </v-card-title>
-    <v-card-text>
-      <v-data-table
-          :headers="columnNames"
-          :items="anlage.filter(anlage => anlage.Count = loads.filter(loads => loads.Anlage == anlage.Anlage).length)"
-          :single-expand="singleExpand"
-          :expanded.sync="expanded"
-          item-key="Anlage"
-          show-expand
-          class="elevation-1"
-      >
-        <template v-slot:item.actions="{item}">
-          <v-btn @click="toCSV(item)">
-            <v-icon>mdi-file-download</v-icon>
-          </v-btn>
-        </template>
-        <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length">
-            <v-data-table
-                :headers="columnInnerNames"
-                :items="loads.filter(loads => loads.Anlage == item.Anlage)"
-                item-key="inner"
-                class="elevation-1"
-            >
-              <template v-slot:item.actions="{item}">
-                <v-btn @click="toCSV(item)">
-                  <v-icon>mdi-file-download</v-icon>
-                </v-btn>
-              </template>
-            </v-data-table>
-          </td>
+    <v-container fluid>
+      <v-card-title>
+        <h1>Loads</h1>
+        <v-badge :content="loads.length" :value="loads.length" color="success" inline/>
+      </v-card-title>
+      <v-card-text>
+        <v-data-table
+            :headers="columnNames"
+            :items="anlage.filter(anlage => anlage.Count = loads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+            :single-expand="singleExpand"
+            :expanded.sync="expanded"
+            item-key="Anlage"
+            show-expand
+            class="elevation-1"
+        >
+          <template v-slot:item.actions="{item}">
+            <v-btn @click="toCSV(item)">
+              <v-icon>mdi-file-download</v-icon>
+            </v-btn>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <v-data-table
+                  :headers="columnInnerNames"
+                  :items="loads.filter(loads => loads.Anlage == item.Anlage)"
+                  item-key="inner"
+                  class="elevation-1"
+              >
+                <template v-slot:item.actions="{item}">
+                  <v-btn @click="toCSV(item)">
+                    <v-icon>mdi-file-download</v-icon>
+                  </v-btn>
+                </template>
+              </v-data-table>
+            </td>
 
-        </template>
-      </v-data-table>
-    </v-card-text>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-container>
   </v-card>
+
 </template>
 
 <script>
