@@ -4,7 +4,7 @@
          <v-card style="margin-top: 20px" :elevation="5">
             <v-card-title>
                <h1>Anstehende Rechnungen</h1>
-               <v-badge :content="upcomingInvoices.length" :value="upcomingInvoices.length" color="success" inline/>
+               <v-badge :content="this.upcomingInvoices.length" :value="this.upcomingInvoices.length" color="success" inline/>
             </v-card-title>
             <v-card-subtitle style="padding-left: 20px; padding-top: -30px">(nächste 30 Tage)</v-card-subtitle>
             <v-card-text>
@@ -220,6 +220,7 @@
 <script>
 
    import GenerateInvoice from "./GenerateInvoice";
+   import { mapGetters } from "vuex";
 
    export default {
       name: "Dashboard",
@@ -239,107 +240,6 @@
             dialog: false,
             editedIndex: -1,
             paidInvoices: [],
-            upcomingInvoices: [
-               {
-                  ID: 11,
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 10,
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 9,
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 8,
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 7,
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 6,
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 5,
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 4,
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 3,
-                  Liegenschaft: "L3",
-                  Betrag: 172,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 2,
-                  Liegenschaft: "L1",
-                  Betrag: 125,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-               {
-                  ID: 1,
-                  Liegenschaft: "L2",
-                  Betrag: 144,
-                  Rechnungsart: "Serviceabo",
-                  Mieter: "Mietermann",
-                  Immobilienverwaltung: "Verwaltung 1",
-                  ['Fällig Am']: "31.12.2020"
-               },
-            ],
          };
       },
       methods: {
@@ -355,6 +255,7 @@
          }
       },
       computed: {
+         ...mapGetters(["upcomingInvoices"]),
          columnNames() {
             var computedColumnnames  = []
             Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
@@ -398,8 +299,8 @@
                }
             })
             return array
-         }
-      }
+         },
+      },
    }
 
 </script>
