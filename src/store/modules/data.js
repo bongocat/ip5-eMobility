@@ -181,7 +181,7 @@ const state = {
     ],
     facilities: [
         {
-            AnlageID: 11,
+            AnlageID: 1,
             Anlage: "L1",
             Immobilienverwaltung: "Verwaltung 1",
             Strasse: "Boliovenweg",
@@ -316,6 +316,10 @@ const mutations = {
 
     addNewUser (state, user){
         state.users.push(user)
+    },
+
+    addNewFacility (state, facility){
+        state.facilities.push(facility)
     }
 }
 
