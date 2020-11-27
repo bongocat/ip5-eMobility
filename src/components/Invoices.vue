@@ -80,6 +80,8 @@
 
 <script>
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "Invoices",
   data() {
@@ -141,7 +143,10 @@ export default {
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
       return computedColumnnames
-    }
+    },
+    ...mapGetters({
+      allInvoices: 'allInvoices',
+    }),
   }
 }
 
