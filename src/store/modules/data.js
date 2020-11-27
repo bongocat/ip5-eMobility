@@ -178,7 +178,7 @@ const state = {
             Aktiv: "Nein",
             Kommentar: "Is this the real Life, or iks this just Fantasy.",
         },
-    ]
+    ],
     facilities: [
         {
             AnlageID: 11,
@@ -295,7 +295,7 @@ const getters = {
     /**
      * Load getters
      */
-    
+
     /**
      * Get all loads
      * @param state
