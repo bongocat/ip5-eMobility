@@ -39,7 +39,6 @@ const state = {
             Nachname: "Karachi",
             Firma: "",
             Generiert: "Nein"
-
         },
         {
             Betrag: 300,
@@ -60,7 +59,6 @@ const state = {
             Nachname: "Karachi",
             Firma: "",
             Generiert: "Nein"
-
         },
         {
             Betrag: 444,
@@ -81,7 +79,6 @@ const state = {
             Nachname: "Karachi",
             Firma: "",
             Generiert: "Nein"
-
         },
         {
             Betrag: 521,
@@ -253,7 +250,6 @@ const state = {
 }
 
 const getters = {
-
     /**
      * Invoice getters
      */
@@ -355,7 +351,6 @@ const getters = {
 }
 
 const actions = {}
-
 
 const mutations = {
     addInvoice(state, invoice) {
