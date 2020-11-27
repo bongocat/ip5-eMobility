@@ -1,13 +1,20 @@
 const state = {
-    upInvoices: [
+    invoices: [
         {
-            ID: 12,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2011-01-31')
+            RechnungsID: "001",
+            RechnungsNr: "ABCD",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2011-01-31'),
+            ['Zu Zahlen Bis']: new Date('2011-01-31'),
+            Bezahlt: "Nein",
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
         },
         {
             ID: 11,
@@ -99,15 +106,6 @@ const state = {
             Immobilienverwaltung: "Verwaltung 1",
             ['Fällig Am']: new Date('2020-12-20')
         },
-        {
-            ID: 1,
-            Liegenschaft: "L2",
-            Betrag: 144,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-20')
-        }
     ],
     users: [
         {
@@ -242,7 +240,7 @@ const getters = {
      * @returns filtered invoices
      * */
     upcomingInvoices: state => {
-        return state.upInvoices.filter(invoice => {
+        return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
             return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays;
@@ -255,7 +253,7 @@ const getters = {
      * @returns invoives
      */
     allInvoices: state => {
-        return state.upInvoices
+        return state.invoices
     },
 
     /**
@@ -321,7 +319,7 @@ const actions = {}
 
 const mutations = {
     addInvoice(state, invoice) {
-        state.upInvoices.push(invoice)
+        state.invoices.push(invoice)
     },
 
     addNewUser (state, user){
