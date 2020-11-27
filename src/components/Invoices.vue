@@ -1,3 +1,43 @@
+<!--<template>-->
+<!--  <div class="container-lg">-->
+<!--    <h1 id = invoices>Rechnungen</h1>-->
+<!--    <div class = dataTable>-->
+<!--      <v-data-table-->
+<!--          :headers="columnNames"-->
+<!--          :items="Invoices"-->
+<!--          class="elevation-1">-->
+<!--        <template v-slot:item.actions="{item}">-->
+<!--          <v-btn @click="toCSV(item)">-->
+<!--            <v-icon>mdi-file-download</v-icon>-->
+<!--          </v-btn>-->
+<!--        </template>-->
+<!--      </v-data-table>-->
+<!--      <v-card max-width="300">-->
+<!--        <v-list dense>-->
+<!--          <v-subheader>Rechnungsvorlagen</v-subheader>-->
+<!--          <v-list-item-group-->
+<!--              v-model="selectedItem"-->
+<!--              color="primary"-->
+<!--          >-->
+<!--            <v-list-item-->
+<!--                v-for="(vorlagen, i) in vorlagen"-->
+<!--                :key="i"-->
+<!--            >-->
+<!--              <v-list-item-content>-->
+<!--                <v-list-item-title v-text="vorlagen.text"></v-list-item-title>-->
+<!--              </v-list-item-content>-->
+<!--              <v-list-item-icon>-->
+<!--                <v-icon v-text="vorlagen.icon"></v-icon>-->
+<!--              </v-list-item-icon>-->
+<!--            </v-list-item>-->
+<!--          </v-list-item-group>-->
+<!--        </v-list>-->
+<!--      </v-card>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--</template>-->
+
 <template>
   <div class="container-lg">
     <h1 id = invoices>Rechnungen</h1>
