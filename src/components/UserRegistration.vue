@@ -82,6 +82,7 @@
                 <v-btn
                         color="success"
                         text
+                        @click="createNewUserFromForm"
                 >
                     Nutzer erfassen
                 </v-btn>
@@ -102,6 +103,7 @@
         name: "UserRegistration",
         data(){
             return{
+                userID: 5,
                 dialog: false,
                 userFirstName: "",
                 userLastName: "",
@@ -115,6 +117,30 @@
                 userCountry: "",
                 userActive: "",
                 userComment: "",
+            }
+        },
+        methods: {
+            createNewUserFromForm (){
+                this.dialog = false
+
+                const newUser = {
+                    NutzerID: this.userID,
+                    Vorname: this.user,
+                    Nachname:this.userLastName,
+                    NutzerTyp: this.userType,
+                    Firma: this.userCompany,
+                    Anrede: this.userFormOfAddress,
+                    Strasse: this.userStreet,
+                    Hausnummer: this.userHouseNumber,
+                    PLZ: this.userZIPCode,
+                    Ort: this.userLocation,
+                    Land: this.userCountry,
+                    Mietet: "",
+                    Vermietet: "",
+                    Aktiv: this.userActive,
+                    Kommentar: this.userComment,
+                }
+                addNewUser(newUser)
             }
         }
     }
