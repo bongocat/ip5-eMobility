@@ -94,23 +94,6 @@ export default {
       dialog: false,
       dialogDelete: false,
       editedIndex: -1,
-      Invoices: [
-        {
-          RechnungsID: "001",
-          RechnungsNr: "ABCD",
-          RechnungsTyp: "Strom",
-          MieterReferenz: "1001",
-          VermieterReferenz: "2001",
-          RechnungAn: "Mieter",
-          LoadID: "2222",
-          RechnungGestellt: "25.11.2020",
-          ZuZahlenBis: "25.12.2020",
-          RechungBezahlt: "Nein",
-          Vorname: "Peter",
-          Nachname: "Karachi",
-          Firma: "",
-        },
-      ],
       vorlagen: [
         { text: 'Installation', icon: 'mdi-folder-open' },
         { text: 'Strom', icon: 'mdi-folder-open' },
