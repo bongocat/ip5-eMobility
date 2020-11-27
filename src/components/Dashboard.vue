@@ -286,7 +286,7 @@
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
                if (!array.includes(item.AnlageID)){
-                  array.push(item.Liegenschaft)
+                  array.push(item.AnlageID)
                }
             })
             return array
@@ -294,8 +294,8 @@
          getUniqueAdministration(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Immobilienverwaltung)){
-                  array.push(item.Immobilienverwaltung)
+               if (!array.includes(item.Anlagename)){
+                  array.push(item.Anlagename)
                }
             })
             return array
@@ -303,8 +303,8 @@
          getUniqueTenants(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Mieter)){
-                  array.push(item.Mieter)
+               if (!array.includes(item.Nachname)){
+                  array.push(item.Nachname)
                }
             })
             return array
@@ -312,8 +312,8 @@
          getUniqueInvoiceCategory(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Rechnungsart)){
-                  array.push(item.Rechnungsart)
+               if (!array.includes(item.RechnungsArt)){
+                  array.push(item.RechnungsArt)
                }
             })
             return array
