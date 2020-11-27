@@ -309,6 +309,10 @@
       },
    }
 
+   Date.prototype.toString = function() {
+      return "" + this.getUTCDate() + "." + this.getMonth() + "." + this.getFullYear()
+   }
+
 </script>
 
 <style scoped>

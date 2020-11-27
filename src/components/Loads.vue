@@ -22,20 +22,20 @@
           </template>
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
-              <v-data-table
-                  :headers="columnInnerNames"
-                  :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
-                  item-key="inner"
-                  class="elevation-1"
-              >
-                <template v-slot:item.actions="{item}">
-                  <v-btn @click="toCSV(item)">
-                    <v-icon>mdi-file-download</v-icon>
-                  </v-btn>
-                </template>
-              </v-data-table>
+                  <v-data-table
+                          style="margin: 20px; background-color: rgba(0,0,0,0.05)"
+                          :headers="columnInnerNames"
+                          :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
+                          item-key="inner"
+                          class="elevation-5"
+                  >
+                    <template v-slot:item.actions="{item}">
+                      <v-btn @click="toCSV(item)">
+                        <v-icon>mdi-file-download</v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
             </td>
-
           </template>
         </v-data-table>
       </v-card-text>
