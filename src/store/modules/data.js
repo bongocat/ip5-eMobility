@@ -330,6 +330,10 @@ const mutations = {
 
     addNewFacility (state, facility){
         state.facilities.push(facility)
+    },
+
+    addNewLoad (state, load){
+        state.loads.push(load)
     }
 }
 
