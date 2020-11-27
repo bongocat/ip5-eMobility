@@ -193,9 +193,9 @@ const getters = {
      * */
     upcomingInvoices: state => {
         return state.upInvoices.filter(invoice => {
-            let now = new Date();
-            now.setDate(now.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= now;
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays;
         })
     },
 
