@@ -326,6 +326,10 @@ const mutations = {
 
     addNewUser (state, user){
         state.users.push(user)
+    },
+
+    addNewFacility (state, facility){
+        state.facilities.push(facility)
     }
 }
 
