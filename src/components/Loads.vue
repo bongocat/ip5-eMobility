@@ -3,12 +3,12 @@
     <v-container fluid>
       <v-card-title>
         <h1>Loads</h1>
-        <v-badge :content="loads.length" :value="loads.length" color="success" inline/>
+        <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
       </v-card-title>
       <v-card-text>
         <v-data-table
             :headers="columnNames"
-            :items="anlage.filter(anlage => anlage.Count = loads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+            :items="anlage.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
             item-key="Anlage"
@@ -24,7 +24,7 @@
             <td :colspan="headers.length">
               <v-data-table
                   :headers="columnInnerNames"
-                  :items="loads.filter(loads => loads.Anlage == item.Anlage)"
+                  :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
                   item-key="inner"
                   class="elevation-1"
               >
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -66,38 +68,38 @@ export default {
           Count: "",
         },
       ],
-      loads: [
-        {
-          LoadID: "001",
-          Anlage: "ABCD",
-          ['Anlage ID']: "1010",
-          Mieter: "1001",
-          Vermieter: "2001",
-          ['Rechnung an']: "Mieter",
-        },
-        {
-          LoadID: "002",
-          Anlage: "ABCD",
-          ['Anlage ID']: "1010",
-          Mieter: "1001",
-          Vermieter: "2001",
-          ['Rechnung an']: "Mieter",
-        },
-        {
-          LoadID: "003",
-          Anlage: "XXXX",
-          ['Anlage ID']: "2020",
-          Mieter: "1001",
-          Vermieter: "2001",
-          ['Rechnung an']: "Mieter",
-        },
-      ],
+      // loads: [
+      //   {
+      //     LoadID: "001",
+      //     Anlage: "ABCD",
+      //     ['Anlage ID']: "1010",
+      //     Mieter: "1001",
+      //     Vermieter: "2001",
+      //     ['Rechnung an']: "Mieter",
+      //   },
+      //   {
+      //     LoadID: "002",
+      //     Anlage: "ABCD",
+      //     ['Anlage ID']: "1010",
+      //     Mieter: "1001",
+      //     Vermieter: "2001",
+      //     ['Rechnung an']: "Mieter",
+      //   },
+      //   {
+      //     LoadID: "003",
+      //     Anlage: "XXXX",
+      //     ['Anlage ID']: "2020",
+      //     Mieter: "1001",
+      //     Vermieter: "2001",
+      //     ['Rechnung an']: "Mieter",
+      //   },
+      // ],
     }
   },
   computed: {
     columnNames() {
       let anlageHeaders = []
-      Object.keys(this.anlage[0]).forEach(function (item) {
+      Object.keys(this.allFacilities[0]).forEach(function (item) {
         anlageHeaders.push({text: item, value: item},)
       })
       anlageHeaders.push({text: 'Actions', value: 'actions', sortable: false})
@@ -106,12 +108,16 @@ export default {
     },
     columnInnerNames() {
       let computeddessertHeaders = []
-      Object.keys(this.loads[0]).forEach(function (item) {
+      Object.keys(this.allLoads[0]).forEach(function (item) {
         computeddessertHeaders.push({text: item, value: item},)
       })
       computeddessertHeaders.push({text: 'Actions', value: 'actions', sortable: false})
       return computeddessertHeaders
     },
+    ...mapGetters({
+      allLoads: 'allLoads',
+      allFacilities: 'allFacilities'
+    }),
   },
   methods: {
     toCSV: function (item) {
