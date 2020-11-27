@@ -163,7 +163,7 @@
       <v-card style="margin-top: 20px" :elevation="5">
          <v-card-title>
             <h1>Offene Rechnungen</h1>
-            <v-badge :content="upcomingInvoices.length" :value="upcomingInvoices.length" color="success" inline/>
+            <v-badge :content="openInvoices.length" :value="openInvoices.length" color="success" inline/>
          </v-card-title>
          <v-card-text>
             <v-data-table
@@ -173,7 +173,7 @@
                  :single-select="false"
                  dense
                  :headers="headers"
-                 :items="upcomingInvoices"
+                 :items="openInvoices"
                  class="elevation-1"
                  :items-per-page="5">
             <template v-slot:item.actions="{item}">
@@ -240,7 +240,6 @@
             itemsPerPage: 5,
             dialog: false,
             editedIndex: -1,
-            paidInvoices: [],
             headers: [
                {text: 'Rechnungs ID', value: 'RechnungsID'},
                {text: 'Rechnungsart', value: 'RechnungsArt'},
@@ -259,8 +258,7 @@
       methods: {
          markAsPaid(items){
             for (var i = 0; i < items.length; i++){
-               this.paidInvoices.push(items[i])
-               this.upcomingInvoices.splice(this.upcomingInvoices.indexOf(items[i]), 1)
+               items[i].Bezahlt = "Ja"
             }
          },
          resetSelected(){
@@ -272,7 +270,9 @@
       },
       computed: {
          ...mapGetters({
-            upcomingInvoices: 'upcomingInvoices'
+            upcomingInvoices: 'upcomingInvoices',
+            paidInvoices: 'paidInvoices',
+            openInvoices: 'openInvoices'
          }),
          // columnNames() {
          //    var computedColumnnames  = ["RechnungsID", "RechnungsArt", "Betrag", "Vermieter", "Rechnung An", "LoadID", "Mieter",  "Vorname", "Nachname", "Fällig Am"]

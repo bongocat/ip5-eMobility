@@ -14,9 +14,11 @@ const state = {
             ['Fällig Am']: new Date('2021-01-31'),
             ['Zu Zahlen Bis']: new Date('2021-02-28'),
             Bezahlt: "Nein",
+            BezahltAm: new Date(),
             Vorname: "Peter",
             Nachname: "Karachi",
             Firma: "",
+            Generiert: "Nein"
         },
         {
             Betrag: 200,
@@ -32,9 +34,12 @@ const state = {
             ['Fällig Am']: new Date('2020-11-27'),
             ['Zu Zahlen Bis']: new Date('2020-11-30'),
             Bezahlt: "Nein",
+            BezahltAm: new Date(),
             Vorname: "Peter",
             Nachname: "Karachi",
             Firma: "",
+            Generiert: "Nein"
+
         },
         {
             Betrag: 300,
@@ -50,9 +55,12 @@ const state = {
             ['Fällig Am']: new Date('2020-11-27'),
             ['Zu Zahlen Bis']: new Date('2020-11-30'),
             Bezahlt: "Nein",
+            BezahltAm: new Date(),
             Vorname: "Peter",
             Nachname: "Karachi",
             Firma: "",
+            Generiert: "Nein"
+
         },
         {
             Betrag: 444,
@@ -68,9 +76,12 @@ const state = {
             ['Fällig Am']: new Date('2020-11-30'),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
+            BezahltAm: new Date(),
             Vorname: "Peter",
             Nachname: "Karachi",
             Firma: "",
+            Generiert: "Nein"
+
         },
         {
             Betrag: 521,
@@ -86,6 +97,7 @@ const state = {
             ['Fällig Am']: new Date('2020-11-30'),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
+            BezahltAm: new Date(),
             Vorname: "Peter",
             Nachname: "Karachi",
             Firma: "",
@@ -93,6 +105,31 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
+            Generiert: "Nein"
+        },
+        {
+            Betrag: 521,
+            RechnungsID: "5",
+            RechnungsNr: "5",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Hammer Anlage",
+            AnlageID: "8",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-30'),
+            ['Zu Zahlen Bis']: new Date('2020-12-31'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            ZählerstandAlt: "",
+            ['Datum Zählerstand Alt']: new Date('2020-01-1'),
+            ZählerstandNeu: "",
+            ['Datum Zählerstand Neu']: new Date('2020-12-31'),
+            Generiert: "Ja"
         },
     ],
     users: [
@@ -230,7 +267,23 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays;
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Nein";
+        })
+    },
+
+    paidInvoices: state => {
+        return state.invoices.filter(invoice => {
+            let beforeThirtyDays = new Date();
+            beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
+            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "Ja";
+        })
+    },
+
+    openInvoices: state => {
+        return state.invoices.filter(invoice => {
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein";
         })
     },
 
