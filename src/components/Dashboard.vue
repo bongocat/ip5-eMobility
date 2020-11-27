@@ -288,14 +288,6 @@ export default {
       paidInvoices: 'paidInvoices',
       openInvoices: 'openInvoices'
     }),
-    // columnNames() {
-    //    var computedColumnnames  = ["RechnungsID", "RechnungsArt", "Betrag", "Vermieter", "Rechnung An", "LoadID", "Mieter",  "Vorname", "Nachname", "Fällig Am"]
-    //    Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
-    //       computedColumnnames.push({text: item, value: item})
-    //    })
-    //    computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
-    //    return computedColumnnames
-    // },
     getUniqueProperties() {
       var array = [];
       this.upcomingInvoices.forEach(function (item) {
