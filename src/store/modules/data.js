@@ -198,9 +198,34 @@ const getters = {
             return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= now;
         })
     },
+
+    /**
+     * Get all invoices
+     * @param state
+     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
+     */
+    allInvoices: state => {
+        return state.upInvoices
+    },
+
+    /**
+     * User getters
+     */
+
+    /**
+     * Get all active users
+     * @param state
+     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
+     */
     activeUsers: state => {
         return state.users.filter(user => user.Aktiv == "Ja")
     },
+
+    /**
+     * Get all inactive users
+     * @param state
+     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
+     */
     inactiveUsers: state => {
         return state.users.filter(user => user.Aktiv == "Nein")
     },
