@@ -150,7 +150,7 @@
                </v-expansion-panels>
                <v-data-table
                        dense
-                       :headers="columnNames"
+                       :headers="headers"
                        :items="upcomingInvoices"
                        class="elevation-1"
                        :items-per-page="5">
@@ -163,7 +163,7 @@
       <v-card style="margin-top: 20px" :elevation="5">
          <v-card-title>
             <h1>Offene Rechnungen</h1>
-            <v-badge :content="upcomingInvoices.length" :value="upcomingInvoices.length" color="success" inline/>
+            <v-badge :content="openInvoices.length" :value="openInvoices.length" color="success" inline/>
          </v-card-title>
          <v-card-text>
             <v-data-table
@@ -172,8 +172,8 @@
                  show-select
                  :single-select="false"
                  dense
-                 :headers="columnNames"
-                 :items="upcomingInvoices"
+                 :headers="headers"
+                 :items="openInvoices"
                  class="elevation-1"
                  :items-per-page="5">
             <template v-slot:item.actions="{item}">
@@ -199,7 +199,7 @@
                     v-model="selected"
                     item-key="ID"
                     dense
-                    :headers="columnNames"
+                    :headers="headers"
                     :items="paidInvoices"
                     class="elevation-1"
                     :items-per-page="5">
@@ -240,15 +240,25 @@
             itemsPerPage: 5,
             dialog: false,
             editedIndex: -1,
-            paidInvoices: [],
+            headers: [
+               {text: 'Rechnungs ID', value: 'RechnungsID'},
+               {text: 'Rechnungsart', value: 'RechnungsArt'},
+               {text: 'Betrag', value: 'Betrag'},
+               {text: 'Vermieter', value: 'VermieterReferenz'},
+               {text: 'Rechnung An', value: 'RechnungAn'},
+               {text: 'Anlagename ID', value: 'Anlagename'},
+               {text: 'Load ID', value: 'LoadID'},
+               {text: 'Fällig Am', value: 'Fällig Am'},
+               {text: 'Mieter Vorname', value: 'Vorname'},
+               {text: 'Mieter Nachname', value: 'Nachname'},
+               {text: 'Actions', value: 'actions', sortable: false }
+            ]
          };
       },
       methods: {
          markAsPaid(items){
             for (var i = 0; i < items.length; i++){
-               this.paidInvoices.push(items[i])
-               this.upcomingInvoices.splice(this.upcomingInvoices.indexOf(items[i]), 1)
-               console.log(items[i])
+               items[i].Bezahlt = "Ja"
             }
          },
          resetSelected(){
@@ -260,21 +270,23 @@
       },
       computed: {
          ...mapGetters({
-            upcomingInvoices: 'upcomingInvoices'
+            upcomingInvoices: 'upcomingInvoices',
+            paidInvoices: 'paidInvoices',
+            openInvoices: 'openInvoices'
          }),
-         columnNames() {
-            var computedColumnnames  = []
-            Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
-               computedColumnnames.push({text: item, value: item})
-            })
-            computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
-            return computedColumnnames
-         },
+         // columnNames() {
+         //    var computedColumnnames  = ["RechnungsID", "RechnungsArt", "Betrag", "Vermieter", "Rechnung An", "LoadID", "Mieter",  "Vorname", "Nachname", "Fällig Am"]
+         //    Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
+         //       computedColumnnames.push({text: item, value: item})
+         //    })
+         //    computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+         //    return computedColumnnames
+         // },
          getUniqueProperties(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Liegenschaft)){
-                  array.push(item.Liegenschaft)
+               if (!array.includes(item.AnlageID)){
+                  array.push(item.AnlageID)
                }
             })
             return array
@@ -282,8 +294,8 @@
          getUniqueAdministration(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Immobilienverwaltung)){
-                  array.push(item.Immobilienverwaltung)
+               if (!array.includes(item.Anlagename)){
+                  array.push(item.Anlagename)
                }
             })
             return array
@@ -291,8 +303,8 @@
          getUniqueTenants(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Mieter)){
-                  array.push(item.Mieter)
+               if (!array.includes(item.Nachname)){
+                  array.push(item.Nachname)
                }
             })
             return array
@@ -300,13 +312,17 @@
          getUniqueInvoiceCategory(){
             var array = [];
             this.upcomingInvoices.forEach(function (item) {
-               if (!array.includes(item.Rechnungsart)){
-                  array.push(item.Rechnungsart)
+               if (!array.includes(item.RechnungsArt)){
+                  array.push(item.RechnungsArt)
                }
             })
             return array
          },
       },
+   }
+
+   Date.prototype.toString = function() {
+      return this.toDateString()
    }
 
 </script>

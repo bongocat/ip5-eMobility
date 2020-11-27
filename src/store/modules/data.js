@@ -1,113 +1,137 @@
 const state = {
-    upInvoices: [
+    invoices: [
         {
-            ID: 12,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2011-01-31')
+            Betrag: 100,
+            RechnungsID: "1",
+            RechnungsNr: "1",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Anlagé",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2021-01-31'),
+            ['Zu Zahlen Bis']: new Date('2021-02-28'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            Generiert: "Nein"
         },
         {
-            ID: 11,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2021-01-31')
+            Betrag: 200,
+            RechnungsID: "2",
+            RechnungsNr: "2",
+            RechnungsArt: "Service",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Geld Anlage",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-27'),
+            ['Zu Zahlen Bis']: new Date('2020-11-30'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            Generiert: "Nein"
+
         },
         {
-            ID: 10,
-            Liegenschaft: "L2",
-            Betrag: 144,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2021-01-31')
+            Betrag: 300,
+            RechnungsID: "3",
+            RechnungsNr: "3",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Sound Anlage",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-27'),
+            ['Zu Zahlen Bis']: new Date('2020-11-30'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            Generiert: "Nein"
+
         },
         {
-            ID: 9,
-            Liegenschaft: "L3",
-            Betrag: 172,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-31')
+            Betrag: 444,
+            RechnungsID: "4",
+            RechnungsNr: "4",
+            RechnungsArt: "Installation",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Mega Anlage",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-30'),
+            ['Zu Zahlen Bis']: new Date('2020-12-31'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            Generiert: "Nein"
+
         },
         {
-            ID: 8,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-31')
+            Betrag: 521,
+            RechnungsID: "5",
+            RechnungsNr: "5",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Super Anlage",
+            AnlageID: "1",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-30'),
+            ['Zu Zahlen Bis']: new Date('2020-12-31'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            ZählerstandAlt: "",
+            ['Datum Zählerstand Alt']: new Date('2020-01-1'),
+            ZählerstandNeu: "",
+            ['Datum Zählerstand Neu']: new Date('2020-12-31'),
+            Generiert: "Nein"
         },
         {
-            ID: 7,
-            Liegenschaft: "L2",
-            Betrag: 144,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-31')
+            Betrag: 521,
+            RechnungsID: "5",
+            RechnungsNr: "5",
+            RechnungsArt: "Strom",
+            MieterReferenz: "1001",
+            VermieterReferenz: "2001",
+            RechnungAn: "Mieter",
+            Anlagename: "Hammer Anlage",
+            AnlageID: "8",
+            LoadID: "2222",
+            ['Fällig Am']: new Date('2020-11-30'),
+            ['Zu Zahlen Bis']: new Date('2020-12-31'),
+            Bezahlt: "Nein",
+            BezahltAm: new Date(),
+            Vorname: "Peter",
+            Nachname: "Karachi",
+            Firma: "",
+            ZählerstandAlt: "",
+            ['Datum Zählerstand Alt']: new Date('2020-01-1'),
+            ZählerstandNeu: "",
+            ['Datum Zählerstand Neu']: new Date('2020-12-31'),
+            Generiert: "Ja"
         },
-        {
-            ID: 6,
-            Liegenschaft: "L3",
-            Betrag: 172,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-27')
-        },
-        {
-            ID: 5,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-27')
-        },
-        {
-            ID: 4,
-            Liegenschaft: "L2",
-            Betrag: 144,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-27')
-        },
-        {
-            ID: 3,
-            Liegenschaft: "L3",
-            Betrag: 172,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-20')
-        },
-        {
-            ID: 2,
-            Liegenschaft: "L1",
-            Betrag: 125,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-20')
-        },
-        {
-            ID: 1,
-            Liegenschaft: "L2",
-            Betrag: 144,
-            Rechnungsart: "Serviceabo",
-            Mieter: "Mietermann",
-            Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: new Date('2020-12-20')
-        }],
+    ],
     users: [
         {
             NutzerID: "1",
@@ -177,7 +201,55 @@ const state = {
             Aktiv: "Nein",
             Kommentar: "Is this the real Life, or iks this just Fantasy.",
         },
-    ]
+    ],
+    facilities: [
+        {
+            AnlageID: 1,
+            Anlage: "ABCD",
+            Immobilienverwaltung: "2001",
+            Strasse: "Boliovenweg",
+            Hausnummer: "33",
+            PLZ: "1020",
+            Land: "Schweiz",
+            Count: "0",
+        },
+        {
+            AnlageID: 2,
+            Anlage: "XXXX",
+            Immobilienverwaltung: "2001",
+            Strasse: "Boliovenweg",
+            Hausnummer: "33",
+            PLZ: "1020",
+            Land: "Schweiz",
+            Count: "0",
+        },
+    ],
+    loads: [
+        {
+            LoadID: "001",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "002",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "003",
+            Anlage: "XXXX",
+            AnlageID: "2020",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+    ],
 }
 
 const getters = {
@@ -189,23 +261,39 @@ const getters = {
     /**
      * Get invoices from the next 30 days
      * @param state
-     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
-     */
+     * @returns filtered invoices
+     * */
     upcomingInvoices: state => {
-        return state.upInvoices.filter(invoice => {
-            let now = new Date();
-            now.setDate(now.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= now;
+        return state.invoices.filter(invoice => {
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Nein";
+        })
+    },
+
+    paidInvoices: state => {
+        return state.invoices.filter(invoice => {
+            let beforeThirtyDays = new Date();
+            beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
+            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "Ja";
+        })
+    },
+
+    openInvoices: state => {
+        return state.invoices.filter(invoice => {
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein";
         })
     },
 
     /**
      * Get all invoices
      * @param state
-     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
+     * @returns invoives
      */
     allInvoices: state => {
-        return state.upInvoices
+        return state.invoices
     },
 
     /**
@@ -215,7 +303,7 @@ const getters = {
     /**
      * Get all active users
      * @param state
-     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
+     * @returns active users
      */
     activeUsers: state => {
         return state.users.filter(user => user.Aktiv == "Ja")
@@ -224,8 +312,8 @@ const getters = {
     /**
      * Get all inactive users
      * @param state
-     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
-     */
+     * @returns inactive users
+     * */
     inactiveUsers: state => {
         return state.users.filter(user => user.Aktiv == "Nein")
     },
@@ -233,10 +321,36 @@ const getters = {
     /**
      * Get all users
      * @param state
-     * @returns {[{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}]}
+     * @returns users
      */
     allUsers: state => {
         return state.users
+    },
+
+    /**
+     * Facility getters
+     */
+
+    /**
+     * Get all facilities
+     * @param state
+     * @returns all facilities
+     */
+    allFacilities: state => {
+        return state.facilities
+    },
+
+    /**
+     * Load getters
+     */
+
+    /**
+     * Get all loads
+     * @param state
+     * @returns all loads
+     */
+    allLoads: state => {
+        return state.loads
     },
 }
 
@@ -244,12 +358,20 @@ const actions = {}
 
 
 const mutations = {
-    addInvoice (state, invoice){
-        state.upInvoices.push(invoice)
+    addInvoice(state, invoice) {
+        state.invoices.push(invoice)
     },
 
     addNewUser (state, user){
         state.users.push(user)
+    },
+
+    addNewFacility (state, facility){
+        state.facilities.push(facility)
+    },
+
+    addNewLoad (state, load){
+        state.loads.push(load)
     }
 }
 

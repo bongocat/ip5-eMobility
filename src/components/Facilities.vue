@@ -4,10 +4,11 @@
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
           <h1>Anlagen</h1>
-          <v-badge :content="upcomingInvoices.length" :value="upcomingInvoices.length" color="success" inline/>
+          <v-badge :content="allFacilities.length" :value="allFacilities.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
-          <v-expansion-panels style="padding-bottom: 20px">
+          <facility-registration></facility-registration>
+          <v-expansion-panels style="padding-bottom: 20px; margin-top: 20px">
             <v-expansion-panel>
               <v-expansion-panel-header>
                 Filter
@@ -64,7 +65,7 @@
           <v-data-table
               dense
               :headers="columnNames"
-              :items="upcomingInvoices"
+              :items="allFacilities"
               class="elevation-1"
               :items-per-page="20">
             <template v-slot:item.actions="{item}">
@@ -82,16 +83,15 @@
 <script>
 
 
+import FacilityRegistration from "./FacilityRegistration";
+import { mapGetters } from "vuex";
+
 export default {
   name: "facilities",
+  components: {FacilityRegistration},
   data() {
     return {
-      startingDate: new Date().toISOString().substr(0, 10),
-      endDate: new Date().toISOString().substr(0, 10),
-      menuStartingDate: false,
-      menuEndDate: false,
       currentItem: {},
-      showModal: false,
       selected: [],
       page: 1,
       pageCount: 0,
@@ -99,19 +99,6 @@ export default {
       dialog: false,
       editedIndex: -1,
       paidInvoices: [],
-      upcomingInvoices: [
-        {
-          AnlageID: 11,
-          Name: "L1",
-          Immobilienverwaltung: "Verwaltung 1",
-          Strasse: "Boliovenweg",
-          Hausnummer: "33",
-          PLZ: "1020",
-          Land: "Schweiz",
-          Loads: "0",
-        },
-
-      ],
     };
   },
   methods: {
@@ -135,9 +122,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      allFacilities: 'allFacilities'
+    }),
     columnNames() {
       var computedColumnnames  = []
-      Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
+      Object.keys(this.allFacilities[0]).forEach(function (item) {
         computedColumnnames.push({text: item, value: item})
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
@@ -145,7 +135,7 @@ export default {
     },
     getUniqueProperties(){
       var array = [];
-      this.upcomingInvoices.forEach(function (item) {
+      this.allFacilities.forEach(function (item) {
         if (!array.includes(item.Name)){
           array.push(item.Name)
         }
@@ -154,7 +144,7 @@ export default {
     },
     getUniqueAdministration(){
       var array = [];
-      this.upcomingInvoices.forEach(function (item) {
+      this.allFacilities.forEach(function (item) {
         if (!array.includes(item.Immobilienverwaltung)){
           array.push(item.Immobilienverwaltung)
         }
@@ -163,7 +153,7 @@ export default {
     },
     getUniqueTenants(){
       var array = [];
-      this.upcomingInvoices.forEach(function (item) {
+      this.allFacilities.forEach(function (item) {
         if (!array.includes(item.PLZ)){
           array.push(item.PLZ)
         }
@@ -172,7 +162,7 @@ export default {
     },
     getUniqueInvoiceCategory(){
       var array = [];
-      this.upcomingInvoices.forEach(function (item) {
+      this.allFacilities.forEach(function (item) {
         if (!array.includes(item.Land)){
           array.push(item.Land)
         }
