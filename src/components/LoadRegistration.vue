@@ -83,7 +83,6 @@ export default {
     ...mapMutations({
       addNewLoad: "addNewLoad"
     }),
-
     createNewLoadFromForm() {
       this.dialog = false
 
@@ -101,7 +100,6 @@ export default {
       this.$refs.form.reset()
     },
   },
-
   computed: {
     ...mapGetters({
       allLoads: 'allLoads',
