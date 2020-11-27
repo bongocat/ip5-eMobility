@@ -107,7 +107,8 @@ const state = {
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
             ['Fällig Am']: new Date('2020-12-20')
-        }],
+        }
+    ],
     users: [
         {
             NutzerID: "1",
@@ -177,7 +178,46 @@ const state = {
             Aktiv: "Nein",
             Kommentar: "Is this the real Life, or iks this just Fantasy.",
         },
-    ]
+    ],
+    facilities: [
+        {
+            AnlageID: 11,
+            Anlage: "L1",
+            Immobilienverwaltung: "Verwaltung 1",
+            Strasse: "Boliovenweg",
+            Hausnummer: "33",
+            PLZ: "1020",
+            Land: "Schweiz",
+            Count: "0",
+        },
+    ],
+    loads: [
+        {
+            LoadID: "001",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "002",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "003",
+            Anlage: "XXXX",
+            AnlageID: "2020",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+    ],
+
 }
 
 const getters = {
@@ -189,20 +229,20 @@ const getters = {
     /**
      * Get invoices from the next 30 days
      * @param state
-     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
-     */
+     * @returns filtered invoices
+     * */
     upcomingInvoices: state => {
         return state.upInvoices.filter(invoice => {
-            let now = new Date();
-            now.setDate(now.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= now;
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays;
         })
     },
 
     /**
      * Get all invoices
      * @param state
-     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
+     * @returns invoives
      */
     allInvoices: state => {
         return state.upInvoices
@@ -215,7 +255,7 @@ const getters = {
     /**
      * Get all active users
      * @param state
-     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
+     * @returns active users
      */
     activeUsers: state => {
         return state.users.filter(user => user.Aktiv == "Ja")
@@ -224,8 +264,8 @@ const getters = {
     /**
      * Get all inactive users
      * @param state
-     * @returns {({Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}|{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string})[]}
-     */
+     * @returns inactive users
+     * */
     inactiveUsers: state => {
         return state.users.filter(user => user.Aktiv == "Nein")
     },
@@ -233,10 +273,36 @@ const getters = {
     /**
      * Get all users
      * @param state
-     * @returns {[{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}]}
+     * @returns users
      */
     allUsers: state => {
         return state.users
+    },
+
+    /**
+     * Facility getters
+     */
+
+    /**
+     * Get all facilities
+     * @param state
+     * @returns all facilities
+     */
+    allFacilities: state => {
+        return state.facilities
+    },
+
+    /**
+     * Load getters
+     */
+
+    /**
+     * Get all loads
+     * @param state
+     * @returns all loads
+     */
+    allLoads: state => {
+        return state.loads
     },
 }
 
@@ -244,7 +310,7 @@ const actions = {}
 
 
 const mutations = {
-    addInvoice (state, invoice){
+    addInvoice(state, invoice) {
         state.upInvoices.push(invoice)
     },
 

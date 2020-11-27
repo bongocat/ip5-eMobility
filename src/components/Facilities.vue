@@ -110,7 +110,6 @@ export default {
           Land: "Schweiz",
           Loads: "0",
         },
-
       ],
     };
   },
