@@ -322,7 +322,7 @@
    }
 
    Date.prototype.toString = function() {
-      return "" + this.getUTCDate() + "." + this.getMonth() + "." + this.getFullYear()
+      return this.toDateString()
    }
 
 </script>
