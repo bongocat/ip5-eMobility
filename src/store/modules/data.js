@@ -284,12 +284,25 @@ const getters = {
      */
 
     /**
-     * get all facilities
+     * Get all facilities
      * @param state
      * @returns all facilities
      */
     allFacilities: state => {
         return state.facilities
+    },
+
+    /**
+     * Load getters
+     */
+    
+    /**
+     * Get all loads
+     * @param state
+     * @returns all loads
+     */
+    allLoads: state => {
+        return state.loads
     },
 }
 
