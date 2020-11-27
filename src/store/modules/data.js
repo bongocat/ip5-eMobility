@@ -174,7 +174,10 @@ const state = {
 const getters = {
     upcomingInvoices: state => {
         return state.upInvoices
-    }
+    },
+    activeUsers: state => {
+        return state.users.filter(value => state.users.Aktiv == "Ja")
+    },
 }
 
 const actions = {}
