@@ -14,11 +14,12 @@ Vue.use(VueRouter)
 Vue.config.productionTip = false
 
 const routes = [
-  {path: '/dashboard', component: Dashboard, name: 'Dashboard'},
-  {path: '/invoices', component: Invoices, name: "Rechnungen"},
-  {path: '/loads', component: Loads, name: 'Loads'},
-  {path: '/facilities', component: Facilities, name: "Anlagen"},
-  {path: '/users', component: Users, name: "Nutzer"},
+  {path: '/dashboard',    component: Dashboard,    name: 'Dashboard'},
+  {path: '/invoices',     component: Invoices,     name: "Rechnungen"},
+  {path: '/loads',        component: Loads,        name: 'Loads'},
+  {path: '/facilities',   component: Facilities,   name: "Anlagen"},
+  {path: '/users',        component: Users,        name: "Nutzer"},
+  {path: '/*',            component: Dashboard,    name: 'Dashboard'},
 ];
 
 const router = new VueRouter({

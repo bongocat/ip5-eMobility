@@ -1,54 +1,54 @@
 <template>
   <v-main>
-  <v-container fluid>
-  <v-card style="margin-top: 20px" :elevation="5">
-      <v-card-title>
-        <h1>Loads</h1>
-        <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
-      </v-card-title>
-      <v-card-text>
-        <LoadRegistration></LoadRegistration>
-        <v-data-table
-                style="margin-top: 20px"
-            :headers="columnNames"
-            :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
-            :single-expand="singleExpand"
-            :expanded.sync="expanded"
-            item-key="Anlage"
-            show-expand
-            class="elevation-1"
-        >
-          <template v-slot:item.actions="{item}">
-            <v-btn @click="toCSV(item)">
-              <v-icon>mdi-file-download</v-icon>
-            </v-btn>
-          </template>
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-                  <v-data-table
-                          style="margin: 20px; background-color: rgba(0,0,0,0.05)"
-                          :headers="columnInnerNames"
-                          :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
-                          item-key="inner"
-                          class="elevation-5"
-                  >
-                    <template v-slot:item.actions="{item}">
-                      <v-btn @click="toCSV(item)">
-                        <v-icon>mdi-file-download</v-icon>
-                      </v-btn>
-                    </template>
-                  </v-data-table>
-            </td>
-          </template>
-        </v-data-table>
-      </v-card-text>
-  </v-card>
-  </v-container>
+    <v-container fluid>
+      <v-card style="margin-top: 20px" :elevation="5">
+        <v-card-title>
+          <h1>Loads</h1>
+          <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
+        </v-card-title>
+        <v-card-text>
+          <LoadRegistration></LoadRegistration>
+          <v-data-table
+              style="margin-top: 20px"
+              :headers="columnNames"
+              :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+              :single-expand="singleExpand"
+              :expanded.sync="expanded"
+              item-key="Anlage"
+              show-expand
+              class="elevation-1"
+          >
+            <template v-slot:item.actions="{item}">
+              <v-btn small @click="toCSV(item)">
+                <v-icon>mdi-file-download</v-icon>
+              </v-btn>
+            </template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                <v-data-table
+                    style="margin: 20px; background-color: rgba(0,0,0,0.05)"
+                    :headers="columnInnerNames"
+                    :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
+                    item-key="inner"
+                    class="elevation-5"
+                >
+                  <template v-slot:item.actions="{item}">
+                    <v-btn small @click="toCSV(item)">
+                      <v-icon>mdi-file-download</v-icon>
+                    </v-btn>
+                  </template>
+                </v-data-table>
+              </td>
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-container>
   </v-main>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import LoadRegistration from "./LoadRegistration";
 
 export default {
@@ -103,10 +103,8 @@ export default {
 </script>
 
 <style scoped>
-
 h1, h5 {
   vertical-align: center;
   clear: both;
 }
-
 </style>

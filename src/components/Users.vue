@@ -15,7 +15,7 @@
               class="elevation-1"
               :items-per-page="5">
             <template v-slot:item.actions="{item}">
-              <v-btn @click="toCSV(item)">
+              <v-btn small @click="toCSV(item)">
                 <v-icon>mdi-file-download</v-icon>
               </v-btn>
             </template>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-
 import UserRegistration from "./UserRegistration";
 import { mapGetters } from "vuex";
 
@@ -77,58 +76,11 @@ export default {
     }),
   }
 }
-
 </script>
 
 <style scoped>
-
 h1, h5 {
   vertical-align: center;
   clear:both;
 }
-
-div.dataTable {
-  max-width: 1800px;
-}
-
-.modal-overlay{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 98;
-  background-color: rgba(3, 12, 3, 0.11);
-}
-
-.modalPresentation{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-  width: 100%;
-  max-width: 800px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 25px;
-  padding: 20px;
-}
-
-.fade-enter-active, .fade-leave-active{
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to{
-  opacity: 0;
-}
-
-.slide-enter-active, .slide-leave-active{
-  transition: opacity 0.5s;
-}
-
-.slide-enter, .slide-leave-to{
-  opacity: 0;
-  transform: translateY(-50%) translateX(100vw);
-}
-
 </style>
