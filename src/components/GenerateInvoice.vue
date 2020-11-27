@@ -22,10 +22,12 @@
         <v-form>
             <v-row>
                <v-col>
-                   <v-text-field label="Rechnungsnummer"></v-text-field>
+                   <v-text-field v-model = "invoiceNumber"
+                                 label="Rechnungsnummer"></v-text-field>
                </v-col>
                 <v-col>
                     <v-overflow-btn style="width: 400px"
+                                    v-model = "due"
                                     dense
                                     editable
                                     :items='[10 + " Tage", 20 + " Tage", 30 + " Tage"]'
@@ -34,14 +36,15 @@
                     ></v-overflow-btn>
                 </v-col>
                 <v-col>
-                    <v-text-field label="Kommentar"></v-text-field>
+                    <v-text-field v-model = "comment"
+                                  label="Kommentar"></v-text-field>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
                     <v-switch
                             v-model = "meterReadingOld"
-                            color="success"
+                            color= "success"
                             label = 'Zählerstand alt'
                     >
                     </v-switch>
@@ -49,7 +52,7 @@
                 <v-col>
                     <v-switch
                             v-model = "meterReadingNew"
-                            color="success"
+                            color= "success"
                             label = 'Zählerstand neu'
                     >
                     </v-switch>
@@ -95,6 +98,8 @@ export default {
   },
   data() {
     return {
+        due: 0,
+        comment: "",
       dialog: false,
       name: '',
       invoiceNumber: 0,
@@ -110,6 +115,10 @@ export default {
     toCSV: function (item) {
 
       item.Generiert = "Ja"
+        item.RechnungsNr = this.invoiceNumber
+        item.ZählerstandAlt = this.meterReadingOld
+        item.ZählerstandNeu = this.meterReadingNew
+        item.Kommentar = this.comment
 
       const outputData = [Object.keys(item), Object.values(item)];
 

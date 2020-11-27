@@ -18,7 +18,8 @@ const state = {
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein"
+            Generiert: "Nein",
+            Kommentar: ""
         },
         {
             Betrag: 200,
@@ -38,7 +39,8 @@ const state = {
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein"
+            Generiert: "Nein",
+            Kommentar: ""
         },
         {
             Betrag: 300,
@@ -58,7 +60,8 @@ const state = {
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein"
+            Generiert: "Nein",
+            Kommentar: ""
         },
         {
             Betrag: 444,
@@ -78,7 +81,8 @@ const state = {
             Vorname: "Maria",
             Nachname: "Winter",
             Firma: "",
-            Generiert: "Nein"
+            Generiert: "Nein",
+            Kommentar: ""
         },
         {
             Betrag: 521,
@@ -102,7 +106,8 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Nein"
+            Generiert: "Nein",
+            Kommentar: ""
         },
         {
             Betrag: 521,
@@ -126,7 +131,8 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Ja"
+            Generiert: "Ja",
+            Kommentar: ""
         },
     ],
     users: [
