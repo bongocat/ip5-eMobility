@@ -182,6 +182,16 @@ const state = {
     facilities: [
         {
             AnlageID: 1,
+            Anlage: "ABCD",
+            Immobilienverwaltung: "2001",
+            Strasse: "Boliovenweg",
+            Hausnummer: "33",
+            PLZ: "1020",
+            Land: "Schweiz",
+            Count: "0",
+        },
+        {
+            AnlageID: 2,
             Anlage: "L1",
             Immobilienverwaltung: "Verwaltung 1",
             Strasse: "Boliovenweg",
