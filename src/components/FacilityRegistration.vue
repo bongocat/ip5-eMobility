@@ -94,6 +94,7 @@
             ...mapMutations({
                 addNewFacility: "addNewFacility"
             }),
+
             createNewFacilityFromForm() {
                 this.dialog = false
 
@@ -119,9 +120,8 @@
             facilityID() {
                 return this.allFacilities.length + 1
             },
-        }
+        },
     }
-
 </script>
 
 <style scoped>

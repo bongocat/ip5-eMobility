@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import LoadRegistration from "@/components/LoadRegistration";
+import LoadRegistration from "./LoadRegistration";
 
 export default {
   components: {LoadRegistration},

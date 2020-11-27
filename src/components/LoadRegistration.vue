@@ -92,10 +92,10 @@
                 this.dialog = false
 
                 const newLoad = {
-                    LoadID: this.LoadNummer(),
+                    LoadID: this.loadNummer,
                     AnlageID: this.anlageID,
                     Anlage: this.anlageName,
-                    Vermieter: this.anlageVermieterr,
+                    Vermieter: this.anlageVermieter,
                     Mieter: this.anlageMieter,
                     ['Rechnung an']: this.rechnungAn,
                 }
@@ -107,13 +107,14 @@
         },
 
         computed: {
-            ...mapGetters(['allLoads']),
-            LoadNummer() {
-                return this.allLoads().length + 1
+            ...mapGetters({
+                allLoads: 'allLoads',
+            }),
+            loadNummer() {
+                return this.allLoads.length + 1
             },
-        }
+        },
     }
-
 </script>
 
 <style scoped>
