@@ -1,7 +1,7 @@
 <template>
   <v-dialog
       v-model="dialog"
-      width="600px"
+      max-width="1200px"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -20,15 +20,50 @@
       </v-card-title>
       <v-card-text>
         <v-form>
-          <v-text-field label="Rechnungsnummer"></v-text-field>
-          <v-overflow-btn style="width: 400px"
-                          dense
-                          editable
-                          :items='[10 + " Tage", 20 + " Tage", 30 + " Tage"]'
-                          label="Zahlungsfrist"
-                          item-value="number"
-          ></v-overflow-btn>
-          <v-text-field label="Kommentar"></v-text-field>
+            <v-row>
+               <v-col>
+                   <v-text-field label="Rechnungsnummer"></v-text-field>
+               </v-col>
+                <v-col>
+                    <v-overflow-btn style="width: 400px"
+                                    dense
+                                    editable
+                                    :items='[10 + " Tage", 20 + " Tage", 30 + " Tage"]'
+                                    label="Zahlungsfrist"
+                                    item-value="number"
+                    ></v-overflow-btn>
+                </v-col>
+                <v-col>
+                    <v-text-field label="Kommentar"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-switch
+                            v-model = "meterReadingOld"
+                            color="success"
+                            label = 'Zählerstand alt'
+                    >
+                    </v-switch>
+                </v-col>
+                <v-col>
+                    <v-switch
+                            v-model = "meterReadingNew"
+                            color="success"
+                            label = 'Zählerstand neu'
+                    >
+                    </v-switch>
+                </v-col>
+                <v-col>
+                    <v-switch
+                            color ="success"
+                            v-model = "meterDifference"
+                            label = "Differenz"
+                            :disabled = meterDifferenceEnabled
+                    >
+                    </v-switch>
+                </v-col>
+            </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -62,7 +97,10 @@ export default {
     return {
       dialog: false,
       name: '',
-      invoiceNumber: 0
+      invoiceNumber: 0,
+        meterReadingOld: false,
+        meterReadingNew: false,
+        meterDifference: false,
     }
   },
   methods: {
@@ -87,6 +125,12 @@ export default {
       window.open(encodedUri);
     }
   },
-  watch: {}
+    computed: {
+        meterDifferenceEnabled(){
+            return !(this.meterReadingOld && this.meterReadingNew)
+        }
+    },
+  watch: {},
+
 }
 </script>
