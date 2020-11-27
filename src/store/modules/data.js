@@ -1,6 +1,15 @@
 const state = {
     upInvoices: [
         {
+            ID: 12,
+            Liegenschaft: "L1",
+            Betrag: 125,
+            Rechnungsart: "Serviceabo",
+            Mieter: "Mietermann",
+            Immobilienverwaltung: "Verwaltung 1",
+            ['Fällig Am']: new Date('2011-01-31')
+        },
+        {
             ID: 11,
             Liegenschaft: "L1",
             Betrag: 125,
@@ -173,7 +182,11 @@ const state = {
 
 const getters = {
     upcomingInvoices: state => {
-        return state.upInvoices
+        return state.upInvoices.filter(invoice => {
+            let now = new Date();
+            now.setDate(now.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= now;
+        })
     },
     activeUsers: state => {
         return state.users.filter(user => user.Aktiv == "Ja")
