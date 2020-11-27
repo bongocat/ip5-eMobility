@@ -219,7 +219,6 @@
 </template>
 
 <script>
-
 import GenerateInvoice from "./GenerateInvoice";
 import {mapGetters} from "vuex";
 import {mapMutations} from 'vuex'
@@ -330,11 +329,9 @@ export default {
 Date.prototype.toString = function () {
   return this.toDateString()
 }
-
 </script>
 
 <style scoped>
-
 h1, h5 {
   vertical-align: center;
   clear: both;
