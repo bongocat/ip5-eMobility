@@ -27,7 +27,6 @@
 </template>
 
 <script>
-
 import UserRegistration from "./UserRegistration";
 import { mapGetters } from "vuex";
 
@@ -77,11 +76,9 @@ export default {
     }),
   }
 }
-
 </script>
 
 <style scoped>
-
 h1, h5 {
   vertical-align: center;
   clear:both;
