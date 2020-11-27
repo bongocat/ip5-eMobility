@@ -192,8 +192,8 @@ const state = {
         },
         {
             AnlageID: 2,
-            Anlage: "L1",
-            Immobilienverwaltung: "Verwaltung 1",
+            Anlage: "XXXX",
+            Immobilienverwaltung: "2001",
             Strasse: "Boliovenweg",
             Hausnummer: "33",
             PLZ: "1020",
