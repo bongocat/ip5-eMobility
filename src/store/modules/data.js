@@ -108,7 +108,13 @@ const getters = {
 }
 
 const actions = {}
-const mutations = {}
+
+
+const mutations = {
+    addInvoice (state, invoice){
+        store.upInvoices.push(invoice)
+    }
+}
 
 export default {
     state,

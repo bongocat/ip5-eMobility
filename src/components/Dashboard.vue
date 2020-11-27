@@ -221,6 +221,7 @@
 
    import GenerateInvoice from "./GenerateInvoice";
    import { mapGetters } from "vuex";
+   import { mapMutations } from 'vuex'
 
    export default {
       name: "Dashboard",
@@ -255,7 +256,12 @@
          }
       },
       computed: {
-         ...mapGetters(["upcomingInvoices"]),
+         ...mapGetters({
+            upcomingInvoices: 'upcomingInvoices'
+         }),
+         ...mapMutations([
+            'addInvoice',  // map `this.increment()` to `this.$store.commit('increment')`
+         ]),
          columnNames() {
             var computedColumnnames  = []
             Object.keys(this.upcomingInvoices[0]).forEach(function (item) {
