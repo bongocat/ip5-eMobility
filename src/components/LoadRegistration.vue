@@ -22,16 +22,19 @@
                 <v-form ref="form">
                     <v-row>
                         <v-col>
-                            <v-text-field label="AnlageID" v-model=AnlageID></v-text-field>
+                            <v-text-field label="AnlageID" v-model=anlageID></v-text-field>
                         </v-col>
                       <v-col>
-                        <v-text-field label="Anlagenname" v-model=Anlage></v-text-field>
+                        <v-text-field label="Anlagenname" v-model=anlageName></v-text-field>
                       </v-col>
                         <v-col>
-                            <v-text-field label="Verwalter" v-model=Vermieter></v-text-field>
+                            <v-text-field label="Verwalter" v-model=anlageVermieter></v-text-field>
                         </v-col>
                       <v-col>
-                        <v-text-field label="Mieter" v-model=Mieter></v-text-field>
+                        <v-text-field label="Mieter" v-model=anlageMieter></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-text-field label=">Rechnung an" v-model=rechnungAn></v-text-field>
                       </v-col>
                     </v-row>
                 </v-form>
@@ -73,11 +76,11 @@
         data() {
             return {
                 dialog: false,
-                AnlageID: "",
-                Anlage: "",
-                Vermieter: "",
-                Mieter: "",
-                ['Rechnung an']: "",
+                anlageID: "",
+                anlageName: "",
+                anlageVermieter: "",
+                anlageMieter: "",
+                rechnungAn: "",
             }
         },
         methods: {
@@ -89,11 +92,12 @@
                 this.dialog = false
 
                 const newLoad = {
-                    AnlageID: this.LoadID,
-                    Anlage: this.Anlage,
-                    Vermieter: this.Vermieter,
-                    Mieter: this.Mieter,
-                    ['Rechnung an']: this.Vermieter,
+                    LoadID: this.LoadNummer(),
+                    AnlageID: this.anlageID,
+                    Anlage: this.anlageName,
+                    Vermieter: this.anlageVermieterr,
+                    Mieter: this.anlageMieter,
+                    ['Rechnung an']: this.rechnungAn,
                 }
                 this.addNewLoad(newLoad)
             },
@@ -104,7 +108,7 @@
 
         computed: {
             ...mapGetters(['allLoads']),
-            LoadID() {
+            LoadNummer() {
                 return this.allLoads().length + 1
             },
         }
