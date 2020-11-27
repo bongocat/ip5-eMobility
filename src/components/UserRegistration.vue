@@ -19,7 +19,7 @@
                 <h1 class="headline">Nutzer erfassen</h1>
             </v-card-title>
             <v-card-text>
-                <v-form>
+                <v-form ref="form">
                     <v-row>
                         <v-col>
                             <v-text-field  label="Vorname" v-model = userFirstName></v-text-field>
@@ -78,7 +78,6 @@
                 </v-form>
             </v-card-text>
             <v-card-actions>
-                <v-spacer></v-spacer>
                 <v-btn
                         color="success"
                         text
@@ -93,6 +92,13 @@
                 >
                     Schliessen
                 </v-btn>
+                <v-btn
+                        text
+                        color="warning"
+                        @click="reset"
+                >
+                    Zurücksetzen
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -101,12 +107,12 @@
 <script>
 
     import {mapMutations} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: "UserRegistration",
         data() {
             return {
-                userID: 5,
                 dialog: false,
                 userFirstName: "",
                 userLastName: "",
@@ -146,11 +152,18 @@
                     Aktiv: this.userActive,
                     Kommentar: this.userComment,
                 }
-                this.userID++
                 this.addNewUser(newUser)
-            }
+            },
+            reset () {
+                this.$refs.form.reset()
+            },
         },
+
         computed: {
+            ...mapGetters(['allUsers']),
+            userID(){
+                return this.allUsers.length + 1
+            },
         }
     }
 </script>

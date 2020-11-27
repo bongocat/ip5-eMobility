@@ -253,15 +253,15 @@
          },
          resetSelected(){
             this.selected = []
-         }
+         },
+         ...mapMutations([
+            'addInvoice',  // map `this.increment()` to `this.$store.commit('increment')`
+         ]),
       },
       computed: {
          ...mapGetters({
             upcomingInvoices: 'upcomingInvoices'
          }),
-         ...mapMutations([
-            'addInvoice',  // map `this.increment()` to `this.$store.commit('increment')`
-         ]),
          columnNames() {
             var computedColumnnames  = []
             Object.keys(this.upcomingInvoices[0]).forEach(function (item) {

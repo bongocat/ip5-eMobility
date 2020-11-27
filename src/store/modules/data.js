@@ -110,7 +110,7 @@ const state = {
         }],
     users: [
         {
-            NutzerID: "001",
+            NutzerID: "1",
             Vorname: "John",
             Nachname: "Snow",
             NutzerTyp: "Mieter",
@@ -127,7 +127,7 @@ const state = {
             Kommentar: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
         },
         {
-            NutzerID: "002",
+            NutzerID: "2",
             Vorname: "Maria",
             Nachname: "Winter",
             NutzerTyp: "Mieter",
@@ -144,7 +144,7 @@ const state = {
             Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
         },
         {
-            NutzerID: "003",
+            NutzerID: "3",
             Vorname: "Maurus",
             Nachname: "Kona",
             NutzerTyp: "Vermieter",
@@ -161,7 +161,7 @@ const state = {
             Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n sdsdsdsdsdsdsdsd",
         },
         {
-            NutzerID: "004",
+            NutzerID: "4",
             Vorname: "Maurus",
             Nachname: "Kona",
             NutzerTyp: "Vermieter",
