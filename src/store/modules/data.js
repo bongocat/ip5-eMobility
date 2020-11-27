@@ -98,7 +98,7 @@ const state = {
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
             ['Fällig Am']: "31.12.2020"
-        }]
+        }],
     users: [
         {
             NutzerID: "001",
@@ -181,8 +181,8 @@ const actions = {}
 
 
 const mutations = {
-    addInvoice(state, invoice) {
-        store.upInvoices.push(invoice)
+    addInvoice (state, invoice){
+        state.upInvoices.push(invoice)
     }
 }
 
