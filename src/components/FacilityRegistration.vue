@@ -90,7 +90,6 @@ export default {
     ...mapMutations({
       addNewFacility: "addNewFacility"
     }),
-
     createNewFacilityFromForm() {
       this.dialog = false
 
@@ -110,7 +109,6 @@ export default {
       this.$refs.form.reset()
     },
   },
-
   computed: {
     ...mapGetters(['allFacilities']),
     facilityID() {
