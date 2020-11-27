@@ -81,10 +81,8 @@
 </template>
 
 <script>
-
-
 import FacilityRegistration from "./FacilityRegistration";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "facilities",
@@ -102,17 +100,17 @@ export default {
     };
   },
   methods: {
-    resetSelected(){
+    resetSelected() {
       this.selected = []
     },
-    toCSV: function(item) {
+    toCSV: function (item) {
 
       const outputData = [Object.keys(item), Object.values(item)];
 
       console.log(outputData);
       let csvContent = "data:text/csv;charset=utf-8,";
 
-      outputData.forEach(function(outputData) {
+      outputData.forEach(function (outputData) {
         let row = outputData.join(",");
         csvContent += row + ";\r\n";
       });
@@ -126,44 +124,44 @@ export default {
       allFacilities: 'allFacilities'
     }),
     columnNames() {
-      var computedColumnnames  = []
+      var computedColumnnames = []
       Object.keys(this.allFacilities[0]).forEach(function (item) {
         computedColumnnames.push({text: item, value: item})
       })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false})
       return computedColumnnames
     },
-    getUniqueProperties(){
+    getUniqueProperties() {
       var array = [];
       this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Name)){
+        if (!array.includes(item.Name)) {
           array.push(item.Name)
         }
       })
       return array
     },
-    getUniqueAdministration(){
+    getUniqueAdministration() {
       var array = [];
       this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Immobilienverwaltung)){
+        if (!array.includes(item.Immobilienverwaltung)) {
           array.push(item.Immobilienverwaltung)
         }
       })
       return array
     },
-    getUniqueTenants(){
+    getUniqueTenants() {
       var array = [];
       this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.PLZ)){
+        if (!array.includes(item.PLZ)) {
           array.push(item.PLZ)
         }
       })
       return array
     },
-    getUniqueInvoiceCategory(){
+    getUniqueInvoiceCategory() {
       var array = [];
       this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Land)){
+        if (!array.includes(item.Land)) {
           array.push(item.Land)
         }
       })
@@ -171,13 +169,11 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
-
 h1, h5 {
   vertical-align: center;
-  clear:both;
+  clear: both;
 }
 </style>
