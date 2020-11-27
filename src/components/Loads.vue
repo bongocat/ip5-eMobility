@@ -4,6 +4,7 @@
       <v-card-title>
         <h1>Loads</h1>
         <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
+        <LoadRegistration></LoadRegistration>
       </v-card-title>
       <v-card-text>
         <v-data-table
@@ -46,8 +47,10 @@
 
 <script>
 import { mapGetters } from "vuex";
+import LoadRegistration from "@/components/LoadRegistration";
 
 export default {
+  components: {LoadRegistration},
   data() {
     return {
       expanded: [],
