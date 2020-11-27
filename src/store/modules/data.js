@@ -178,6 +178,19 @@ const state = {
             Kommentar: "Is this the real Life, or iks this just Fantasy.",
         },
     ]
+    facilities: [
+        {
+            AnlageID: 11,
+            Anlage: "L1",
+            Immobilienverwaltung: "Verwaltung 1",
+            Strasse: "Boliovenweg",
+            Hausnummer: "33",
+            PLZ: "1020",
+            Land: "Schweiz",
+            Count: "0",
+        },
+    ]
+
 }
 
 const getters = {
