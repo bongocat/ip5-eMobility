@@ -33,7 +33,7 @@
                           class="elevation-5"
                   >
                     <template v-slot:item.actions="{item}">
-                      <v-btn @click="toCSV(item)">
+                      <v-btn small @click="toCSV(item)">
                         <v-icon>mdi-file-download</v-icon>
                       </v-btn>
                     </template>
