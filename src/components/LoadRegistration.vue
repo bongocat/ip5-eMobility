@@ -11,7 +11,7 @@
                     v-bind="attrs"
                     v-on="on"
             >
-                Nue Load erfassen
+                Neue Load erfassen
             </v-btn>
         </template>
         <v-card style="padding: 20px">
@@ -22,25 +22,17 @@
                 <v-form ref="form">
                     <v-row>
                         <v-col>
-                            <v-text-field label="Name" v-model=Anlage></v-text-field>
+                            <v-text-field label="AnlageID" v-model=AnlageID></v-text-field>
                         </v-col>
+                      <v-col>
+                        <v-text-field label="Anlagenname" v-model=Anlage></v-text-field>
+                      </v-col>
                         <v-col>
-                            <v-text-field label="Immobilienverwaltung" v-model=Immobilienverwaltung></v-text-field>
+                            <v-text-field label="Verwalter" v-model=Vermieter></v-text-field>
                         </v-col>
-                        <v-col>
-                            <v-text-field label="Strasse" v-model=Strasse></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-text-field label="Hausnummer" v-model=Hausnummer></v-text-field>
-                        </v-col>
-                        <v-col>
-                            <v-text-field label="Postleitzahl" v-model=PLZ></v-text-field>
-                        </v-col>
-                        <v-col>
-                            <v-text-field label="Land" v-model=Land></v-text-field>
-                        </v-col>
+                      <v-col>
+                        <v-text-field label="Mieter" v-model=Mieter></v-text-field>
+                      </v-col>
                     </v-row>
                 </v-form>
             </v-card-text>
@@ -48,7 +40,7 @@
                 <v-btn
                         color="success"
                         text
-                        @click="createNewFacilityFromForm"
+                        @click="createNewLoadFromForm"
                 >
                     Anlage erfassen
                 </v-btn>
@@ -81,33 +73,29 @@
         data() {
             return {
                 dialog: false,
+                AnlageID: "",
                 Anlage: "",
-                Immobilienverwaltung: "",
-                Strasse: "",
-                Hausnummer: "",
-                PLZ: "",
-                Land: "",
-                Count: 0,
+                Vermieter: "",
+                Mieter: "",
+                ['Rechnung an']: "",
             }
         },
         methods: {
             ...mapMutations({
-                addNewFacility: "addNewFacility"
+                addNewLoad: "addNewLoad"
             }),
-            createNewFacilityFromForm() {
+
+            createNewLoadFromForm() {
                 this.dialog = false
 
-                const newFacility = {
-                    AnlageID: this.facilityID,
+                const newLoad = {
+                    AnlageID: this.LoadID,
                     Anlage: this.Anlage,
-                    Immobilienverwaltung: this.Immobilienverwaltung,
-                    Strasse: this.Strasse,
-                    Hausnummer: this.Hausnummer,
-                    PLZ: this.PLZ,
-                    Land: this.Land,
-                    Count: this.Count,
+                    Vermieter: this.Vermieter,
+                    Mieter: this.Mieter,
+                    ['Rechnung an']: this.Vermieter,
                 }
-                this.addNewFacility(newFacility)
+                this.addNewLoad(newLoad)
             },
             reset() {
                 this.$refs.form.reset()
@@ -115,9 +103,9 @@
         },
 
         computed: {
-            ...mapGetters(['allFacilities']),
-            facilityID() {
-                return this.allFacilities.length + 1
+            ...mapGetters(['allLoads']),
+            LoadID() {
+                return this.allLoads().length + 1
             },
         }
     }
