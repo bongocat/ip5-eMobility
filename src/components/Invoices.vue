@@ -121,7 +121,7 @@ export default {
   computed: {
     columnNames() {
       var computedColumnnames  = []
-      Object.keys(this.Invoices[0]).forEach(function (item) {
+      Object.keys(this.allInvoices[0]).forEach(function (item) {
         computedColumnnames.push({text: item, value: item})
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
