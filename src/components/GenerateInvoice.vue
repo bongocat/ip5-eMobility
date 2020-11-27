@@ -73,6 +73,8 @@
             },
             toCSV: function(item) {
 
+                item.Generiert = "Ja"
+
               const outputData = [Object.keys(item), Object.values(item)];
 
               console.log(outputData);
