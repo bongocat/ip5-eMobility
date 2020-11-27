@@ -7,7 +7,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2021-01-31')
         },
         {
             ID: 10,
@@ -16,7 +16,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2021-01-31')
         },
         {
             ID: 9,
@@ -25,7 +25,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-31')
         },
         {
             ID: 8,
@@ -34,7 +34,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-31')
         },
         {
             ID: 7,
@@ -43,7 +43,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-31')
         },
         {
             ID: 6,
@@ -52,7 +52,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-27')
         },
         {
             ID: 5,
@@ -61,7 +61,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-27')
         },
         {
             ID: 4,
@@ -70,7 +70,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-27')
         },
         {
             ID: 3,
@@ -79,7 +79,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-20')
         },
         {
             ID: 2,
@@ -88,7 +88,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-20')
         },
         {
             ID: 1,
@@ -97,7 +97,7 @@ const state = {
             Rechnungsart: "Serviceabo",
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
-            ['Fällig Am']: "31.12.2020"
+            ['Fällig Am']: new Date('2020-12-20')
         }],
     users: [
         {
