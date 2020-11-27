@@ -251,13 +251,26 @@ const getters = {
     allUsers: state => {
         return state.users
     },
+
+    /**
+     * Facility getters
+     */
+
+    /**
+     * get all facilities
+     * @param state
+     * @returns all facilities
+     */
+    allFacilities: state => {
+        return state.facilities
+    },
 }
 
 const actions = {}
 
 
 const mutations = {
-    addInvoice (state, invoice){
+    addInvoice(state, invoice) {
         state.upInvoices.push(invoice)
     }
 }
