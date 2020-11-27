@@ -150,7 +150,7 @@
                </v-expansion-panels>
                <v-data-table
                        dense
-                       :headers="headers"
+                       :headers="upcomingHeaders"
                        :items="upcomingInvoices"
                        class="elevation-1"
                        :items-per-page="5">
@@ -172,7 +172,7 @@
                  show-select
                  :single-select="false"
                  dense
-                 :headers="headers"
+                 :headers="openInvoicesHeaders"
                  :items="openInvoices"
                  class="elevation-1"
                  :items-per-page="5">
@@ -199,7 +199,7 @@
                     v-model="selected"
                     item-key="ID"
                     dense
-                    :headers="headers"
+                    :headers="upcomingHeaders"
                     :items="paidInvoices"
                     class="elevation-1"
                     :items-per-page="5">
@@ -240,7 +240,7 @@
             itemsPerPage: 5,
             dialog: false,
             editedIndex: -1,
-            headers: [
+            upcomingHeaders: [
                {text: 'Rechnungs ID', value: 'RechnungsID'},
                {text: 'Rechnungsart', value: 'RechnungsArt'},
                {text: 'Betrag', value: 'Betrag'},
@@ -249,6 +249,19 @@
                {text: 'Anlagename ID', value: 'Anlagename'},
                {text: 'Load ID', value: 'LoadID'},
                {text: 'Fällig Am', value: 'Fällig Am'},
+               {text: 'Mieter Vorname', value: 'Vorname'},
+               {text: 'Mieter Nachname', value: 'Nachname'},
+               {text: 'Actions', value: 'actions', sortable: false }
+            ],
+            openInvoicesHeaders: [
+               {text: 'Rechnungs ID', value: 'RechnungsID'},
+               {text: 'Rechnungsart', value: 'RechnungsArt'},
+               {text: 'Betrag', value: 'Betrag'},
+               {text: 'Vermieter', value: 'VermieterReferenz'},
+               {text: 'Rechnung An', value: 'RechnungAn'},
+               {text: 'Anlagename ID', value: 'Anlagename'},
+               {text: 'Load ID', value: 'LoadID'},
+               {text: 'Zu Zahlen Bis', value: 'Zu Zahlen Bis'},
                {text: 'Mieter Vorname', value: 'Vorname'},
                {text: 'Mieter Nachname', value: 'Nachname'},
                {text: 'Actions', value: 'actions', sortable: false }
