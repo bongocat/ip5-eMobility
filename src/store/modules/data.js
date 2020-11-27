@@ -176,10 +176,13 @@ const getters = {
         return state.upInvoices
     },
     activeUsers: state => {
-        return state.users.filter(value => state.users.Aktiv == "Ja")
+        return state.users.filter(users => state.users.Aktiv == "Ja")
     },
     inactiveUsers: state => {
-        return state.users.filter(value => state.users.Aktiv == "Nein")
+        return state.users.filter(users => state.users.Aktiv == "Nein")
+    },
+    allUsers: state => {
+        return state.users
     },
 }
 
