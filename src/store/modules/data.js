@@ -246,6 +246,10 @@ const actions = {}
 const mutations = {
     addInvoice (state, invoice){
         state.upInvoices.push(invoice)
+    },
+
+    addNewUser (state, user){
+        state.users.push(user)
     }
 }
 

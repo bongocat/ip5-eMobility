@@ -99,18 +99,21 @@
 </template>
 
 <script>
+
+    import {mapMutations} from 'vuex'
+
     export default {
         name: "UserRegistration",
-        data(){
-            return{
+        data() {
+            return {
                 userID: 5,
                 dialog: false,
                 userFirstName: "",
                 userLastName: "",
                 userFormOfAddress: "",
                 userType: "",
-                userCompany:"",
-                userStreet:"",
+                userCompany: "",
+                userStreet: "",
                 userHouseNumber: "",
                 userZIPCode: "",
                 userLocation: "",
@@ -120,13 +123,16 @@
             }
         },
         methods: {
-            createNewUserFromForm (){
+            ...mapMutations({
+                addNewUser: "addNewUser"
+            }),
+            createNewUserFromForm() {
                 this.dialog = false
 
                 const newUser = {
                     NutzerID: this.userID,
-                    Vorname: this.user,
-                    Nachname:this.userLastName,
+                    Vorname: this.userFirstName,
+                    Nachname: this.userLastName,
                     NutzerTyp: this.userType,
                     Firma: this.userCompany,
                     Anrede: this.userFormOfAddress,
@@ -140,8 +146,11 @@
                     Aktiv: this.userActive,
                     Kommentar: this.userComment,
                 }
-                addNewUser(newUser)
+                this.userID++
+                this.addNewUser(newUser)
             }
+        },
+        computed: {
         }
     }
 </script>

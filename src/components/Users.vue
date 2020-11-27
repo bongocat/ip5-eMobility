@@ -6,14 +6,14 @@
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
           <h1>Nutzer</h1>
-          <v-badge :content="Users.length" :value="Users.length" color="success" inline/>
+          <v-badge :content="allUsers.length" :value="allUsers.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
           <UserRegistration></UserRegistration>
           <v-data-table style="margin-top: 20px"
               dense
               :headers="columnNames"
-              :items="Users"
+              :items="allUsers"
               class="elevation-1"
               :items-per-page="5">
             <template v-slot:item.actions="{item}">
@@ -31,6 +31,8 @@
 <script>
 
 import UserRegistration from "./UserRegistration";
+import { mapGetters } from "vuex";
+
 export default {
   name: "Users",
   components: {UserRegistration},
@@ -44,25 +46,6 @@ export default {
       dialog: false,
       dialogDelete: false,
       editedIndex: -1,
-      Users: [
-        {
-          NutzerID: "001",
-          Vorname: "John",
-          Nachname: "Snow",
-          NutzerTyp: "Mieter",
-          Firma: "",
-          Anrede: "Herr",
-          Strasse: "Musterweg",
-          Hausnummer: "42",
-          PLZ: "2077",
-          Ort: "Night-City",
-          Land: "Boletaria",
-          Mietet: "",
-          Vermietet: "",
-          Aktiv:"Ja",
-          Kommentar:"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-      ],
     };
   },
   methods: {
@@ -85,12 +68,15 @@ export default {
   computed: {
     columnNames() {
       var computedColumnnames  = []
-      Object.keys(this.Users[0]).forEach(function (item) {
+      Object.keys(this.allUsers[0]).forEach(function (item) {
         computedColumnnames.push({text: item, value: item})
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
       return computedColumnnames
-    }
+    },
+    ...mapGetters({
+      allUsers: 'allUsers'
+    }),
   }
 }
 
