@@ -7,6 +7,7 @@ import Loads from "./components/Loads";
 import Facilities from "./components/Facilities";
 import Users from "./components/Users";
 import vuetify from './plugins/vuetify';
+import store from "./store/index";
 
 Vue.use(VueRouter)
 
@@ -28,5 +29,6 @@ const router = new VueRouter({
 new Vue({
   render: h => h(App),
   vuetify,
-  router
+  router,
+  store
 }).$mount('#app')
