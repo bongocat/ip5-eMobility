@@ -1,5 +1,3 @@
-
-
 <template>
   <v-main>
     <v-container fluid>
@@ -86,7 +84,7 @@ export default {
 
 h1, h5 {
   vertical-align: center;
-  clear:both !important;
+  clear:both;
 }
 
 div.dataTable {

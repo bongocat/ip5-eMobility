@@ -1,13 +1,15 @@
 <template>
+  <v-main>
+  <v-container fluid>
   <v-card style="margin-top: 20px" :elevation="5">
-    <v-container fluid>
       <v-card-title>
         <h1>Loads</h1>
         <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
-        <LoadRegistration></LoadRegistration>
       </v-card-title>
       <v-card-text>
+        <LoadRegistration></LoadRegistration>
         <v-data-table
+                style="margin-top: 20px"
             :headers="columnNames"
             :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
             :single-expand="singleExpand"
@@ -40,9 +42,9 @@
           </template>
         </v-data-table>
       </v-card-text>
-    </v-container>
   </v-card>
-
+  </v-container>
+  </v-main>
 </template>
 
 <script>
