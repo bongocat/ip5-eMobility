@@ -14,7 +14,7 @@
               class="elevation-1"
               :items-per-page="15">
             <template v-slot:item.actions="{item}">
-              <v-btn @click="toCSV(item)">
+              <v-btn @click="toCSV(item)" v-if="item.Generiert == 'Ja'">
                 <v-icon>mdi-file-download</v-icon>
               </v-btn>
             </template>
