@@ -178,6 +178,9 @@ const getters = {
     activeUsers: state => {
         return state.users.filter(value => state.users.Aktiv == "Ja")
     },
+    inactiveUsers: state => {
+        return state.users.filter(value => state.users.Aktiv == "Nein")
+    },
 }
 
 const actions = {}
