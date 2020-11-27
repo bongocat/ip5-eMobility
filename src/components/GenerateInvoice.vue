@@ -25,7 +25,7 @@
                                 <v-overflow-btn style="width: 400px"
                                                 dense
                                                 editable
-                                                :items="[10, 20, 30]"
+                                                :items='[10 + " Tage", 20 + " Tage", 30 + " Tage"]'
                                                 label="Zahlungsfrist"
                                                 item-value="number"
                                 ></v-overflow-btn>
