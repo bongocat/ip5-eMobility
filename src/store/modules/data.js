@@ -107,7 +107,8 @@ const state = {
             Mieter: "Mietermann",
             Immobilienverwaltung: "Verwaltung 1",
             ['Fällig Am']: new Date('2020-12-20')
-        }],
+        }
+    ],
     users: [
         {
             NutzerID: "001",
@@ -189,7 +190,33 @@ const state = {
             Land: "Schweiz",
             Count: "0",
         },
-    ]
+    ],
+    loads: [
+        {
+            LoadID: "001",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "002",
+            Anlage: "ABCD",
+            AnlageID: "1010",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+        {
+            LoadID: "003",
+            Anlage: "XXXX",
+            AnlageID: "2020",
+            Mieter: "1001",
+            Vermieter: "2001",
+            ['Rechnung an']: "Mieter",
+        },
+    ],
 
 }
 
