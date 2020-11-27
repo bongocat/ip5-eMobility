@@ -9,7 +9,8 @@
           <v-badge :content="Users.length" :value="Users.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
-          <v-data-table
+          <UserRegistration></UserRegistration>
+          <v-data-table style="margin-top: 20px"
               dense
               :headers="columnNames"
               :items="Users"
@@ -29,8 +30,10 @@
 
 <script>
 
+import UserRegistration from "./UserRegistration";
 export default {
   name: "Users",
+  components: {UserRegistration},
   data() {
     return {
       showModal: false,
