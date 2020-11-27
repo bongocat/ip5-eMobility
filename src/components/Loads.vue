@@ -8,7 +8,7 @@
       <v-card-text>
         <v-data-table
             :headers="columnNames"
-            :items="anlage.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+            :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
             item-key="Anlage"
@@ -52,67 +52,25 @@ export default {
     return {
       expanded: [],
       singleExpand: false,
-      anlage: [
-        {
-          Anlage: "ABCD",
-          ['Anlage ID']: "1010",
-          Vermieter: "2001",
-          ['Rechnung an']: "Mieter",
-          Count: "",
-        },
-        {
-          Anlage: "XXXX",
-          ['Anlage ID']: "2020",
-          Vermieter: "2001",
-          ['Rechnung an']: "Mieter",
-          Count: "",
-        },
-      ],
-      // loads: [
-      //   {
-      //     LoadID: "001",
-      //     Anlage: "ABCD",
-      //     ['Anlage ID']: "1010",
-      //     Mieter: "1001",
-      //     Vermieter: "2001",
-      //     ['Rechnung an']: "Mieter",
-      //   },
-      //   {
-      //     LoadID: "002",
-      //     Anlage: "ABCD",
-      //     ['Anlage ID']: "1010",
-      //     Mieter: "1001",
-      //     Vermieter: "2001",
-      //     ['Rechnung an']: "Mieter",
-      //   },
-      //   {
-      //     LoadID: "003",
-      //     Anlage: "XXXX",
-      //     ['Anlage ID']: "2020",
-      //     Mieter: "1001",
-      //     Vermieter: "2001",
-      //     ['Rechnung an']: "Mieter",
-      //   },
-      // ],
     }
   },
   computed: {
     columnNames() {
-      let anlageHeaders = []
+      let facilityHeaders = []
       Object.keys(this.allFacilities[0]).forEach(function (item) {
-        anlageHeaders.push({text: item, value: item},)
+        facilityHeaders.push({text: item, value: item},)
       })
-      anlageHeaders.push({text: 'Actions', value: 'actions', sortable: false})
-      anlageHeaders.push({text: '', value: 'data-table-expand'})
-      return anlageHeaders
+      facilityHeaders.push({text: 'Actions', value: 'actions', sortable: false})
+      facilityHeaders.push({text: '', value: 'data-table-expand'})
+      return facilityHeaders
     },
     columnInnerNames() {
-      let computeddessertHeaders = []
+      let loadHeader = []
       Object.keys(this.allLoads[0]).forEach(function (item) {
-        computeddessertHeaders.push({text: item, value: item},)
+        loadHeader.push({text: item, value: item},)
       })
-      computeddessertHeaders.push({text: 'Actions', value: 'actions', sortable: false})
-      return computeddessertHeaders
+      loadHeader.push({text: 'Actions', value: 'actions', sortable: false})
+      return loadHeader
     },
     ...mapGetters({
       allLoads: 'allLoads',
