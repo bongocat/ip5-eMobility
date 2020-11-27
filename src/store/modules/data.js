@@ -181,6 +181,16 @@ const state = {
 }
 
 const getters = {
+
+    /**
+     * Invoice getters
+     */
+
+    /**
+     * Get invoices from the next 30 days
+     * @param state
+     * @returns {({[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string}|{[p: string]: number|string|*, Betrag: number, Mieter: string, Immobilienverwaltung: string, "Fällig Am": Date, ID: number, Liegenschaft: string, Rechnungsart: string})[]}
+     */
     upcomingInvoices: state => {
         return state.upInvoices.filter(invoice => {
             let now = new Date();
@@ -194,6 +204,12 @@ const getters = {
     inactiveUsers: state => {
         return state.users.filter(user => user.Aktiv == "Nein")
     },
+
+    /**
+     * Get all users
+     * @param state
+     * @returns {[{Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}, {Kommentar: string, Mietet: string, Firma: string, Vermietet: string, Hausnummer: string, Anrede: string, Land: string, Ort: string, Aktiv: string, Nachname: string, NutzerID: string, NutzerTyp: string, Strasse: string, Vorname: string, PLZ: string}]}
+     */
     allUsers: state => {
         return state.users
     },
