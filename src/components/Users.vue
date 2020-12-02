@@ -59,7 +59,11 @@ export default {
       });
 
       let encodedUri = encodeURI(csvContent);
-      window.open(encodedUri);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "megalog_invoice.csv");
+      document.body.appendChild(link);
+      link.click();
     }
   },
   computed: {
