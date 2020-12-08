@@ -290,8 +290,8 @@ export default {
     getUniqueProperties() {
       var array = [];
       this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.AnlageID)) {
-          array.push(item.AnlageID)
+        if (!array.includes(item.Anlagename)) {
+          array.push(item.Anlagename)
         }
       })
       return array
@@ -299,8 +299,8 @@ export default {
     getUniqueAdministration() {
       var array = [];
       this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.Anlagename)) {
-          array.push(item.Anlagename)
+        if (!array.includes(item.VermieterReferenz)) {
+          array.push(item.VermieterReferenz)
         }
       })
       return array
