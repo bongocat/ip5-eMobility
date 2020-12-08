@@ -91,6 +91,7 @@
 </template>
 
 <script>
+
 export default {
   name: "GenerateInvoice",
   props: {
@@ -137,7 +138,7 @@ export default {
         link.setAttribute("download", "megalog_invoice.csv");
         document.body.appendChild(link);
         link.click();
-    }
+    },
   },
     computed: {
         meterDifferenceEnabled(){
