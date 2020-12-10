@@ -279,7 +279,7 @@ export default {
       this.selected = []
     },
     ...mapMutations([
-      'addInvoice',  // map `this.increment()` to `this.$store.commit('increment')`
+      'addInvoice',
     ]),
   },
   computed: {

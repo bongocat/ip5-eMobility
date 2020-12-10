@@ -14,7 +14,7 @@
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">Nutzer erfassen</h1>
+        <h1 class="headline">{{ formTitle }}</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -110,6 +110,7 @@ export default {
   name: "UserRegistration",
   data() {
     return {
+      editedIndex: -1,
       dialog: false,
       userFirstName: "",
       userLastName: "",
@@ -159,6 +160,9 @@ export default {
     ...mapGetters(['allUsers']),
     userID() {
       return this.allUsers.length + 1
+    },
+    formTitle () {
+      return this.editedIndex === -1 ? 'Neuen Nuzer erfassen' : 'Nutzer bearbeiten'
     },
   }
 }

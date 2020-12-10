@@ -8,12 +8,14 @@
         </v-card-title>
         <v-card-text>
           <UserRegistration></UserRegistration>
-          <v-data-table style="margin-top: 20px"
-              dense
+          <v-data-table
+              style="margin-top: 20px"
               :headers="columnNames"
               :items="allUsers"
               class="elevation-1"
-              :items-per-page="5">
+              :items-per-page="5"
+              :item-class="itemRowBackground"
+          >
             <template v-slot:item.actions="{item}">
               <v-btn small @click="toCSV(item)">
                 <v-icon>mdi-file-download</v-icon>
@@ -46,6 +48,9 @@ export default {
     };
   },
   methods: {
+    itemRowBackground: function (item) {
+      return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
+    },
     toCSV: function(item) {
 
       const outputData = [Object.keys(item), Object.values(item)];
@@ -70,9 +75,16 @@ export default {
     columnNames() {
       var computedColumnnames  = []
       Object.keys(this.allUsers[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
+        console.log(item)
+        if (item === 'Kommentar'){
+          computedColumnnames.push({text: item, value: item, class: 'tableComment', width: "25%"})
+        }
+        else {
+          computedColumnnames.push({text: item, value: item})
+        }
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      console.log(computedColumnnames)
       return computedColumnnames
     },
     ...mapGetters({
@@ -82,9 +94,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
 h1, h5 {
   vertical-align: center;
   clear:both;
 }
+
+.style-1 .text-start {
+  overflow-y: auto;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.style-2 {
+}
+
 </style>
