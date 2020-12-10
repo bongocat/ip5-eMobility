@@ -103,7 +103,7 @@ export default {
   },
   data() {
     return {
-        due: "",
+        due: "10 Tage",
         comment: "",
       dialog: false,
       name: '',
@@ -151,6 +151,7 @@ export default {
       item.Kommentar = this.comment
       console.log(this.due)
       item['Zu Zahlen Bis'] = new Date(Date.now() + (parseInt(this.due) + 1) * 24*60*60*1000);
+      console.log(item['Zu Zahlen Bis'].toString())
       toPDF(item,this.allUsers, this.allFacilities)
     }
   },

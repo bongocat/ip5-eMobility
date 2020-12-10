@@ -169,7 +169,7 @@
         <v-card-text>
           <v-data-table
               v-model="selected"
-              item-key="Rechnungs ID"
+              item-key="RechnungsID"
               show-select
               :single-select="false"
               dense
@@ -198,14 +198,14 @@
         <v-card-text>
           <v-data-table
               v-model="selected"
-              item-key="Rechnungs ID"
+              item-key="RechnungsID"
               dense
               :headers="upcomingHeaders"
               :items="paidInvoices"
               class="elevation-1"
               :items-per-page="5">
             <template v-slot:item.actions="{}">
-              <v-btn x-small @click="{ toPDF() }">
+              <v-btn x-small @click="{ }">
                 <v-icon>
                   mdi-file-download
                 </v-icon>
@@ -328,7 +328,7 @@ export default {
 }
 
 Date.prototype.toString = function () {
-  return (this.getUTCDay() + '.' + this.getUTCMonth()+ '.' + this.getUTCFullYear())
+  return (this.toLocaleDateString())
 }
 </script>
 

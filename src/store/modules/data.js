@@ -11,7 +11,7 @@ const state = {
             Anlagename: "Anlagé",
             AnlageID: "1",
             LoadID: "001",
-            ['Fällig Am']: new Date('2021-01-31'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2021-02-28'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
