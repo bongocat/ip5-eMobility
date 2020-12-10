@@ -9,6 +9,7 @@
         <v-card-text>
           <UserRegistration></UserRegistration>
           <v-data-table
+              dense
               style="margin-top: 20px"
               :headers="columnNames"
               :items="allUsers"
@@ -49,7 +50,7 @@ export default {
   },
   methods: {
     itemRowBackground: function (item) {
-      return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
+      return item.Kommentar.length > 125 ? 'style-1' : 'style-2'
     },
     toCSV: function(item) {
 
@@ -103,8 +104,11 @@ h1, h5 {
 
 .style-1 .text-start {
   overflow-y: auto;
+  overflow-x: auto;
+  text-overflow-ellipsis: true;
   white-space: nowrap;
-  max-width: 200px;
+  max-width: 300px;
+  height: 300px;
 }
 
 .style-2 {
