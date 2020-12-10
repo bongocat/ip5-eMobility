@@ -18,14 +18,21 @@ export function toPDF(invoice, users, facilities) {
     var landlord = users.filter(user => user.NutzerID === invoice.VermieterReferenz)
     console.log(landlord)
 
+    function inDays (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return parseInt((t2-t1)/(24*3600*1000));
+    }
+
     var dd = {
         content: [
             {
                 columns: [{text: date.toString(), alignment: 'left'}, {text: 'Rechnungsnummer: ' + invoice.RechnungsNr, alignment: 'right', fontSize: 8}],
             },
-            {text: landlord[0].Nachname, alignment: 'left'},
+            {text:landlord[0].Vorname + " " + landlord[0].Nachname, alignment: 'left'},
             {text: facility[0].Strasse + ' ' + facility[0].Hausnummer, alignment: 'left'},
-            {text: facility[0].PLZ, alignment: 'left'},
+            {text: facility[0].PLZ + " " + facility[0].Ort, alignment: 'left'},
 
 
             {text: 'Rechnung für ' + invoice.RechnungsArt + ' der Ladeinfrastruktur ', style: 'header', margin: [0, 30]},
@@ -59,7 +66,7 @@ export function toPDF(invoice, users, facilities) {
                         ['4', 'Powerbox Gateway (3-phasig) \n PP32 (Name Nutzer) ', '1x3 ', '8.50 ', '25.50 '],
                         ['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: '127.50 ', bold: true}],
                         ['', '7.7% MwSt ', '', '', '9.80 '],
-                        ['', {text: 'Total inkl. MwSt, zahlbar innert 10 Tagen ', bold: true}, '', '', {
+                        ['', {text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(new Date(), invoice['Zu Zahlen Bis']).toString() + " Tagen"), bold: true}, '', '', {
                             text: '137.80 ',
                             bold: true
                         }]

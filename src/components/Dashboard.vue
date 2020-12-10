@@ -169,7 +169,7 @@
         <v-card-text>
           <v-data-table
               v-model="selected"
-              item-key="ID"
+              item-key="Rechnungs ID"
               show-select
               :single-select="false"
               dense
@@ -198,7 +198,7 @@
         <v-card-text>
           <v-data-table
               v-model="selected"
-              item-key="ID"
+              item-key="Rechnungs ID"
               dense
               :headers="upcomingHeaders"
               :items="paidInvoices"

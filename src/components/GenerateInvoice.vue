@@ -103,7 +103,7 @@ export default {
   },
   data() {
     return {
-        due: 0,
+        due: "",
         comment: "",
       dialog: false,
       name: '',
@@ -149,6 +149,8 @@ export default {
       item.ZählerstandAlt = this.meterReadingOld
       item.ZählerstandNeu = this.meterReadingNew
       item.Kommentar = this.comment
+      console.log(this.due)
+      item['Zu Zahlen Bis'] = new Date(Date.now() + (parseInt(this.due) + 1) * 24*60*60*1000);
       toPDF(item,this.allUsers, this.allFacilities)
     }
   },
