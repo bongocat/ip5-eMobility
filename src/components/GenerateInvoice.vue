@@ -74,7 +74,7 @@
         <v-btn
             color="success"
             text
-            @click="dialog = false, toCSV(invoice)"
+            @click="dialog = false, exportToPDF(invoice)"
         >
           Generieren
         </v-btn>
@@ -91,6 +91,10 @@
 </template>
 
 <script>
+
+import { mapGetters}  from "vuex";
+import { toPDF } from "../PDFGeneration/generatePDF"
+
 
 export default {
   name: "GenerateInvoice",
@@ -139,8 +143,24 @@ export default {
         document.body.appendChild(link);
         link.click();
     },
+    exportToPDF: function (item) {
+      item.Generiert = "Ja"
+      item.RechnungsNr = this.invoiceNumber
+      item.ZählerstandAlt = this.meterReadingOld
+      item.ZählerstandNeu = this.meterReadingNew
+      item.Kommentar = this.comment
+      toPDF(item,this.allUsers, this.allFacilities)
+    }
   },
     computed: {
+      ...mapGetters({
+        upcomingInvoices: 'upcomingInvoices',
+        paidInvoices: 'paidInvoices',
+        openInvoices: 'openInvoices',
+        allFacilities: 'allFacilities',
+        allUsers: 'allUsers',
+        allLoads: 'allLoads'
+      }),
         meterDifferenceEnabled(){
             return !(this.meterReadingOld && this.meterReadingNew)
         }

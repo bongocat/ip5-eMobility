@@ -207,7 +207,7 @@ const state = {
     ],
     facilities: [
         {
-            AnlageID: 1,
+            AnlageID: "1",
             Anlage: "ABCD",
             Immobilienverwaltung: "3",
             Strasse: "Döbeligut",
@@ -217,7 +217,7 @@ const state = {
             Count: "0",
         },
         {
-            AnlageID: 2,
+            AnlageID: "2",
             Anlage: "XXXX",
             Immobilienverwaltung: "3",
             Strasse: "Chrischonaweg",
