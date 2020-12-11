@@ -33,9 +33,7 @@
                     class="elevation-5"
                 >
                   <template v-slot:item.actions="{item}">
-                    <v-btn small @click="toCSV(item)">
-                      <v-icon>mdi-file-download</v-icon>
-                    </v-btn>
+                    <LoadEdit :load = "item"></LoadEdit>
                   </template>
                 </v-data-table>
               </td>
@@ -50,9 +48,11 @@
 <script>
 import {mapGetters} from "vuex";
 import LoadRegistration from "./LoadRegistration";
+import LoadEdit from "./LoadEdit";
+
 
 export default {
-  components: {LoadRegistration},
+  components: {LoadRegistration, LoadEdit},
   data() {
     return {
       expanded: [],
