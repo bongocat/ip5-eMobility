@@ -69,9 +69,7 @@
               class="elevation-1"
               :items-per-page="20">
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <FacilityEdit :facility = "item"></FacilityEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -82,11 +80,13 @@
 
 <script>
 import FacilityRegistration from "./FacilityRegistration";
+import FacilityEdit from "./FacilityEdit";
+
 import {mapGetters} from "vuex";
 
 export default {
   name: "facilities",
-  components: {FacilityRegistration},
+  components: {FacilityRegistration, FacilityEdit},
   data() {
     return {
       currentItem: {},

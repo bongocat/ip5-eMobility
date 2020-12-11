@@ -14,7 +14,7 @@ const state = {
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2021-02-28'),
             Bezahlt: "Nein",
-            BezahltAm: new Date(),
+            BezahltAm: new Date(Date.now()),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
