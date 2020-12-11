@@ -18,9 +18,7 @@
               :item-class="itemRowBackground"
           >
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <UserEdit :user="item" ></UserEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -30,12 +28,13 @@
 </template>
 
 <script>
+import UserEdit from "./UserEdit";
 import UserRegistration from "./UserRegistration";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Users",
-  components: {UserRegistration},
+  components: {UserRegistration, UserEdit},
   data() {
     return {
       showModal: false,
@@ -46,6 +45,7 @@ export default {
       dialog: false,
       dialogDelete: false,
       editedIndex: -1,
+      edit: false
     };
   },
   methods: {
