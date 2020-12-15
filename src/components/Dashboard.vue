@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Anstehende Rechnungen</h1>
+          <h3>Anstehende Rechnungen</h3>
           <v-badge :content="this.upcomingInvoices.length" :value="this.upcomingInvoices.length" color="success"
                    inline/>
         </v-card-title>
@@ -163,18 +163,47 @@
       </v-card>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Offene Rechnungen</h1>
+          <h3>Offene Rechnungen</h3>
           <v-badge :content="openInvoices.length" :value="openInvoices.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
           <v-data-table
-              v-model="selected"
+              v-model="openInvoicesSelected"
               item-key="RechnungsID"
               show-select
               :single-select="false"
               dense
               :headers="openInvoicesHeaders"
               :items="openInvoices"
+              class="elevation-1"
+              :items-per-page="5">
+            <template v-slot:item.actions="{item}">
+              <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
+                Als verschickt markieren
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn small color="blue" @click="markAsSent(openInvoicesSelected), resetSelectedOpen()">
+            Ausgewählte als verschickt markieren
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card style="margin-top: 20px" :elevation="5">
+        <v-card-title>
+          <h3>Verschickte Rechnungen</h3>
+          <v-badge :content="openInvoices.length" :value="openInvoices.length" color="success" inline/>
+        </v-card-title>
+        <v-card-text>
+          <v-data-table
+              v-model="sentInvoicesSelected"
+              item-key="RechnungsID"
+              show-select
+              :single-select="false"
+              dense
+              :headers="openInvoicesHeaders"
+              :items="sentInvoices"
               class="elevation-1"
               :items-per-page="5">
             <template v-slot:item.actions="{item}">
@@ -185,19 +214,19 @@
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <v-btn small color="blue" @click="markAsPaid(selected), resetSelected()">
+          <v-btn small color="blue" @click="markAsPaid(sentInvoicesSelected), resetSelectedSent()">
             Ausgewählte als bezahlt markieren
           </v-btn>
         </v-card-actions>
       </v-card>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Kürzlich bezahlte Rechnungen</h1>
+          <h3>Kürzlich bezahlte Rechnungen</h3>
           <v-badge :content="paidInvoices.length" :value="paidInvoices.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
           <v-data-table
-              v-model="selected"
+              v-model="sentInvoicesSelected"
               item-key="RechnungsID"
               dense
               :headers="upcomingHeaders"
@@ -235,7 +264,8 @@ export default {
       menuEndDate: false,
       currentItem: {},
       showModal: false,
-      selected: [],
+      openInvoicesSelected: [],
+      sentInvoicesSelected: [],
       page: 1,
       pageCount: 0,
       itemsPerPage: 5,
@@ -275,8 +305,16 @@ export default {
         items[i].Bezahlt = "Ja"
       }
     },
-    resetSelected() {
-      this.selected = []
+    markAsSent(items) {
+      for (var i = 0; i < items.length; i++) {
+        items[i].Versendet = "true"
+      }
+    },
+    resetSelectedOpen() {
+      this.openInvoicesSelected = []
+    },
+    resetSelectedSent() {
+      this.sentInvoicesSelected = []
     },
     ...mapMutations([
       'addInvoice',
@@ -286,7 +324,8 @@ export default {
     ...mapGetters({
       upcomingInvoices: 'upcomingInvoices',
       paidInvoices: 'paidInvoices',
-      openInvoices: 'openInvoices'
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices'
     }),
     getUniqueProperties() {
       var array = [];

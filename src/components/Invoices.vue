@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Rechnungen</h1>
+          <h3>Rechnungen</h3>
           <v-badge :content="this.allInvoices.length" :value="this.allInvoices.length" color="success" inline/>
         </v-card-title>
         <v-card-text>

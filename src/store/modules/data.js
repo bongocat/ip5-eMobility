@@ -19,7 +19,8 @@ const state = {
             Nachname: "Snow",
             Firma: "",
             Generiert: "Nein",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
         {
             Betrag: 200,
@@ -32,7 +33,7 @@ const state = {
             Anlagename: "Anlagé",
             AnlageID: "1",
             LoadID: "001",
-            ['Fällig Am']: new Date('2020-11-30'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-11-30'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
@@ -40,7 +41,8 @@ const state = {
             Nachname: "Snow",
             Firma: "",
             Generiert: "Nein",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
         {
             Betrag: 300,
@@ -53,7 +55,7 @@ const state = {
             Anlagename: "Anlagé",
             AnlageID: "1",
             LoadID: "001",
-            ['Fällig Am']: new Date('2020-12-15'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
@@ -61,7 +63,8 @@ const state = {
             Nachname: "Snow",
             Firma: "",
             Generiert: "Nein",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
         {
             Betrag: 444,
@@ -74,7 +77,7 @@ const state = {
             Anlagename: "Mega Anlage",
             AnlageID: "2",
             LoadID: "003",
-            ['Fällig Am']: new Date('2020-12-15'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
@@ -82,7 +85,8 @@ const state = {
             Nachname: "Winter",
             Firma: "",
             Generiert: "Nein",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
         {
             Betrag: 521,
@@ -95,7 +99,7 @@ const state = {
             Anlagename: "Mega Anlage",
             AnlageID: "2",
             LoadID: "003",
-            ['Fällig Am']: new Date('2020-12-15'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
@@ -107,7 +111,8 @@ const state = {
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Nein",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
         {
             Betrag: 521,
@@ -120,7 +125,7 @@ const state = {
             Anlagename: "Mega Anlage",
             AnlageID: "2",
             LoadID: "003",
-            ['Fällig Am']: new Date('2020-12-15'),
+            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
             Bezahlt: "Nein",
             BezahltAm: new Date(),
@@ -132,7 +137,8 @@ const state = {
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Ja",
-            Kommentar: ""
+            Kommentar: "",
+            Versendet: "false"
         },
     ],
     users: [
@@ -287,7 +293,15 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "false";
+        })
+    },
+
+    sentInvoices: state => {
+        return state.invoices.filter(invoice => {
+            let inThirtyDays = new Date();
+            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "true";
         })
     },
 

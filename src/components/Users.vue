@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Nutzer</h1>
+          <h3>Nutzer</h3>
           <v-badge :content="allUsers.length" :value="allUsers.length" color="success" inline/>
         </v-card-title>
         <v-card-text>

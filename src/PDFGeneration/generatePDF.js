@@ -43,7 +43,7 @@ export function toPDF(invoice, users, facilities) {
                     widths: ['*', '*', '*'],
                     heights: [30, 30, 30],
                     body: [
-                        ['Objekt', 'Column 2', '-'],
+                        ['Objekt', facility[0].Anlage, '-'],
                         ['Projekt', 'Projektname', '-'],
                         ['Abrechnungsperiode', '-', '-']
                     ]
