@@ -9,7 +9,7 @@
           v-bind="attrs"
           v-on="on"
       >
-        Neuen Nutzer erfassen
+        <v-icon small>mdi-pencil</v-icon>
       </v-btn>
     </template>
     <v-card style="padding: 20px">
@@ -79,9 +79,9 @@
         <v-btn
             color="success"
             text
-            @click="createNewUserFromForm"
+            @click="saveEditedUser"
         >
-          Nutzer erfassen
+          Änderungen speichern
         </v-btn>
         <v-btn
             color="error"
@@ -107,53 +107,64 @@ import {mapMutations} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
-  name: "UserRegistration",
+  name: "UserEdit",
+  props: {
+    user: Object
+  },
   data() {
     return {
       editedIndex: -1,
       dialog: false,
-      userFirstName: "",
-      userLastName: "",
-      userFormOfAddress: "",
-      userType: "",
-      userCompany: "",
-      userStreet: "",
-      userHouseNumber: "",
-      userZIPCode: "",
-      userLocation: "",
-      userCountry: "",
-      userActive: "",
-      userComment: "",
+      userFirstName: this.user.Vorname,
+      userLastName: this.user.Nachname,
+      userFormOfAddress: this.user.Anrede,
+      userType: this.user.NutzerTyp,
+      userCompany: this.user.Firma,
+      userStreet: this.user.Strasse,
+      userHouseNumber: this.user.Hausnummer,
+      userZIPCode: this.user.PLZ,
+      userLocation: this.user.Ort,
+      userCountry: this.user.Land,
+      userActive: this.user.Aktiv,
+      userComment: this.user.Kommentar,
     }
   },
   methods: {
     ...mapMutations({
       addNewUser: "addNewUser"
     }),
-    createNewUserFromForm() {
+    saveEditedUser() {
       this.dialog = false
 
-      const newUser = {
-        NutzerID: this.userID,
-        Vorname: this.userFirstName,
-        Nachname: this.userLastName,
-        NutzerTyp: this.userType,
-        Firma: this.userCompany,
-        Anrede: this.userFormOfAddress,
-        Strasse: this.userStreet,
-        Hausnummer: this.userHouseNumber,
-        PLZ: this.userZIPCode,
-        Ort: this.userLocation,
-        Land: this.userCountry,
-        Mietet: "",
-        Vermietet: "",
-        Aktiv: this.userActive,
-        Kommentar: this.userComment,
-      }
-      this.addNewUser(newUser)
+        this.user.NutzerID = this.userID,
+            this.user.Vorname =  this.userFirstName,
+          this.user.Nachname =  this.userLastName,
+          this.user.NutzerTyp =  this.userType,
+          this.user.Firma = this.userCompany,
+          this.user.Anrede =  this.userFormOfAddress,
+          this.user.Strasse =  this.userStreet,
+          this.user.Hausnummer = this.userHouseNumber,
+          this.user.PLZ = this.userZIPCode,
+          this.user.Ort = this.userLocation,
+          this.user.Land = this.userCountry,
+          this.user.Mietet = "",
+          this.user.Vermietet =  "",
+          this.user.Aktiv =  this.userActive,
+          this.user.Kommentar = this.userComment
     },
     reset() {
-      this.$refs.form.reset()
+          this.userFirstName = this.user.Vorname,
+          this.userLastName=  this.user.Nachname,
+          this.userFormOfAddress= this.user.Anrede,
+          this.userType=  this.user.NutzerTyp,
+          this.userCompany= this.user.Firma,
+          this.userStreet= this.user.Strasse,
+          this.userHouseNumber =  this.user.Hausnummer,
+          this.userZIPCode= this.user.PLZ,
+          this.userLocation= this.user.Ort,
+          this.userCountry = this.user.Land,
+          this.userActive= this.user.Aktiv,
+          this.userComment= this.user.Kommentar
     },
   },
   computed: {
@@ -162,7 +173,7 @@ export default {
       return this.allUsers.length + 1
     },
     formTitle () {
-      return this.editedIndex === -1 ? 'Neuen Nuzer erfassen' : 'Nutzer bearbeiten'
+      return 'Nutzer bearbeiten'
     },
   }
 }

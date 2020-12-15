@@ -9,6 +9,7 @@ import Users from "./components/Users";
 import vuetify from './plugins/vuetify';
 import store from "./store/index";
 
+
 Vue.use(VueRouter)
 
 Vue.config.productionTip = false

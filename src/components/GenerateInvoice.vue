@@ -74,7 +74,7 @@
         <v-btn
             color="success"
             text
-            @click="dialog = false, toCSV(invoice)"
+            @click="dialog = false, exportToPDF(invoice)"
         >
           Generieren
         </v-btn>
@@ -91,6 +91,11 @@
 </template>
 
 <script>
+
+import { mapGetters}  from "vuex";
+import { toPDF } from "../PDFGeneration/generatePDF"
+
+
 export default {
   name: "GenerateInvoice",
   props: {
@@ -98,7 +103,7 @@ export default {
   },
   data() {
     return {
-        due: 0,
+        due: "10 Tage",
         comment: "",
       dialog: false,
       name: '',
@@ -137,9 +142,28 @@ export default {
         link.setAttribute("download", "megalog_invoice.csv");
         document.body.appendChild(link);
         link.click();
+    },
+    exportToPDF: function (item) {
+      item.Generiert = "Ja"
+      item.RechnungsNr = this.invoiceNumber
+      item.ZählerstandAlt = this.meterReadingOld
+      item.ZählerstandNeu = this.meterReadingNew
+      item.Kommentar = this.comment
+      console.log(this.due)
+      item['Zu Zahlen Bis'] = new Date(Date.now() + (parseInt(this.due) + 1) * 24*60*60*1000);
+      console.log(item['Zu Zahlen Bis'].toString())
+      toPDF(item,this.allUsers, this.allFacilities)
     }
   },
     computed: {
+      ...mapGetters({
+        upcomingInvoices: 'upcomingInvoices',
+        paidInvoices: 'paidInvoices',
+        openInvoices: 'openInvoices',
+        allFacilities: 'allFacilities',
+        allUsers: 'allUsers',
+        allLoads: 'allLoads'
+      }),
         meterDifferenceEnabled(){
             return !(this.meterReadingOld && this.meterReadingNew)
         }

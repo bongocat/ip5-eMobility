@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Rechnungen</h1>
+          <h3>Rechnungen</h3>
           <v-badge :content="this.allInvoices.length" :value="this.allInvoices.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
@@ -14,9 +14,7 @@
               class="elevation-1"
               :items-per-page="15">
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <InvoiceEdit :invoice="item"></InvoiceEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -48,9 +46,11 @@
 
 <script>
 import {mapGetters} from "vuex";
+import InvoiceEdit from "@/components/InvoiceEdit";
 
 export default {
   name: "Invoices",
+  components: {InvoiceEdit},
   data() {
     return {
       showModal: false,
