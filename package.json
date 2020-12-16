@@ -1,6 +1,16 @@
 {
   "name": "ip5_megalog",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "contributors": [
+    {
+      "name": "René Achterberg",
+      "email": "rene.achterberg@students.fhnw.ch"
+    },
+    {
+      "name": "Samuel Keller",
+      "email": "samuel.keller@students.fhnw.ch"
+    }
+  ],
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
