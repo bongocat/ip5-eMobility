@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-expansion-panels multiple>
         <v-expansion-panel>
-          <v-expansion-panel-header style="height: 50px">
+          <v-expansion-panel-header style="height: 50px;">
               <h3>Anstehende Rechnungen  <v-badge :content="this.upcomingInvoices.length" :value="this.upcomingInvoices.length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
@@ -27,6 +27,7 @@
                               :items="getUniqueProperties"
                               label="Anlagen"
                               item-value="text"
+                              v-model="filterProperties"
                           ></v-overflow-btn>
                         </v-col>
                         <v-col>
@@ -38,6 +39,7 @@
                               :items="getUniqueAdministration"
                               label="Verwaltungen"
                               item-value="text"
+                              v-model="filterAdministration"
                           ></v-overflow-btn>
                         </v-col>
                         <v-col>
@@ -49,6 +51,7 @@
                               :items="getUniqueTenants"
                               label="Mieter"
                               item-value="text"
+                              v-model="filterTenants"
                           ></v-overflow-btn>
                         </v-col>
                         <v-col>
@@ -60,6 +63,7 @@
                               :items="getUniqueInvoiceCategory"
                               label="Rechnungsart"
                               item-value="text"
+                              v-model="filterCategory"
                           ></v-overflow-btn>
                         </v-col>
                         <v-col>
@@ -191,7 +195,7 @@
               </template>
             </v-data-table>
             <v-card-actions>
-              <v-btn small color="blue" @click="markAsSent(openInvoicesSelected), resetSelectedOpen()">
+              <v-btn small color="blue" @click="markAsSent(openInvoicesSelected), resetSelectedOpen()" :disabled="(openInvoicesSelected.length === 0)">
                 Ausgewählte als verschickt markieren
               </v-btn>
             </v-card-actions>
@@ -199,7 +203,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 55px">
-            <h3>Verschickte Rechnungen <v-badge :content="sentInvoices.length" :value="sentInvoices.length" color="success"/></h3>
+            <h3>Verschickte Rechnungen <v-badge :content="sentInvoices.length" :value="sentInvoices.length" color="success" /></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -224,7 +228,7 @@
               </template>
             </v-data-table>
             <v-card-actions>
-              <v-btn small color="blue" @click="markAsPaid(sentInvoicesSelected), resetSelectedSent()">
+              <v-btn small color="blue" @click="markAsPaid(sentInvoicesSelected), resetSelectedSent()" :disabled="(sentInvoicesSelected.length === 0)">
                 Ausgewählte als bezahlt markieren
               </v-btn>
             </v-card-actions>
@@ -232,7 +236,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 55px">
-            <h3>Kürzlich bezahlte Rechnungen <v-badge :content="paidInvoices.length" :value="paidInvoices.length" color="success"/> </h3>
+            <h3>Kürzlich bezahlte Rechnungen <v-badge :content="paidInvoices.length" :value="paidInvoices.length" color="success" /> </h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -266,7 +270,6 @@
 <script>
 import GenerateInvoice from "./GenerateInvoice";
 import {mapGetters} from "vuex";
-import {mapMutations} from 'vuex';
 
 export default {
 
@@ -274,12 +277,15 @@ export default {
   components: {GenerateInvoice},
   data() {
     return {
+      filterProperties: String,
+      filterAdministration: String,
+      filterTenants: String,
+      filterCategory: String,
       startingDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
       menuStartingDate: false,
       menuEndDate: false,
       currentItem: {},
-      showModal: false,
       openInvoicesSelected: [],
       sentInvoicesSelected: [],
       page: 1,
@@ -319,11 +325,13 @@ export default {
     markAsPaid(items) {
       for (var i = 0; i < items.length; i++) {
         items[i].Bezahlt = "Ja"
+        this.sentInvoicesSelected.splice(this.sentInvoicesSelected.indexOf(items[i]), 1)
       }
     },
     markAsSent(items) {
       for (var i = 0; i < items.length; i++) {
         items[i].Versendet = "true"
+        this.openInvoicesSelected.splice(this.openInvoicesSelected.indexOf(items[i]), 1)
       }
     },
     resetSelectedOpen() {
@@ -332,16 +340,16 @@ export default {
     resetSelectedSent() {
       this.sentInvoicesSelected = []
     },
-    ...mapMutations([
-      'addInvoice',
-    ]),
   },
   computed: {
     ...mapGetters({
       upcomingInvoices: 'upcomingInvoices',
       paidInvoices: 'paidInvoices',
       openInvoices: 'openInvoices',
-      sentInvoices: 'sentInvoices'
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads'
     }),
     getUniqueProperties() {
       var array = [];

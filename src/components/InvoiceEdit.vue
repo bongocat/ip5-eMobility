@@ -42,7 +42,7 @@
                               label="Rechnungsart"
                               item-value="string"
                               hint="Rechnungsart"
-                              persistent-hint = "true"
+                              persistent-hint
               ></v-overflow-btn>
             </v-col>
           </v-row>
@@ -64,7 +64,7 @@
                               label="Rechnung an"
                               item-value="string"
                               hint="Rechnung An"
-                              persistent-hint = "true"
+                              persistent-hint
               ></v-overflow-btn>
             </v-col>
             <v-col>
@@ -217,8 +217,6 @@
           </v-row>
           <v-row>
             <v-col>
-            </v-col>
-            <v-col>
               <v-text-field v-model="Kommentar"
                             label="Kommentar"></v-text-field>
             </v-col>
@@ -303,10 +301,10 @@ export default {
           this.invoice.Anlagename = this.Anlagename,
           this.invoice.AnlageID = this.AnlageID,
           this.invoice.LoadID = this.LoadID,
-          this.invoice['Fällig Am'] = this.faelligAm,
-          this.invoice['Zu Zahlen Bis'] = this.zuZahlenBis,
+          this.invoice['Fällig Am'] = new Date (this.faelligAm),
+          this.invoice['Zu Zahlen Bis'] = new Date (this.zuZahlenBis),
           this.invoice.Bezahlt = this.Bezahlt,
-          this.invoice.BezahltAm = this.BezahltAm,
+          this.invoice.BezahltAm = new Date(this.BezahltAm),
           this.invoice.Nachname = this.Vorname,
           this.invoice.Nachname = this.Nachname,
           this.invoice.Firma = this.Firma,

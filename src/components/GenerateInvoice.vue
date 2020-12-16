@@ -30,7 +30,7 @@
                                     v-model = "due"
                                     dense
                                     editable
-                                    :items='[10 + " Tage", 20 + " Tage", 30 + " Tage"]'
+                                    :items='[{text: "10 Tage", value: 10}, {text: "20 Tage", value: 20}, {text: "30 Tage", value: 30}]'
                                     label="Zahlungsfrist"
                                     item-value="number"
                     ></v-overflow-btn>
@@ -67,6 +67,81 @@
                     </v-switch>
                 </v-col>
             </v-row>
+          <h1 class="subtitle-1">Rechnungsposition hinzufügen</h1>
+          <v-row>
+            <v-col>
+              <v-text-field v-model = "extraPosDescription"
+                            label="Beschreibung"></v-text-field>
+            </v-col>
+            <v-col>
+            <v-text-field v-model = "extraPosCount"
+                          label="Anzahl"
+                          type="number"
+                          min="0"
+            ></v-text-field>
+          </v-col>
+            <v-col>
+              <v-text-field v-model = "extraPosUnitPrice"
+                            label="Preis Pro Einheit"
+                            type="number"
+                            step="0.01"
+                            min="0.00"
+                            suffix="CHF"
+              >
+
+              </v-text-field>
+            </v-col>
+            <v-col>
+              <v-btn
+                  color="success"
+                  @click="newInvoicePosition"
+                  fab
+                  small
+                  text
+              >
+                <v-icon small>mdi-plus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-simple-table dense>
+            <template v-slot:default>
+              <thead>
+              <tr>
+                <th class="text-left">
+                  Beschreibung
+                </th>
+                <th class="text-left">
+                  Anzahl
+                </th>
+                <th class="text-left">
+                  Preis Pro Einheit
+                </th>
+                <th class="text-left">
+
+              </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                  v-for="item in invoicePositions"
+                  :key="item.name"
+              >
+                <td>{{ item.extraPosDescription }}</td>
+                <td>{{ item.extraPosCount }}</td>
+                <td>{{ item.extraPosUnitPrice }}</td>
+                <td>
+                  <v-btn color="error"
+                         text
+                         @click="removeInvoicePosition(item)"
+                         fab
+                  small>
+                    <v-icon small>mdi-delete</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -103,7 +178,11 @@ export default {
   },
   data() {
     return {
-        due: "10 Tage",
+      extraPosDescription: "",
+      extraPosCount: "",
+      extraPosUnitPrice: "",
+      invoicePositions: [],
+        due: 10,
         comment: "",
       dialog: false,
       name: '',
@@ -116,6 +195,20 @@ export default {
   methods: {
     reset() {
       this.$refs.form.reset()
+    },
+    newInvoicePosition(){
+      this.invoicePositions.push({
+        extraPosDescription: this.extraPosDescription,
+        extraPosCount: this.extraPosCount,
+        extraPosUnitPrice: this.extraPosUnitPrice
+      })
+
+      this.extraPosDescription = ""
+      this.extraPosCount = ""
+      this.extraPosUnitPrice = ""
+    },
+    removeInvoicePosition(position){
+      this.invoicePositions.splice(this.invoicePositions.indexOf(position),1)
     },
     toCSV: function (item) {
 
@@ -150,7 +243,7 @@ export default {
       item.ZählerstandNeu = this.meterReadingNew
       item.Kommentar = this.comment
       console.log(this.due)
-      item['Zu Zahlen Bis'] = new Date(Date.now() + (parseInt(this.due) + 1) * 24*60*60*1000);
+      item['Zu Zahlen Bis'] = new Date(Date.now() + (this.due + 1) * 24*60*60*1000);
       console.log(item['Zu Zahlen Bis'].toString())
       toPDF(item,this.allUsers, this.allFacilities)
     }
@@ -165,7 +258,7 @@ export default {
         allLoads: 'allLoads'
       }),
         meterDifferenceEnabled(){
-            return !(this.meterReadingOld && this.meterReadingNew)
+            return !(this.meterReadingOld || this.meterReadingNew)
         }
     },
   watch: {},
