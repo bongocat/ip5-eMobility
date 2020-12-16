@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-mysql.createPool({
+const connection = mysql.createPool({
     connectionLimit: 10,
     password: '',
     user: 'root',
@@ -12,7 +12,14 @@ mysql.createPool({
 let megadb = {}
 
 megadb.all = () => {
-
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from emobility', (err,results) => {
+            if (err){
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
 };
 
 module.exports = megadb;
