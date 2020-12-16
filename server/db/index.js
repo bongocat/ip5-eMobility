@@ -13,7 +13,7 @@ let megadb = {}
 
 megadb.all = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from emobility', (err,results) => {
+        connection.query('SELECT * from nutzertyp', (err,results) => {
             if (err){
                 return reject(err);
             }
