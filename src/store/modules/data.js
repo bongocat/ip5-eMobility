@@ -20,7 +20,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 200,
@@ -42,7 +43,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 300,
@@ -64,7 +66,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 444,
@@ -86,7 +89,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 521,
@@ -112,7 +116,8 @@ const state = {
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 521,
@@ -138,7 +143,8 @@ const state = {
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Ja",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
     ],
     users: [
@@ -375,7 +381,7 @@ const getters = {
 const actions = {}
 
 const mutations = {
-    addInvoice(state, invoice) {
+    addNewInvoice(state, invoice) {
         state.invoices.push(invoice)
     },
 

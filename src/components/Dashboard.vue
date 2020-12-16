@@ -270,7 +270,6 @@
 <script>
 import GenerateInvoice from "./GenerateInvoice";
 import {mapGetters} from "vuex";
-import {mapMutations} from 'vuex';
 
 export default {
 
@@ -287,7 +286,6 @@ export default {
       menuStartingDate: false,
       menuEndDate: false,
       currentItem: {},
-      showModal: false,
       openInvoicesSelected: [],
       sentInvoicesSelected: [],
       page: 1,
@@ -342,9 +340,6 @@ export default {
     resetSelectedSent() {
       this.sentInvoicesSelected = []
     },
-    ...mapMutations([
-      'addInvoice',
-    ]),
   },
   computed: {
     ...mapGetters({
