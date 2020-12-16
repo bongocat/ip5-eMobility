@@ -26,4 +26,16 @@ router.get('/usertype/:id', async (req, res,next) => {
 
 });
 
+router.get('/user', async (req, res,next) => {
+
+    try {
+        let results = await db.user();
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 module.exports = router;

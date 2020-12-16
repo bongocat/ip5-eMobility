@@ -33,4 +33,15 @@ megadb.usertypeByID = (id) => {
     });
 };
 
+megadb.user = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from nutzer', (err,results) => {
+            if (err){
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 module.exports = megadb;
