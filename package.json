@@ -10,6 +10,8 @@
   "dependencies": {
     "core-js": "^3.8.1",
     "normalize.css": "^8.0.1",
+    "pdfmake": "^0.1.68",
+    "puppeteer": "^5.5.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vuetify": "^2.3.21",
