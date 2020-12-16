@@ -8,3 +8,11 @@ mysql.createPool({
     host: 'localhost',
     port: '3306',
 });
+
+let megadb = {}
+
+megadb.all = () => {
+
+};
+
+module.exports = megadb;
