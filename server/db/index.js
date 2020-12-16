@@ -11,13 +11,24 @@ const connection = mysql.createPool({
 
 let megadb = {}
 
-megadb.all = () => {
+megadb.usertype = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from nutzertyp', (err,results) => {
             if (err){
                 return reject(err);
             }
             return resolve(results);
+        });
+    });
+};
+
+megadb.usertypeByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from nutzertyp WHERE NutzerTypID = ?', [id], (err,results) => {
+            if (err){
+                return reject(err);
+            }
+            return resolve(results[0]);
         });
     });
 };
