@@ -31,7 +31,101 @@
               <v-text-field label="Mieter" v-model=anlageMieter></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label=">Rechnung an" v-model=rechnungAn></v-text-field>
+              <v-select
+                      v-model="invoiceTo"
+                      :items="['Mieter', 'Vermieter']"
+                      label="Rechnung an"
+                      hint="Rechnung an"
+                      persistent-hint
+                      return-object
+                      single-line
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-menu
+                      ref="menuFirstPayment"
+                      v-model="menuFirstPayment"
+                      :close-on-content-click="false"
+                      :return-value.sync=firstPayment
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                          v-model="firstPayment"
+                          label="Erste Zahlung"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                        v-model="firstPayment"
+                        no-title
+                        scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn
+                          text
+                          color="primary"
+                          @click="menuFirstPayment = false"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.menuFirstPayment.save(firstPayment)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col>
+                <v-select
+                        v-model="paymentIntervalService"
+                        :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                        label="Zahlunsintervall"
+                        hint="Rechnungsintervall Strom"
+                        persistent-hint
+                        return-object
+                        single-line
+                ></v-select>
+            </v-col>
+            <v-col>
+              <v-select
+                      v-model="paymentIntervalElectricity"
+                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                      label="Zahlunsintervall"
+                      hint="Rechnungsintervall Service"
+                      persistent-hint
+                      return-object
+                      single-line
+              ></v-select>
+            </v-col>
+            <v-col>
+              <v-select
+                      v-model="loadType"
+                      :items="['LoadType A', 'LoadType XY', 'LoadType 123', 'LoadType HASD']"
+                      label="Load Typ"
+                      hint="Load Typ"
+                      persistent-hint
+                      return-object
+                      single-line
+              ></v-select>
+            </v-col>
+            <v-col>
+              <v-switch v-model="active"
+                        label="Aktiv"
+                        color="success"
+
+              >
+              </v-switch>
             </v-col>
           </v-row>
         </v-form>
@@ -76,7 +170,13 @@ export default {
       anlageName: "",
       anlageVermieter: "",
       anlageMieter: "",
-      rechnungAn: "",
+      invoiceTo: "",
+      menuFirstPayment: false,
+      firstPayment: new Date(Date.now()).toISOString().substr(0,10),
+      paymentIntervalService: 'jährlich',
+      paymentIntervalElectricity: 'jährlich',
+      loadType: '',
+      active: true
     }
   },
   methods: {
@@ -92,7 +192,11 @@ export default {
         Anlage: this.anlageName,
         Vermieter: this.anlageVermieter,
         Mieter: this.anlageMieter,
-        ['Rechnung an']: this.rechnungAn,
+        ['Rechnung an']: this.invoiceTo,
+        ErstesZahlungsdatum: new Date(this.firstPayment),
+        RechnungsIntervallStrom: this.paymentIntervalElectricity,
+        RechnungsIntervallService: this.paymentIntervalService,
+        LoadTyp: this.loadType,
       }
       this.addNewLoad(newLoad)
     },

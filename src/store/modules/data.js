@@ -249,6 +249,10 @@ const state = {
             Mieter: "1",
             Vermieter: "3",
             ['Rechnung an']: "Mieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType 123"
         },
         {
             LoadID: "002",
@@ -257,6 +261,10 @@ const state = {
             Mieter: "",
             Vermieter: "4",
             ['Rechnung an']: "Mieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType ABC"
         },
         {
             LoadID: "003",
@@ -265,6 +273,10 @@ const state = {
             Mieter: "2",
             Vermieter: "4",
             ['Rechnung an']: "Vermieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType XYZ"
         },
     ],
 }

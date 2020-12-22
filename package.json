@@ -19,6 +19,8 @@
     "dev": "npx nodemon server/server.js -w server"
   },
   "dependencies": {
+    "autoprefixer": "^9.8.0",
+    "colorette": "^1.2.1",
     "core-js": "^3.8.1",
     "express": "^4.17.1",
     "fsevents": "^2.2.1",
