@@ -393,7 +393,7 @@ export default {
 }
 
 Date.prototype.toString = function () {
-  return (this.toLocaleDateString())
+  return (this.toLocaleDateString('de-CH'))
 }
 </script>
 

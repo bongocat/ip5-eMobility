@@ -48,8 +48,8 @@
 
 <script>
 import {mapGetters} from "vuex";
-import InvoiceEdit from "@/components/InvoiceEdit";
-import InvoiceExceptional from "@/components/InvoiceExceptional";
+import InvoiceEdit from "../components/InvoiceEdit";
+import InvoiceExceptional from "../components/InvoiceExceptional";
 
 export default {
   name: "Invoices",
