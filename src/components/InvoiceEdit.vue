@@ -311,7 +311,7 @@ export default {
           this.invoice.Kommentar = this.Kommentar
     },
     reset() {
-      this.Betrag = this.invoice.Betrag,
+        this.Betrag = this.invoice.Betrag,
           this.RechnungsID = this.invoice.RechnungsID,
           this.RechnungsNr = this.invoice.RechnungsNr,
           this.RechnungsArt = this.invoice.RechnungsArt,

@@ -1,6 +1,7 @@
 <template>
   <v-main>
     <v-container fluid>
+      <v-card style="margin-top: 20px" :elevation="5">
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
@@ -263,6 +264,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+      </v-card>
     </v-container>
   </v-main>
 </template>
