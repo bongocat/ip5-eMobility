@@ -15,6 +15,11 @@ let megadb = {}
  * User
  *****************/
 
+// TODO: Change singular into plural throughout in the function names
+// TODO: Fix spelling and keep code consistent with formatting and scheme
+
+// TODO: User functions for: Create, Update, Delete
+
 /** getter **/
 
 megadb.user = () => {
@@ -43,6 +48,8 @@ megadb.userByID = (id) => {
  * Usertype
  *****************/
 
+// TODO: Usertype functions for: Create, Update, Delete
+
 /** getter **/
 
 megadb.usertype = () => {
@@ -67,11 +74,12 @@ megadb.usertypeByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
 
 /******************
  * Invoice
  *****************/
+
+// TODO: Invoice functions for: Create, Update, Delete
 
 /** getter **/
 
@@ -97,11 +105,11 @@ megadb.invoiceByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
-
 /******************
  * Invoicetype
  *****************/
+
+// TODO: Invoicetype functions for: Create, Update, Delete
 
 /** getter **/
 
@@ -127,11 +135,11 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
-
 /******************
  * Loads
  *****************/
+
+// TODO: Load functions for: Create, Update, Delete
 
 /** getter **/
 
@@ -157,11 +165,11 @@ megadb.loadByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
-
 /******************
  * Loadtype
  *****************/
+
+// TODO: Loadtype functions for: Create, Update, Delete
 
 /** getter **/
 
@@ -187,11 +195,11 @@ megadb.loadtypeByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
-
 /******************
  * Facility
  *****************/
+
+// TODO: Facility functions for: Create, Update, Delete
 
 /** getter **/
 
@@ -217,13 +225,14 @@ megadb.facilityByID = (id) => {
     });
 };
 
-// TODO: Create, Update, Delete
-
 /******************
  * Invoice Positions
  *****************/
 
+// TODO: Invoice Position functions for: Create, Update, Delete
+
 /** getter **/
+
 megadb.invoiceposition = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from rechnungspositionen', (err, results) => {
@@ -267,7 +276,5 @@ megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
         });
     });
 };
-
-// TODO: Create, Update, Delete
 
 module.exports = megadb;
