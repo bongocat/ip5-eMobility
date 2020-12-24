@@ -2,10 +2,9 @@ const express = require('express');
 const db = require('../db');
 const router = express.Router();
 
-
-/**
+/******************
  * User
- */
+ *****************/
 
 router.get('/user', async (req, res,next) => {
 
@@ -31,9 +30,9 @@ router.get('/user/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Usertype
- */
+ *****************/
 
 router.get('/usertype', async (req, res,next) => {
 
@@ -59,9 +58,9 @@ router.get('/usertype/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Invoice
- */
+ *****************/
 
 router.get('/invoice', async (req, res,next) => {
 
@@ -87,9 +86,9 @@ router.get('/invoice/:id', async (req, res,next) => {
 
 });
 
-/**
- * Invoicetype
- */
+/******************
+ * Invoice Type
+ *****************/
 
 /**
  * Get all invoice types
@@ -121,9 +120,9 @@ router.get('/invoicetype/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Load
- */
+ *****************/
 
 /**
  * Get all loads
@@ -155,9 +154,9 @@ router.get('/load/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Loadtype
- */
+ *****************/
 
 /**
  * Get all load types
@@ -189,9 +188,9 @@ router.get('/loadtype/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Facility
- */
+ *****************/
 
 /**
  * Get all facilities
@@ -223,9 +222,9 @@ router.get('/facility/:id', async (req, res,next) => {
 
 });
 
-/**
+/******************
  * Invoice Position
- */
+ *****************/
 
 /**
  * Get all invoice positions. Only use when really needed
