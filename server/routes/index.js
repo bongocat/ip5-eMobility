@@ -239,5 +239,18 @@ router.get('/invoice/:id/invoiceposition', async (req, res,next) => {
 
 });
 
+router.get('/invoice/:invoiceid/invoiceposition/:positionid', async (req, res,next) => {
+
+    try {
+        let results = await db.invoicepositionByIDByInvoiceNummer(req.params.invoiceid,req.params.positionid);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
 
 module.exports = router;
