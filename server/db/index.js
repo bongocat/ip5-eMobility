@@ -129,7 +129,7 @@ megadb.invoicetypeByID = (id) => {
 
 /** getter **/
 
-megadb.loads = () => {
+megadb.load = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loads', (err, results) => {
             if (err) {
@@ -140,13 +140,30 @@ megadb.loads = () => {
     });
 };
 
-megadb.loadsByID = (id) => {
+megadb.loadByID = (id) => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
             return resolve(results[0]);
+        });
+    });
+};
+
+/**
+ * Loadtype
+ */
+
+/** getter **/
+
+megadb.loadtype = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loadtype', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
         });
     });
 };
