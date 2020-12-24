@@ -12,7 +12,7 @@ const state = {
             AnlageID: "1",
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2021-02-28'),
+            ['Zu Zahlen Bis']: new Date(Date.now() + (30) * 24*60*60*1000),
             Bezahlt: "Nein",
             BezahltAm: new Date(Date.now()),
             Vorname: "John",
@@ -20,7 +20,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 200,
@@ -42,7 +43,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 300,
@@ -64,7 +66,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 444,
@@ -86,7 +89,8 @@ const state = {
             Firma: "",
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 521,
@@ -112,7 +116,8 @@ const state = {
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Nein",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
         {
             Betrag: 521,
@@ -138,7 +143,8 @@ const state = {
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
             Generiert: "Ja",
             Kommentar: "",
-            Versendet: "false"
+            Versendet: "false",
+            positions: [],
         },
     ],
     users: [
@@ -243,6 +249,10 @@ const state = {
             Mieter: "1",
             Vermieter: "3",
             ['Rechnung an']: "Mieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType 123"
         },
         {
             LoadID: "002",
@@ -251,6 +261,10 @@ const state = {
             Mieter: "",
             Vermieter: "4",
             ['Rechnung an']: "Mieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType ABC"
         },
         {
             LoadID: "003",
@@ -259,6 +273,10 @@ const state = {
             Mieter: "2",
             Vermieter: "4",
             ['Rechnung an']: "Vermieter",
+            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
+            RechnungsIntervallStrom: 'jährlich',
+            RechnungsIntervallService: 'jährlich',
+            LoadTyp: "LoadType XYZ"
         },
     ],
 }
@@ -375,7 +393,7 @@ const getters = {
 const actions = {}
 
 const mutations = {
-    addInvoice(state, invoice) {
+    addNewInvoice(state, invoice) {
         state.invoices.push(invoice)
     },
 
