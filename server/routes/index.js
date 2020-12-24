@@ -199,5 +199,21 @@ router.get('/facility/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Invoice Position
+ */
+
+router.get('/invoiceposition', async (req, res,next) => {
+
+    try {
+        let results = await db.invoiceposition();
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 
 module.exports = router;
