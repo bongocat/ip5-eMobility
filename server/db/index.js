@@ -11,9 +11,9 @@ const connection = mysql.createPool({
 
 let megadb = {}
 
-/**
+/******************
  * User
- */
+ *****************/
 
 /** getter **/
 
@@ -39,9 +39,9 @@ megadb.userByID = (id) => {
     });
 };
 
-/**
+/******************
  * Usertype
- */
+ *****************/
 
 /** getter **/
 
@@ -67,9 +67,9 @@ megadb.usertypeByID = (id) => {
     });
 };
 
-/**
+/******************
  * Invoice
- */
+ *****************/
 
 /** getter **/
 
@@ -95,9 +95,9 @@ megadb.invoiceByID = (id) => {
     });
 };
 
-/**
+/******************
  * Invoicetype
- */
+ *****************/
 
 /** getter **/
 
@@ -123,9 +123,9 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
-/**
+/******************
  * Loads
- */
+ *****************/
 
 /** getter **/
 
@@ -151,9 +151,9 @@ megadb.loadByID = (id) => {
     });
 };
 
-/**
+/******************
  * Loadtype
- */
+ *****************/
 
 /** getter **/
 
@@ -179,9 +179,9 @@ megadb.loadtypeByID = (id) => {
     });
 };
 
-/**
+/******************
  * Facility
- */
+ *****************/
 
 /** getter **/
 
@@ -207,9 +207,9 @@ megadb.facilityByID = (id) => {
     });
 };
 
-/**
+/******************
  * Invoice Positions
- */
+ *****************/
 
 /** getter **/
 megadb.invoiceposition = () => {
