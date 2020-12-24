@@ -67,6 +67,8 @@ megadb.usertypeByID = (id) => {
     });
 };
 
+// TODO: Create, Update, Delete
+
 /******************
  * Invoice
  *****************/
@@ -94,6 +96,8 @@ megadb.invoiceByID = (id) => {
         });
     });
 };
+
+// TODO: Create, Update, Delete
 
 /******************
  * Invoicetype
@@ -123,6 +127,8 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
+// TODO: Create, Update, Delete
+
 /******************
  * Loads
  *****************/
@@ -150,6 +156,8 @@ megadb.loadByID = (id) => {
         });
     });
 };
+
+// TODO: Create, Update, Delete
 
 /******************
  * Loadtype
@@ -179,6 +187,8 @@ megadb.loadtypeByID = (id) => {
     });
 };
 
+// TODO: Create, Update, Delete
+
 /******************
  * Facility
  *****************/
@@ -206,6 +216,8 @@ megadb.facilityByID = (id) => {
         });
     });
 };
+
+// TODO: Create, Update, Delete
 
 /******************
  * Invoice Positions
@@ -255,5 +267,7 @@ megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
         });
     });
 };
+
+// TODO: Create, Update, Delete
 
 module.exports = megadb;

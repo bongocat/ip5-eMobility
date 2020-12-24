@@ -6,6 +6,8 @@ const router = express.Router();
  * User
  *****************/
 
+// TODO: Create, Update, Delete
+
 /**
  * Get all users
  */
@@ -39,6 +41,8 @@ router.get('/user/:id', async (req, res,next) => {
 /******************
  * Usertype
  *****************/
+
+// TODO: Create, Update, Delete
 
 /**
  * Get all user types
@@ -74,6 +78,8 @@ router.get('/usertype/:id', async (req, res,next) => {
  * Invoice
  *****************/
 
+// TODO: Create, Update, Delete
+
 /**
  * Get all invoices
  */
@@ -107,6 +113,8 @@ router.get('/invoice/:id', async (req, res,next) => {
 /******************
  * Invoice Type
  *****************/
+
+// TODO: Create, Update, Delete
 
 /**
  * Get all invoice types
@@ -142,6 +150,8 @@ router.get('/invoicetype/:id', async (req, res,next) => {
  * Load
  *****************/
 
+// TODO: Create, Update, Delete
+
 /**
  * Get all loads
  */
@@ -176,6 +186,8 @@ router.get('/load/:id', async (req, res,next) => {
  * Loadtype
  *****************/
 
+// TODO: Create, Update, Delete
+
 /**
  * Get all load types
  */
@@ -192,7 +204,7 @@ router.get('/loadtype', async (req, res,next) => {
 });
 
 /**
- * get a load typ by their ic
+ * Get a load typ by their id
  */
 router.get('/loadtype/:id', async (req, res,next) => {
 
@@ -209,6 +221,8 @@ router.get('/loadtype/:id', async (req, res,next) => {
 /******************
  * Facility
  *****************/
+
+// TODO: Create, Update, Delete
 
 /**
  * Get all facilities
@@ -243,6 +257,8 @@ router.get('/facility/:id', async (req, res,next) => {
 /******************
  * Invoice Position
  *****************/
+
+// TODO: Create, Update, Delete
 
 /**
  * Get all invoice positions. Only use when really needed
