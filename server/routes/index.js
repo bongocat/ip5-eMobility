@@ -59,4 +59,33 @@ router.get('/usertype/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Invoice
+ */
+
+router.get('/invoice', async (req, res,next) => {
+
+    try {
+        let results = await db.invoice();
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+router.get('/invoice/:id', async (req, res,next) => {
+
+    try {
+        let results = await db.invoiceByID(req.params.id);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
 module.exports = router;
