@@ -159,7 +159,7 @@ megadb.loadByID = (id) => {
 
 megadb.loadtype = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from loadtype', (err, results) => {
+        connection.query('SELECT * from loadtyp', (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -170,7 +170,7 @@ megadb.loadtype = () => {
 
 megadb.loadtypeByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from loadtype WHERE LoadTypeID = ?', [id], (err, results) => {
+        connection.query('SELECT * from loadtyp WHERE LoadTypID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
