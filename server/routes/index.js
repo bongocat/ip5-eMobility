@@ -87,5 +87,33 @@ router.get('/invoice/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Invoicetype
+ */
+
+router.get('/invoicetype', async (req, res,next) => {
+
+    try {
+        let results = await db.invoicetype();
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+router.get('/invoicetype/:id', async (req, res,next) => {
+
+    try {
+        let results = await db.invoicetypeByID(req.params.id);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 
 module.exports = router;
