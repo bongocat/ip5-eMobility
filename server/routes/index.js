@@ -122,7 +122,7 @@ router.get('/invoicetype/:id', async (req, res,next) => {
 router.get('/load', async (req, res,next) => {
 
     try {
-        let results = await db.loads();
+        let results = await db.load();
         res.json(results);
     } catch (e){
         console.log(e);
@@ -134,7 +134,7 @@ router.get('/load', async (req, res,next) => {
 router.get('/load/:id', async (req, res,next) => {
 
     try {
-        let results = await db.loadsByID(req.params.id);
+        let results = await db.loadByID(req.params.id);
         res.json(results);
     } catch (e){
         console.log(e);
