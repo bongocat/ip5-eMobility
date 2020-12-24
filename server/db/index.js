@@ -123,4 +123,21 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
+/**
+ * Loads
+ */
+
+/** getter **/
+
+megadb.loads = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loads', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 module.exports = megadb;
