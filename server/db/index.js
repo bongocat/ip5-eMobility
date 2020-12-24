@@ -207,4 +207,21 @@ megadb.facilityByID = (id) => {
     });
 };
 
+/**
+ * Invoice Positions
+ */
+
+/** getter **/
+megadb.invoiceposition = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from rechnungspositionen', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
 module.exports = megadb;
