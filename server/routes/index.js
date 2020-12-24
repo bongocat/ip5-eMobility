@@ -159,4 +159,16 @@ router.get('/loadtype', async (req, res,next) => {
 
 });
 
+router.get('/loadtype/:id', async (req, res,next) => {
+
+    try {
+        let results = await db.loadtypeByID(req.params.id);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 module.exports = router;
