@@ -91,6 +91,9 @@ router.get('/invoice/:id', async (req, res,next) => {
  * Invoicetype
  */
 
+/**
+ * Get all invoice types
+ */
 router.get('/invoicetype', async (req, res,next) => {
 
     try {
@@ -103,6 +106,9 @@ router.get('/invoicetype', async (req, res,next) => {
 
 });
 
+/**
+ * Get a invoice type by their id
+ */
 router.get('/invoicetype/:id', async (req, res,next) => {
 
     try {
@@ -119,6 +125,9 @@ router.get('/invoicetype/:id', async (req, res,next) => {
  * Load
  */
 
+/**
+ * Get all loads
+ */
 router.get('/load', async (req, res,next) => {
 
     try {
@@ -131,6 +140,9 @@ router.get('/load', async (req, res,next) => {
 
 });
 
+/**
+ * get a load by their id
+ */
 router.get('/load/:id', async (req, res,next) => {
 
     try {
@@ -147,6 +159,9 @@ router.get('/load/:id', async (req, res,next) => {
  * Loadtype
  */
 
+/**
+ * Get all load types
+ */
 router.get('/loadtype', async (req, res,next) => {
 
     try {
@@ -159,6 +174,9 @@ router.get('/loadtype', async (req, res,next) => {
 
 });
 
+/**
+ * get a load typ by their ic
+ */
 router.get('/loadtype/:id', async (req, res,next) => {
 
     try {
@@ -175,6 +193,9 @@ router.get('/loadtype/:id', async (req, res,next) => {
  * Facility
  */
 
+/**
+ * Get all facilities
+ */
 router.get('/facility', async (req, res,next) => {
 
     try {
@@ -187,6 +208,9 @@ router.get('/facility', async (req, res,next) => {
 
 });
 
+/**
+ * Get a facility by their id
+ */
 router.get('/facility/:id', async (req, res,next) => {
 
     try {
@@ -203,6 +227,9 @@ router.get('/facility/:id', async (req, res,next) => {
  * Invoice Position
  */
 
+/**
+ * Get all invoice positions. Only use when really needed
+ */
 router.get('/invoiceposition', async (req, res,next) => {
 
     try {
@@ -215,6 +242,9 @@ router.get('/invoiceposition', async (req, res,next) => {
 
 });
 
+/**
+ * Get a specific invoice position
+ */
 router.get('/invoiceposition/:id', async (req, res,next) => {
 
     try {
@@ -227,6 +257,9 @@ router.get('/invoiceposition/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Get all invoice positions from a specific invoice
+ */
 router.get('/invoice/:id/invoiceposition', async (req, res,next) => {
 
     try {
@@ -239,6 +272,9 @@ router.get('/invoice/:id/invoiceposition', async (req, res,next) => {
 
 });
 
+/**
+ * Get a specific invoice position from a specific invoice
+ */
 router.get('/invoice/:invoiceid/invoiceposition/:positionid', async (req, res,next) => {
 
     try {
