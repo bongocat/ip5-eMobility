@@ -179,4 +179,20 @@ megadb.loadtypeByID = (id) => {
     });
 };
 
+/**
+ * Facility
+ */
+
+/** getter **/
+
+megadb.facility = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from anlage', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 module.exports = megadb;
