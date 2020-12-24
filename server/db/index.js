@@ -95,4 +95,32 @@ megadb.invoiceByID = (id) => {
     });
 };
 
+/**
+ * Invoicetype
+ */
+
+/** getter **/
+
+megadb.invoicetype = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from rechnungstyp', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+megadb.invoicetypeByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from rechnungstyp WHERE RechnungsTypID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 module.exports = megadb;
