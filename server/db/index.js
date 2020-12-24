@@ -140,4 +140,15 @@ megadb.loads = () => {
     });
 };
 
+megadb.loadsByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 module.exports = megadb;

@@ -115,5 +115,20 @@ router.get('/invoicetype/:id', async (req, res,next) => {
 
 });
 
+/**
+ * loads
+ */
+
+router.get('/loads', async (req, res,next) => {
+
+    try {
+        let results = await db.loads();
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
 
 module.exports = router;
