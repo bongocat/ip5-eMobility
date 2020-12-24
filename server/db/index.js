@@ -223,5 +223,16 @@ megadb.invoiceposition = () => {
     });
 };
 
+megadb.invoicepositionByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from rechnungspositionen WHERE RechnungsPositionID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 
 module.exports = megadb;
