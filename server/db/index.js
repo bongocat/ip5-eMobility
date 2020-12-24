@@ -187,7 +187,7 @@ megadb.loadtypeByID = (id) => {
 
 megadb.facility = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from anlage', (err, results) => {
+        connection.query('SELECT * from anlagen', (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -195,4 +195,16 @@ megadb.facility = () => {
         });
     });
 };
+
+megadb.facilityByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from anlagen WHERE AnlageID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 module.exports = megadb;
