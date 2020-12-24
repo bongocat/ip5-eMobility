@@ -6,6 +6,9 @@ const router = express.Router();
  * User
  *****************/
 
+/**
+ * Get all users
+ */
 router.get('/user', async (req, res,next) => {
 
     try {
@@ -18,6 +21,9 @@ router.get('/user', async (req, res,next) => {
 
 });
 
+/**
+ * Get a specific user by their id
+ */
 router.get('/user/:id', async (req, res,next) => {
 
     try {
@@ -34,6 +40,9 @@ router.get('/user/:id', async (req, res,next) => {
  * Usertype
  *****************/
 
+/**
+ * Get all user types
+ */
 router.get('/usertype', async (req, res,next) => {
 
     try {
@@ -46,6 +55,9 @@ router.get('/usertype', async (req, res,next) => {
 
 });
 
+/**
+ * Get a specific user type by their id
+ */
 router.get('/usertype/:id', async (req, res,next) => {
 
     try {
@@ -62,6 +74,9 @@ router.get('/usertype/:id', async (req, res,next) => {
  * Invoice
  *****************/
 
+/**
+ * Get all invoices
+ */
 router.get('/invoice', async (req, res,next) => {
 
     try {
@@ -74,6 +89,9 @@ router.get('/invoice', async (req, res,next) => {
 
 });
 
+/**
+ * Get a specific invoice by their id
+ */
 router.get('/invoice/:id', async (req, res,next) => {
 
     try {
@@ -140,7 +158,7 @@ router.get('/load', async (req, res,next) => {
 });
 
 /**
- * get a load by their id
+ * Get a load by their id
  */
 router.get('/load/:id', async (req, res,next) => {
 
@@ -285,7 +303,5 @@ router.get('/invoice/:invoiceid/invoiceposition/:positionid', async (req, res,ne
     }
 
 });
-
-
 
 module.exports = router;
