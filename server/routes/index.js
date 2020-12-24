@@ -116,10 +116,10 @@ router.get('/invoicetype/:id', async (req, res,next) => {
 });
 
 /**
- * loads
+ * Load
  */
 
-router.get('/loads', async (req, res,next) => {
+router.get('/load', async (req, res,next) => {
 
     try {
         let results = await db.loads();
@@ -131,10 +131,26 @@ router.get('/loads', async (req, res,next) => {
 
 });
 
-router.get('/loads/:id', async (req, res,next) => {
+router.get('/load/:id', async (req, res,next) => {
 
     try {
         let results = await db.loadsByID(req.params.id);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Loadtype
+ */
+
+router.get('/loadtype', async (req, res,next) => {
+
+    try {
+        let results = await db.loadtype();
         res.json(results);
     } catch (e){
         console.log(e);
