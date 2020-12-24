@@ -44,4 +44,15 @@ megadb.user = () => {
     });
 };
 
+megadb.userByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from nutzer WHERE NutzerID = ?', [id], (err,results) => {
+            if (err){
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 module.exports = megadb;
