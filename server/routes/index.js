@@ -346,6 +346,31 @@ router.get('/facilities/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Create a new  facility
+ *
+ * Example for POST JSON:
+ * {
+    "loadTypeID": "1",
+    "facilityID": "1",
+    "tenantID": "1",
+    "comment": "blabla"
+    }
+ */
+router.put('/facilities', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
 /******************
  * Invoice Position
  *****************/
