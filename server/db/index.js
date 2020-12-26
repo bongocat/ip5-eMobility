@@ -271,6 +271,18 @@ megadb.facilityByID = (id) => {
     });
 };
 
+/** create **/
+megadb.newFacility = (administratorID, designation, street, streetNumber, areaCode, city, country, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO loads (VerwalterID, Bezeichnung, Strasse, StrassenNr, PLZ, Ort, Land, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [administratorID, designation, street, streetNumber, areaCode, city, country, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 /******************
  * Invoice Positions
  *****************/
