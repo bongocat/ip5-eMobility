@@ -188,7 +188,7 @@ router.get('/loads/:id', async (req, res,next) => {
 /**
  * Create a new inactive load
  *
- * Example JSON:
+ * Example for POST JSON:
  * {
     "loadTypeID": "1",
     "facilityID": "1",
@@ -196,12 +196,55 @@ router.get('/loads/:id', async (req, res,next) => {
     "comment": "blabla"
     }
  */
-
 router.post('/loads', async (req, res,next) => {
     try {
         let input = req.body;
         console.log(input);
             let results = await db.newInactiveLoad(input.loadTypeID,input.facilityID,input.tenantID,input.comment);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
+/**
+ * Set load active by their id
+ *
+ * Example for POST JSON:
+ * {
+    "loadID": "1",
+    }
+ */
+router.put('/loads/setActive', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+
+        let results = await db.setLoadActiveByID(input.loadID);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Set load inactive by their id
+ *
+ * Example for POST JSON:
+ * {
+    "loadID": "1",
+    }
+ */
+router.put('/loads/setInactive', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.setLoadInactiveByID(input.loadID);
         res.json(results);
     } catch (e){
         console.log(e);
