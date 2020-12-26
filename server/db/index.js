@@ -118,6 +118,55 @@ megadb.invoiceByID = (id) => {
     });
 };
 
+/** create **/
+megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName,
+                     salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet,
+                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO rechnung (RechnungsNummer, RechungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis, RechnungBezahlt, Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RiW, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+                invoiceNumber,
+                invoiceTypeID,
+                customerRefID,
+                invoiceToRefID,
+                loadID,
+                invoiceDate,
+                toPayUntil,
+                isPayed,
+                name,
+                familyName,
+                salutation,
+                company,
+                phone,
+                mobile,
+                email,
+                street,
+                streetNumber,
+                areaCode,
+                city,
+                country,
+                invoiceToShippingAdress,
+                ShippingStreet,
+                ShippingStreetNumber,
+                ShippingAreaCode,
+                ShippingCity,
+                ShippingCountry,
+                counterOld,
+                counterOldDate,
+                counterNew,
+                counterNewDate,
+                active,
+                comment
+            ], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+    });
+};
+
+
 /******************
  * Invoicetype
  *****************/
@@ -339,7 +388,7 @@ megadb.invoicepositionByInvoiceNummer = (id) => {
 
 megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ? AND RechnungsPositionID = ?', [invoiceid,positionid], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ? AND RechnungsPositionID = ?', [invoiceid, positionid], (err, results) => {
             if (err) {
                 return reject(err);
             }
