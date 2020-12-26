@@ -139,8 +139,6 @@ megadb.invoicetypeByID = (id) => {
  * Loads
  *****************/
 
-// TODO: Load functions for: Delete
-
 /** getter **/
 
 megadb.getAllLoads = () => {
@@ -212,8 +210,6 @@ megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, load
         });
     });
 };
-
-
 
 /******************
  * Loadtype
