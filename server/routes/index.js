@@ -6,7 +6,6 @@ const router = express.Router();
  * User
  *****************/
 
-// TODO: Change singular into plural throughout in the route names
 // TODO: Fix spelling and keep code consistent with formatting and scheme
 
 // TODO: User routes for: Create, Update, Delete
@@ -14,7 +13,7 @@ const router = express.Router();
 /**
  * Get all users
  */
-router.get('/user', async (req, res,next) => {
+router.get('/users', async (req, res,next) => {
 
     try {
         let results = await db.user();
@@ -29,7 +28,7 @@ router.get('/user', async (req, res,next) => {
 /**
  * Get a specific user by their id
  */
-router.get('/user/:id', async (req, res,next) => {
+router.get('/users/:id', async (req, res,next) => {
 
     try {
         let results = await db.userByID(req.params.id);
@@ -50,7 +49,7 @@ router.get('/user/:id', async (req, res,next) => {
 /**
  * Get all user types
  */
-router.get('/usertype', async (req, res,next) => {
+router.get('/usertypes', async (req, res,next) => {
 
     try {
         let results = await db.usertype();
@@ -65,7 +64,7 @@ router.get('/usertype', async (req, res,next) => {
 /**
  * Get a specific user type by their id
  */
-router.get('/usertype/:id', async (req, res,next) => {
+router.get('/usertypes/:id', async (req, res,next) => {
 
     try {
         let results = await db.usertypeByID(req.params.id);
@@ -86,7 +85,7 @@ router.get('/usertype/:id', async (req, res,next) => {
 /**
  * Get all invoices
  */
-router.get('/invoice', async (req, res,next) => {
+router.get('/invoices', async (req, res,next) => {
 
     try {
         let results = await db.invoice();
@@ -101,7 +100,7 @@ router.get('/invoice', async (req, res,next) => {
 /**
  * Get a specific invoice by their id
  */
-router.get('/invoice/:id', async (req, res,next) => {
+router.get('/invoices/:id', async (req, res,next) => {
 
     try {
         let results = await db.invoiceByID(req.params.id);
@@ -122,7 +121,7 @@ router.get('/invoice/:id', async (req, res,next) => {
 /**
  * Get all invoice types
  */
-router.get('/invoicetype', async (req, res,next) => {
+router.get('/invoicetypes', async (req, res,next) => {
 
     try {
         let results = await db.invoicetype();
@@ -137,7 +136,7 @@ router.get('/invoicetype', async (req, res,next) => {
 /**
  * Get a invoice type by their id
  */
-router.get('/invoicetype/:id', async (req, res,next) => {
+router.get('/invoicetypes/:id', async (req, res,next) => {
 
     try {
         let results = await db.invoicetypeByID(req.params.id);
@@ -158,7 +157,7 @@ router.get('/invoicetype/:id', async (req, res,next) => {
 /**
  * Get all loads
  */
-router.get('/load', async (req, res,next) => {
+router.get('/loads', async (req, res,next) => {
 
     try {
         let results = await db.load();
@@ -173,7 +172,7 @@ router.get('/load', async (req, res,next) => {
 /**
  * Get a load by their id
  */
-router.get('/load/:id', async (req, res,next) => {
+router.get('/loads/:id', async (req, res,next) => {
 
     try {
         let results = await db.loadByID(req.params.id);
@@ -194,7 +193,7 @@ router.get('/load/:id', async (req, res,next) => {
 /**
  * Get all load types
  */
-router.get('/loadtype', async (req, res,next) => {
+router.get('/loadtypes', async (req, res,next) => {
 
     try {
         let results = await db.loadtype();
@@ -209,7 +208,7 @@ router.get('/loadtype', async (req, res,next) => {
 /**
  * Get a load typ by their id
  */
-router.get('/loadtype/:id', async (req, res,next) => {
+router.get('/loadtypes/:id', async (req, res,next) => {
 
     try {
         let results = await db.loadtypeByID(req.params.id);
@@ -230,7 +229,7 @@ router.get('/loadtype/:id', async (req, res,next) => {
 /**
  * Get all facilities
  */
-router.get('/facility', async (req, res,next) => {
+router.get('/facilities', async (req, res,next) => {
 
     try {
         let results = await db.facility();
@@ -245,7 +244,7 @@ router.get('/facility', async (req, res,next) => {
 /**
  * Get a facility by their id
  */
-router.get('/facility/:id', async (req, res,next) => {
+router.get('/facilities/:id', async (req, res,next) => {
 
     try {
         let results = await db.facilityByID(req.params.id);
@@ -266,7 +265,7 @@ router.get('/facility/:id', async (req, res,next) => {
 /**
  * Get all invoice positions. Only use when really needed
  */
-router.get('/invoiceposition', async (req, res,next) => {
+router.get('/invoicepositions', async (req, res,next) => {
 
     try {
         let results = await db.invoiceposition();
@@ -281,7 +280,7 @@ router.get('/invoiceposition', async (req, res,next) => {
 /**
  * Get a specific invoice position
  */
-router.get('/invoiceposition/:id', async (req, res,next) => {
+router.get('/invoicepositions/:id', async (req, res,next) => {
 
     try {
         let results = await db.invoicepositionByID(req.params.id);
@@ -296,7 +295,7 @@ router.get('/invoiceposition/:id', async (req, res,next) => {
 /**
  * Get all invoice positions from a specific invoice
  */
-router.get('/invoice/:id/invoiceposition', async (req, res,next) => {
+router.get('/invoices/:id/invoicepositions', async (req, res,next) => {
 
     try {
         let results = await db.invoicepositionByInvoiceNummer(req.params.id);
@@ -311,7 +310,7 @@ router.get('/invoice/:id/invoiceposition', async (req, res,next) => {
 /**
  * Get a specific invoice position from a specific invoice
  */
-router.get('/invoice/:invoiceid/invoiceposition/:positionid', async (req, res,next) => {
+router.get('/invoices/:invoiceid/invoicepositions/:positionid', async (req, res,next) => {
 
     try {
         let results = await db.invoicepositionByIDByInvoiceNummer(req.params.invoiceid,req.params.positionid);
