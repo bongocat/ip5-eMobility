@@ -63,7 +63,7 @@ router.get('/users/:id', async (req, res,next) => {
     "ShippingCity": "New York",
     "ShippingCountry": "USA",
     "active": "1",
-    "comment" : "This is a fictional user to the the underlaying api of the megalog application created for ip5 in 2020/2021"
+    "comment" : "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021"
 }
  */
 router.post('/users', async (req, res,next) => {
