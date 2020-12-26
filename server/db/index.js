@@ -15,13 +15,9 @@ let megadb = {}
  * User
  *****************/
 
-// TODO: Change singular into plural throughout in the function names
-// TODO: Fix spelling and keep code consistent with formatting and scheme
-
 // TODO: User functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.user = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from nutzer', (err, results) => {
@@ -51,7 +47,6 @@ megadb.userByID = (id) => {
 // TODO: Usertype functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.usertype = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from nutzertyp', (err, results) => {
@@ -82,7 +77,6 @@ megadb.usertypeByID = (id) => {
 // TODO: Invoice functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.invoice = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from rechnung', (err, results) => {
@@ -112,7 +106,6 @@ megadb.invoiceByID = (id) => {
 // TODO: Invoicetype functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.invoicetype = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from rechnungstyp', (err, results) => {
@@ -140,7 +133,6 @@ megadb.invoicetypeByID = (id) => {
  *****************/
 
 /** getter **/
-
 megadb.getAllLoads = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loads', (err, results) => {
@@ -164,7 +156,6 @@ megadb.getLoadByID = (id) => {
 };
 
 /** create **/
-
 megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
     return new Promise((resolve, reject) => {
         connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID, Aktiv, Kommentar) VALUES (?,?,?,0,?)', [loadTypeID, facilityID, tenantID, comment], (err, results) => {
@@ -177,7 +168,6 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
 };
 
 /** update **/
-
 megadb.setLoadActiveByID = (id) => {
     return new Promise((resolve, reject) => {
         connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
@@ -218,7 +208,6 @@ megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, load
 // TODO: Loadtype functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.loadtype = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loadtyp', (err, results) => {
@@ -245,10 +234,7 @@ megadb.loadtypeByID = (id) => {
  * Facility
  *****************/
 
-// TODO: Facility functions for: Create, Update, Delete
-
 /** getter **/
-
 megadb.facility = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from anlagen', (err, results) => {
@@ -303,7 +289,6 @@ megadb.updateFacilityByID = (administratorID, designation, street, streetNumber,
 // TODO: Invoice Position functions for: Create, Update, Delete
 
 /** getter **/
-
 megadb.invoiceposition = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from rechnungspositionen', (err, results) => {
