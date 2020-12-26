@@ -6,8 +6,7 @@ const router = express.Router();
  * User
  *****************/
 
-// TODO: Fix spelling and keep code consistent with formatting and scheme
-// TODO: User routes for: Create, Update, Delete
+// TODO: User routes for: Update
 
 /**
  * Get all users
