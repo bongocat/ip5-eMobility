@@ -209,7 +209,7 @@ router.post('/loads', async (req, res,next) => {
 /**
  * Update a load by their load id
  *
- * Example for POST JSON:
+ * Example for PUT JSON:
  * {
  *  "loadTypeID": "1",
     "facilityID": "1",
@@ -234,7 +234,7 @@ router.put('/loads', async (req, res,next) => {
 /**
  * Set a load active by their id
  *
- * Example for POST JSON:
+ * Example for PUT JSON:
  * {
     "loadID": "1",
     }
@@ -256,7 +256,7 @@ router.put('/loads/setActive', async (req, res,next) => {
 /**
  * Set load inactive by their id
  *
- * Example for POST JSON:
+ * Example for PUT JSON:
  * {
     "loadID": "1",
     }
@@ -313,8 +313,6 @@ router.get('/loads/types/:id', async (req, res,next) => {
 /******************
  * Facility
  *****************/
-
-// TODO: Facility routes for: Create, Update, Delete
 
 /**
  * Get all facilities
@@ -405,8 +403,6 @@ router.put('/facilities', async (req, res,next) => {
     }
 
 });
-
-
 
 /******************
  * Invoice Position
