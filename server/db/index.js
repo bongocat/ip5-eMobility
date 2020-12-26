@@ -139,6 +139,26 @@ megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID
     });
 };
 
+/** update **/
+megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName,
+                     salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
+                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment, invoiceID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE rechnung SET RechnungsNummer = ?, RechnungsTypID = ?, KundenReferenzID = ?, RechnungAnReferenzID = ?, LoadID = ?, RechnungGestellt = ?, ZuZahlenBis = ?, RechnungBezahlt = ?, ' +
+            'Vorname = ?, Nachname = ?, Anrede = ?, Firma = ?, FestnetzNummer = ?, HandyNummer = ?, EMailAdresse = ?, WStrasse = ?, WStrassenNr = ?, WPLZ = ?, WOrt = ?, WLand = ?, RStrasse = ?, RStrassenNr = ?, RPLZ = ?, ROrt = ?, RLand = ?, ' +
+            'ZählerAlt = ?, ZählerAltDatum = ?, ZählerNeu = ?, ZählerNeuDatum = ?, Aktiv = ?, Kommentar = ? WHERE RechnungID = ?',
+            [
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName, salutation,
+                company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
+                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment, invoiceID
+            ], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+    });
+};
 
 /******************
  * Invoicetype
