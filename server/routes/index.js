@@ -228,36 +228,46 @@ router.get('/invoices/types/:id', async (req, res,next) => {
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
-    "name": "Metro",
-    "familyName": "Deamon",
-    "salutation": "Mister",
-    "company": "Blue",
-    "phone": "0611111111",
-    "mobile": "0798898989",
-    "email": "metro.deamon@blue.co",
-    "street": "Ponystreet",
-    "streetNumber": "42",
-    "areaCode": "6969",
-    "city": "Night-City",
-    "country": "Africa",
+    "invoiceNumber": "3",
+    "invoiceTypeID": "1",
+    "customerRefID": "1",
+    "invoiceToRefID": "1",
+    "loadID": "4",
+    "invoiceDate": "1",
+    "toPayUntil": "1",
+    "isPayed": "1",
+    "name": "1",
+    "familyName": "1",
+    "salutation": "1",
+    "company": "1",
+    "phone": "1",
+    "mobile": "1",
+    "email": "1",
+    "street": "1",
+    "streetNumber": "1",
+    "areaCode": "1",
+    "city": "1",
+    "country": "1",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "Uwustreet",
-    "ShippingStreetNumber": "1337",
-    "ShippingAreaCode": "12",
-    "ShippingCity": "New York",
-    "ShippingCountry": "USA",
+    "ShippingStreet": "1",
+    "ShippingStreetNumber": "1",
+    "ShippingAreaCode": "1",
+    "ShippingCity": "2",
+    "ShippingCountry": "1",
+    "counterOld": "1",
+    "counterOldDate": "1",
+    "counterNew": "1",
+    "counterNewDate": "1",
     "active": "1",
-    "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021",
-    "userID": "1"
-}
+    "comment": "1"
+    }
  */
-router.post('/invoice', async (req, res,next) => {
+router.post('/invoices', async (req, res,next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
             input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment);
         res.json(results);
     } catch (e){
