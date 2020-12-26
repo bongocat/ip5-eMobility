@@ -40,6 +40,19 @@ megadb.userByID = (id) => {
     });
 };
 
+/** create **/
+megadb.newUser = (userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('NutzerTypID, Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RiW, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
 /******************
  * Usertype
  *****************/
