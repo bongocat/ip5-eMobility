@@ -277,6 +277,61 @@ router.post('/invoices', async (req, res,next) => {
 
 });
 
+/**
+ * Update a invoice by their id
+ *
+ * Example for PUT JSON:
+ * {
+    "invoiceNumber": "3",
+    "invoiceTypeID": "1",
+    "customerRefID": "1",
+    "invoiceToRefID": "1",
+    "loadID": "4",
+    "invoiceDate": "1",
+    "toPayUntil": "1",
+    "isPayed": "1",
+    "name": "1",
+    "familyName": "1",
+    "salutation": "1",
+    "company": "1",
+    "phone": "1",
+    "mobile": "1",
+    "email": "1",
+    "street": "1",
+    "streetNumber": "1",
+    "areaCode": "1",
+    "city": "1",
+    "country": "1",
+    "invoiceToShippingAdress": "1",
+    "ShippingStreet": "1",
+    "ShippingStreetNumber": "1",
+    "ShippingAreaCode": "1",
+    "ShippingCity": "2",
+    "ShippingCountry": "1",
+    "counterOld": "1",
+    "counterOldDate": "1",
+    "counterNew": "1",
+    "counterNewDate": "1",
+    "active": "1",
+    "comment": "1",
+    "invoiceID": "1"
+    }
+ */
+router.put('/invoices', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
+            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /******************
  * Load
  *****************/
