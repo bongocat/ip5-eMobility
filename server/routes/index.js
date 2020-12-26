@@ -44,8 +44,6 @@ router.get('/users/:id', async (req, res,next) => {
  * Usertype
  *****************/
 
-// TODO: Usertype routes for: Create, Update, Delete
-
 /**
  * Get all user types
  */

@@ -44,8 +44,6 @@ megadb.userByID = (id) => {
  * Usertype
  *****************/
 
-// TODO: Usertype functions for: Create, Update, Delete
-
 /** getter **/
 megadb.usertype = () => {
     return new Promise((resolve, reject) => {
