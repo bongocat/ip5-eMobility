@@ -93,7 +93,7 @@ megadb.usertypeByID = (id) => {
  * Invoice
  *****************/
 
-// TODO: Invoice functions for: Create, Update, Delete
+// TODO: Invoice functions for: Update
 
 /** getter **/
 megadb.invoice = () => {
@@ -120,43 +120,16 @@ megadb.invoiceByID = (id) => {
 
 /** create **/
 megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName,
-                     salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet,
+                     salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
                      ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO rechnung (RechnungsNummer, RechungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis, RechnungBezahlt, Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RiW, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        connection.query('INSERT INTO rechnung (RechnungsNummer, RechnungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis, RechnungBezahlt, ' +
+            'Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ' +
+            'ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
-                invoiceNumber,
-                invoiceTypeID,
-                customerRefID,
-                invoiceToRefID,
-                loadID,
-                invoiceDate,
-                toPayUntil,
-                isPayed,
-                name,
-                familyName,
-                salutation,
-                company,
-                phone,
-                mobile,
-                email,
-                street,
-                streetNumber,
-                areaCode,
-                city,
-                country,
-                invoiceToShippingAdress,
-                ShippingStreet,
-                ShippingStreetNumber,
-                ShippingAreaCode,
-                ShippingCity,
-                ShippingCountry,
-                counterOld,
-                counterOldDate,
-                counterNew,
-                counterNewDate,
-                active,
-                comment
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName, salutation,
+                company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
+                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment
             ], (err, results) => {
                 if (err) {
                     return reject(err);
