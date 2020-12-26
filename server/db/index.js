@@ -139,11 +139,11 @@ megadb.invoicetypeByID = (id) => {
  * Loads
  *****************/
 
-// TODO: Load functions for: Create, Update, Delete
+// TODO: Load functions for: Update, Delete
 
 /** getter **/
 
-megadb.load = () => {
+megadb.getAllLoads = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loads', (err, results) => {
             if (err) {
@@ -166,7 +166,7 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
 };
 
 
-megadb.loadByID = (id) => {
+megadb.getLoadByID = (id) => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
             if (err) {

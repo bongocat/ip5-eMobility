@@ -160,7 +160,7 @@ router.get('/invoices/types/:id', async (req, res,next) => {
 router.get('/loads', async (req, res,next) => {
 
     try {
-        let results = await db.load();
+        let results = await db.getAllLoads();
         res.json(results);
     } catch (e){
         console.log(e);
@@ -175,7 +175,33 @@ router.get('/loads', async (req, res,next) => {
 router.get('/loads/:id', async (req, res,next) => {
 
     try {
-        let results = await db.loadByID(req.params.id);
+        let results = await db.getLoadByID(req.params.id);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
+/**
+ * Create a new inactive load
+ *
+ * Example JSON:
+ * {
+    "loadTypeID": "1",
+    "facilityID": "1",
+    "tenantID": "1",
+    "comment": "blabla"
+    }
+ */
+
+router.post('/loads', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+            let results = await db.newInactiveLoad(input.loadTypeID,input.facilityID,input.tenantID,input.comment);
         res.json(results);
     } catch (e){
         console.log(e);
