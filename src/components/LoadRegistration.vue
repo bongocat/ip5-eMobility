@@ -33,7 +33,7 @@
             <v-col>
               <v-select
                       v-model="invoiceTo"
-                      :items="['Mieter', 'Vermieter']"
+                      :items="['Mieter', 'Verwaltung']"
                       label="Rechnung an"
                       hint="Rechnung an"
                       persistent-hint

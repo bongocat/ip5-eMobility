@@ -70,6 +70,7 @@
               <v-checkbox
                   v-model="userActive"
                   label="Aktiv"
+                  color="success"
               ></v-checkbox>
             </v-col>
           </v-row>

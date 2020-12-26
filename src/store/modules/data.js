@@ -1,4 +1,5 @@
 const state = {
+
     invoices: [
         {
             Betrag: 100,
