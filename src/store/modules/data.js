@@ -14,12 +14,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date(Date.now() + (30) * 24*60*60*1000),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(Date.now()),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -37,12 +37,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-11-30'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -60,12 +60,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -83,12 +83,12 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -106,7 +106,7 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
@@ -115,7 +115,7 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -133,7 +133,7 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
@@ -142,7 +142,7 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Ja",
+            Generiert: "true",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -163,7 +163,7 @@ const state = {
             Land: "Boletaria",
             Mietet: "",
             Vermietet: "",
-            Aktiv: "Ja",
+            Aktiv: "true",
             Kommentar: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
         },
         {
@@ -180,7 +180,7 @@ const state = {
             Land: "Schweiz",
             Mietet: "",
             Vermietet: "",
-            Aktiv: "Ja",
+            Aktiv: "true",
             Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
         },
         {
@@ -197,7 +197,7 @@ const state = {
             Land: "Österreich",
             Mietet: "",
             Vermietet: "",
-            Aktiv: "Nein",
+            Aktiv: "false",
             Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n sdsdsdsdsdsdsdsd",
         },
         {
@@ -214,7 +214,7 @@ const state = {
             Land: "Deutschland",
             Mietet: "",
             Vermietet: "",
-            Aktiv: "Nein",
+            Aktiv: "false",
             Kommentar: "Is this the real Life, or iks this just Fantasy.",
         },
     ],
@@ -296,7 +296,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Nein";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "false";
         })
     },
 
@@ -304,7 +304,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let beforeThirtyDays = new Date();
             beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
-            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "Ja";
+            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "true";
         })
     },
 
@@ -312,7 +312,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "false";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "false";
         })
     },
 
@@ -320,7 +320,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "true";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "true";
         })
     },
 
@@ -343,7 +343,7 @@ const getters = {
      * @returns active users
      */
     activeUsers: state => {
-        return state.users.filter(user => user.Aktiv == "Ja")
+        return state.users.filter(user => user.Aktiv == "true")
     },
 
     /**
@@ -352,7 +352,7 @@ const getters = {
      * @returns inactive users
      * */
     inactiveUsers: state => {
-        return state.users.filter(user => user.Aktiv == "Nein")
+        return state.users.filter(user => user.Aktiv == "false")
     },
 
     /**

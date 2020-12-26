@@ -212,7 +212,7 @@ export default {
     },
     toCSV: function (item) {
 
-      item.Generiert = "Ja"
+        item.Generiert = "true"
         item.RechnungsNr = this.invoiceNumber
         item.ZählerstandAlt = this.meterReadingOld
         item.ZählerstandNeu = this.meterReadingNew
@@ -237,7 +237,7 @@ export default {
         link.click();
     },
     exportToPDF: function (item) {
-      item.Generiert = "Ja"
+      item.Generiert = "true"
       item.RechnungsNr = this.invoiceNumber
       item.ZählerstandAlt = this.meterReadingOld
       item.ZählerstandNeu = this.meterReadingNew

@@ -335,9 +335,9 @@ export default {
           Kommentar: this.Kommentar,
           invoicePositions: this.invoicePositions,
           BezahltAm: "",
-          Generiert: "Nein",
+          Generiert: "false",
           Versendet: "false",
-          Bezahlt: "Nein",
+          Bezahlt: "false",
       }
       console.log(invoice)
       this.addNewInvoice(invoice)
