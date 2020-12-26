@@ -152,8 +152,6 @@ router.get('/invoices/types/:id', async (req, res,next) => {
  * Load
  *****************/
 
-// TODO: Load routes for: Create, Update, Delete
-
 /**
  * Get all loads
  */
@@ -184,7 +182,6 @@ router.get('/loads/:id', async (req, res,next) => {
 
 });
 
-
 /**
  * Create a new inactive load
  *
@@ -210,7 +207,7 @@ router.post('/loads', async (req, res,next) => {
 });
 
 /**
- * Update load by their id
+ * Update a load by their load id
  *
  * Example for POST JSON:
  * {
@@ -232,13 +229,10 @@ router.put('/loads', async (req, res,next) => {
         console.log(e);
         res.sendStatus(500);
     }
-
 });
 
-
-
 /**
- * Set load active by their id
+ * Set a load active by their id
  *
  * Example for POST JSON:
  * {
