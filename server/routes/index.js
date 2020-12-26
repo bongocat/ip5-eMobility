@@ -346,18 +346,24 @@ router.get('/facilities/:id', async (req, res,next) => {
 
 });
 
+
 /**
- * Create a new  facility
+ * Create a new facility
  *
  * Example for POST JSON:
  * {
-    "loadTypeID": "1",
-    "facilityID": "1",
-    "tenantID": "1",
-    "comment": "blabla"
+    "administratorID" : "1",
+    "designation": "tesrtrefd",
+    "street": "Teststrasse",
+    "streetNumber": "2",
+    "areaCode": "23",
+    "city": "Zürich",
+    "country": "sdfsd",
+    "active": "1",
+    "comment": "bab"
     }
  */
-router.put('/facilities', async (req, res,next) => {
+router.post('/facilities', async (req, res,next) => {
     try {
         let input = req.body;
         console.log(input);
@@ -369,6 +375,37 @@ router.put('/facilities', async (req, res,next) => {
     }
 
 });
+
+/**
+ * Update a facility by their id
+ *
+ * Example for PUT JSON:
+ * {
+    "administratorID" : "1",
+    "designation": "tesrtrefd",
+    "street": "Teststrasse",
+    "streetNumber": "2",
+    "areaCode": "23",
+    "city": "Zürich",
+    "country": "sdfsd",
+    "active": "1",
+    "comment": "bab",
+    "facilityID": "10"
+    }
+ */
+router.put('/facilities', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 
 
 /******************
