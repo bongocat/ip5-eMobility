@@ -139,7 +139,7 @@ megadb.invoicetypeByID = (id) => {
  * Loads
  *****************/
 
-// TODO: Load functions for: Update, Delete
+// TODO: Load functions for: Delete
 
 /** getter **/
 
@@ -154,6 +154,19 @@ megadb.getAllLoads = () => {
     });
 };
 
+megadb.getLoadByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
+/** create **/
+
 megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
     return new Promise((resolve, reject) => {
         connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID, Aktiv, Kommentar) VALUES (?,?,?,0,?)', [loadTypeID, facilityID, tenantID, comment], (err, results) => {
@@ -164,6 +177,8 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
         });
     });
 };
+
+/** update **/
 
 megadb.setLoadActiveByID = (id) => {
     return new Promise((resolve, reject) => {
@@ -187,16 +202,6 @@ megadb.setLoadInactiveByID = (id) => {
 };
 
 
-megadb.getLoadByID = (id) => {
-    return new Promise((resolve, reject) => {
-        connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            return resolve(results[0]);
-        });
-    });
-};
 
 /******************
  * Loadtype
