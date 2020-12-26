@@ -202,8 +202,6 @@ megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, load
  * Loadtype
  *****************/
 
-// TODO: Loadtype functions for: Create, Update, Delete
-
 /** getter **/
 megadb.loadtype = () => {
     return new Promise((resolve, reject) => {

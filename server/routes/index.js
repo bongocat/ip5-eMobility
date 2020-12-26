@@ -275,8 +275,6 @@ router.put('/loads/setInactive', async (req, res,next) => {
  * Loadtype
  *****************/
 
-// TODO: Loadtype routes for: Create, Update, Delete
-
 /**
  * Get all load types
  */
