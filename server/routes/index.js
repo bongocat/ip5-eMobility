@@ -39,6 +39,47 @@ router.get('/users/:id', async (req, res,next) => {
 
 });
 
+/**
+ * Create a new user
+ *
+ * Example for POST JSON:
+ * {
+    "userType": "1",
+    "name" : "Metro",
+    "familyName" : "Deamon",
+    "salutation": "Mister",
+    "company": "Blue",
+    "phone": "0611111111",
+    "mobile": "0798898989",
+    "email": "metro.deamon@blue.co",
+    "street": "Ponystreet",
+    "streetNumber": "42",
+    "areaCode": "6969",
+    "city": "Night-City",
+    "country": "Africa",
+    "invoiceToShippingAdress": "1",
+    "ShippingStreet": "Uwustreet",
+    "ShippingStreetNumber": "1337",
+    "ShippingAreaCode": "12",
+    "ShippingCity": "New York",
+    "ShippingCountry": "USA",
+    "active": "1",
+    "comment" : "This is a fictional user to the the underlaying api of the megalog application created for ip5 in 2020/2021"
+}
+ */
+router.post('/users', async (req, res,next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment);
+        res.json(results);
+    } catch (e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /******************
  * Usertype
  *****************/
