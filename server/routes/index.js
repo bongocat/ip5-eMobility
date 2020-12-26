@@ -9,12 +9,12 @@ const router = express.Router();
 /**
  * Get all users
  */
-router.get('/users', async (req, res,next) => {
+router.get('/users', async (req, res, next) => {
 
     try {
         let results = await db.user();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -24,12 +24,12 @@ router.get('/users', async (req, res,next) => {
 /**
  * Get a specific user by their id
  */
-router.get('/users/:id', async (req, res,next) => {
+router.get('/users/:id', async (req, res, next) => {
 
     try {
         let results = await db.userByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -64,13 +64,13 @@ router.get('/users/:id', async (req, res,next) => {
     "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021"
 }
  */
-router.post('/users', async (req, res,next) => {
+router.post('/users', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -106,13 +106,13 @@ router.post('/users', async (req, res,next) => {
     "userID": "1"
 }
  */
-router.put('/users', async (req, res,next) => {
+router.put('/users', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment, input.userID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -126,12 +126,12 @@ router.put('/users', async (req, res,next) => {
 /**
  * Get all user types
  */
-router.get('/users/types', async (req, res,next) => {
+router.get('/users/types', async (req, res, next) => {
 
     try {
         let results = await db.usertype();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -141,12 +141,12 @@ router.get('/users/types', async (req, res,next) => {
 /**
  * Get a specific user type by their id
  */
-router.get('/users/types/:id', async (req, res,next) => {
+router.get('/users/types/:id', async (req, res, next) => {
 
     try {
         let results = await db.usertypeByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -162,12 +162,12 @@ router.get('/users/types/:id', async (req, res,next) => {
 /**
  * Get all invoices
  */
-router.get('/invoices', async (req, res,next) => {
+router.get('/invoices', async (req, res, next) => {
 
     try {
         let results = await db.invoice();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -177,12 +177,12 @@ router.get('/invoices', async (req, res,next) => {
 /**
  * Get a specific invoice by their id
  */
-router.get('/invoices/:id', async (req, res,next) => {
+router.get('/invoices/:id', async (req, res, next) => {
 
     try {
         let results = await db.invoiceByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -196,12 +196,12 @@ router.get('/invoices/:id', async (req, res,next) => {
 /**
  * Get all invoice types
  */
-router.get('/invoices/types', async (req, res,next) => {
+router.get('/invoices/types', async (req, res, next) => {
 
     try {
         let results = await db.invoicetype();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -211,12 +211,12 @@ router.get('/invoices/types', async (req, res,next) => {
 /**
  * Get a invoice type by their id
  */
-router.get('/invoices/types/:id', async (req, res,next) => {
+router.get('/invoices/types/:id', async (req, res, next) => {
 
     try {
         let results = await db.invoicetypeByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -262,7 +262,7 @@ router.get('/invoices/types/:id', async (req, res,next) => {
     "comment": "1"
     }
  */
-router.post('/invoices', async (req, res,next) => {
+router.post('/invoices', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
@@ -270,7 +270,7 @@ router.post('/invoices', async (req, res,next) => {
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
             input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -289,7 +289,7 @@ router.post('/invoices', async (req, res,next) => {
     "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "1",
+    "isPayed": "no",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -313,19 +313,19 @@ router.post('/invoices', async (req, res,next) => {
     "counterNew": "1",
     "counterNewDate": "1",
     "active": "1",
-    "comment": "1",
-    "invoiceID": "1"
+    "comment": "Your mom is nice",
+    "invoiceID": "8"
     }
  */
-router.put('/invoices', async (req, res,next) => {
+router.put('/invoices', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
-        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
+        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
             input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -339,12 +339,12 @@ router.put('/invoices', async (req, res,next) => {
 /**
  * Get all loads
  */
-router.get('/loads', async (req, res,next) => {
+router.get('/loads', async (req, res, next) => {
 
     try {
         let results = await db.getAllLoads();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -354,12 +354,12 @@ router.get('/loads', async (req, res,next) => {
 /**
  * Get a load by their id
  */
-router.get('/loads/:id', async (req, res,next) => {
+router.get('/loads/:id', async (req, res, next) => {
 
     try {
         let results = await db.getLoadByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -377,13 +377,13 @@ router.get('/loads/:id', async (req, res,next) => {
     "comment": "blabla"
     }
  */
-router.post('/loads', async (req, res,next) => {
+router.post('/loads', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
-            let results = await db.newInactiveLoad(input.loadTypeID,input.facilityID,input.tenantID,input.comment);
+        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.comment);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -403,13 +403,13 @@ router.post('/loads', async (req, res,next) => {
     "loadID": "1",
     }
  */
-router.put('/loads', async (req, res,next) => {
+router.put('/loads', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
-        let results = await db.updateLoadByID(input.loadTypeID,input.facilityID,input.tenantID,input.Aktiv,input.comment,input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.Aktiv, input.comment, input.loadID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -423,14 +423,14 @@ router.put('/loads', async (req, res,next) => {
     "loadID": "1",
     }
  */
-router.put('/loads/setActive', async (req, res,next) => {
+router.put('/loads/setActive', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
 
         let results = await db.setLoadActiveByID(input.loadID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -445,13 +445,13 @@ router.put('/loads/setActive', async (req, res,next) => {
     "loadID": "1",
     }
  */
-router.put('/loads/setInactive', async (req, res,next) => {
+router.put('/loads/setInactive', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.setLoadInactiveByID(input.loadID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -465,12 +465,12 @@ router.put('/loads/setInactive', async (req, res,next) => {
 /**
  * Get all load types
  */
-router.get('/loads/types', async (req, res,next) => {
+router.get('/loads/types', async (req, res, next) => {
 
     try {
         let results = await db.loadtype();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -480,12 +480,12 @@ router.get('/loads/types', async (req, res,next) => {
 /**
  * Get a load typ by their id
  */
-router.get('/loads/types/:id', async (req, res,next) => {
+router.get('/loads/types/:id', async (req, res, next) => {
 
     try {
         let results = await db.loadtypeByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -499,12 +499,12 @@ router.get('/loads/types/:id', async (req, res,next) => {
 /**
  * Get all facilities
  */
-router.get('/facilities', async (req, res,next) => {
+router.get('/facilities', async (req, res, next) => {
 
     try {
         let results = await db.facility();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -514,12 +514,12 @@ router.get('/facilities', async (req, res,next) => {
 /**
  * Get a facility by their id
  */
-router.get('/facilities/:id', async (req, res,next) => {
+router.get('/facilities/:id', async (req, res, next) => {
 
     try {
         let results = await db.facilityByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -543,13 +543,13 @@ router.get('/facilities/:id', async (req, res,next) => {
     "comment": "bab"
     }
  */
-router.post('/facilities', async (req, res,next) => {
+router.post('/facilities', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -573,13 +573,13 @@ router.post('/facilities', async (req, res,next) => {
     "facilityID": "10"
     }
  */
-router.put('/facilities', async (req, res,next) => {
+router.put('/facilities', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
         let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -595,12 +595,12 @@ router.put('/facilities', async (req, res,next) => {
 /**
  * Get all invoice positions. Only use when really needed
  */
-router.get('/invoices/positions', async (req, res,next) => {
+router.get('/invoices/positions', async (req, res, next) => {
 
     try {
         let results = await db.invoiceposition();
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -610,12 +610,12 @@ router.get('/invoices/positions', async (req, res,next) => {
 /**
  * Get a specific invoice position
  */
-router.get('/invoices/positions/:id', async (req, res,next) => {
+router.get('/invoices/positions/:id', async (req, res, next) => {
 
     try {
         let results = await db.invoicepositionByID(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -625,12 +625,12 @@ router.get('/invoices/positions/:id', async (req, res,next) => {
 /**
  * Get all invoice positions from a specific invoice
  */
-router.get('/invoices/:id/positions', async (req, res,next) => {
+router.get('/invoices/:id/positions', async (req, res, next) => {
 
     try {
         let results = await db.invoicepositionByInvoiceNummer(req.params.id);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
@@ -640,12 +640,12 @@ router.get('/invoices/:id/positions', async (req, res,next) => {
 /**
  * Get a specific invoice position from a specific invoice
  */
-router.get('/invoices/:invoiceid/positions/:positionid', async (req, res,next) => {
+router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) => {
 
     try {
-        let results = await db.invoicepositionByIDByInvoiceNummer(req.params.invoiceid,req.params.positionid);
+        let results = await db.invoicepositionByIDByInvoiceNummer(req.params.invoiceid, req.params.positionid);
         res.json(results);
-    } catch (e){
+    } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
