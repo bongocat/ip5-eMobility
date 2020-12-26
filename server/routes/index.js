@@ -61,7 +61,7 @@ router.get('/users/:id', async (req, res,next) => {
     "ShippingCity": "New York",
     "ShippingCountry": "USA",
     "active": "1",
-    "comment" : "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021"
+    "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021"
 }
  */
 router.post('/users', async (req, res,next) => {
@@ -83,8 +83,8 @@ router.post('/users', async (req, res,next) => {
  * Example for POST JSON:
  * {
     "userType": "1",
-    "name" : "Metro",
-    "familyName" : "Deamon",
+    "name": "Metro",
+    "familyName": "Deamon",
     "salutation": "Mister",
     "company": "Blue",
     "phone": "0611111111",
@@ -102,7 +102,7 @@ router.post('/users', async (req, res,next) => {
     "ShippingCity": "New York",
     "ShippingCountry": "USA",
     "active": "1",
-    "comment" : "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021",
+    "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021",
     "userID": "1"
 }
  */
@@ -192,8 +192,6 @@ router.get('/invoices/:id', async (req, res,next) => {
 /******************
  * Invoice Type
  *****************/
-
-// TODO: Invoicetype routes for: Create, Update, Delete
 
 /**
  * Get all invoice types

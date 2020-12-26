@@ -122,8 +122,6 @@ megadb.invoiceByID = (id) => {
  * Invoicetype
  *****************/
 
-// TODO: Invoicetype functions for: Create, Update, Delete
-
 /** getter **/
 megadb.invoicetype = () => {
     return new Promise((resolve, reject) => {
