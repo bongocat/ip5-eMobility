@@ -165,6 +165,27 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
     });
 };
 
+megadb.setLoadActiveByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+megadb.setLoadInactiveByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 
 megadb.getLoadByID = (id) => {
     return new Promise((resolve, reject) => {
