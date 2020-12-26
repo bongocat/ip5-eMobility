@@ -15,8 +15,6 @@ let megadb = {}
  * User
  *****************/
 
-// TODO: User functions for: Create, Update, Delete
-
 /** getter **/
 megadb.user = () => {
     return new Promise((resolve, reject) => {
@@ -63,6 +61,7 @@ megadb.updateUserByID = (userType, name, familyName, salutation, company, phone,
         });
     });
 };
+
 /******************
  * Usertype
  *****************/
