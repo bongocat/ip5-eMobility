@@ -383,7 +383,7 @@ router.post('/loads', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
-        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo,input.firstInvoice,input.intervalElectricity,input.intervalService, input.comment);
+        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -400,21 +400,21 @@ router.post('/loads', async (req, res, next) => {
  * {
     "loadTypeID": "1",
     "facilityID": "1",
-    "tenantID": "1",
-    "invoiceTo": "1",
-    "firstInvoice": "null",
+    "tenantID": "eeee",
+    "invoiceTo": "sdfsdf",
+    "firstInvoice": "2020-10-10",
     "intervalElectricity": "23",
-    "intervalService": "23",
-    "active": "1",
-    "comment": "blabla",
-    "loadID": "1"
-    }
+    "intervalService": "43",
+    "active": "0",
+    "comment": "ba",
+    "loadID": "13"
+}
  */
 router.put('/loads', async (req, res, next) => {
     try {
         let input = req.body;
         console.log(input);
-        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo,input.firstInvoice,input.intervalElectricity,input.intervalService, input.active, input.comment, input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.active, input.comment, input.loadID);
         res.json(results);
         console.log(results);
     } catch (e) {
