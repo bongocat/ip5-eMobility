@@ -93,8 +93,6 @@ megadb.usertypeByID = (id) => {
  * Invoice
  *****************/
 
-// TODO: Invoice functions for: Update
-
 /** getter **/
 megadb.invoice = () => {
     return new Promise((resolve, reject) => {
