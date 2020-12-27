@@ -401,5 +401,16 @@ megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, v
         });
     });
 };
+/** update **/
+megadb.updateInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment, invoicePositionID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE rechnungspositionen SET InvoiceNumber = ?, PositionName = ?, Price = ?, Amount = ?, Netto = ?, Vat = ?, Brutto = ?, Active = ?, Comment = ? WHERE InvoicePositionID = ?', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment, invoicePositionID], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 
 module.exports = megadb;
