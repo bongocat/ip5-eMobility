@@ -80,7 +80,7 @@ megadb.usertype = () => {
 
 megadb.usertypeByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM nutzertyp WHERE NutzerTypID = ?', [id], (err, results) => {
+        connection.query('SELECT * FROM nutzertyp WHERE userTypeID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
