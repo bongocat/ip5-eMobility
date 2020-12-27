@@ -172,6 +172,10 @@ export default {
       })
       return array
     }
+
+  },
+  created() {
+    this.fetchFacilities();
   }
 }
 </script>
