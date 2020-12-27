@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const state = {
 
     invoices: [
@@ -391,7 +393,12 @@ const getters = {
     },
 }
 
-const actions = {}
+const actions = {
+    async fetchUsers({ commit }) {
+        const response = await axios.get('http://localhost:3000/api/megalog/users/')
+        commit('setUsers', response.data)
+    }
+}
 
 const mutations = {
     addNewInvoice(state, invoice) {
@@ -408,7 +415,9 @@ const mutations = {
 
     addNewLoad (state, load){
         state.loads.push(load)
-    }
+    },
+
+    setUsers: (state, users) => (state.users = users)
 }
 
 export default {
