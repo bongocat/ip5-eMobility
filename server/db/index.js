@@ -248,17 +248,17 @@ megadb.setLoadActiveByID = (id) => {
     });
 };
 
-//
-// megadb.updateLoadByID = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment, LoadID) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE loads SET LoadTypeID = ?, FacilityID = ?, TenantID = ?, InvoiceTo = ?, FirstInvoice = ?, IntervalElectricity = ?, IntervalService = ?, Active = ?, Comment = ? WHERE LoadID = ?', [LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment, LoadID], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
+
+megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE loads SET LoadTypeID = ?, FacilityID = ?, TenantID = ?, InvoiceTo = ?, FirstInvoice = ?, IntervalElectricity = ?, IntervalService = ?, Active = ?, Comment = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 
 /******************
  * Loadtype

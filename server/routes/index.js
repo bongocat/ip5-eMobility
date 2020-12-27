@@ -393,42 +393,42 @@ router.post('/loads', async (req, res, next) => {
 });
 
 
-// /**
-//  * Update a load by their load id
-//  *
-//  * Example for PUT JSON:
-//  * {
-//     "loadTypeID": "1",
-//     "facilityID": "1",
-//     "tenantID": "1",
-//     "invoiceTo": "1",
-//     "firstInvoice": "null",
-//     "intervalElectricity": "23",
-//     "intervalService": "23",
-//     "active": "1",
-//     "comment": "blabla",
-//     "loadID": "1"
-//     }
-//  */
-// router.put('/loads', async (req, res, next) => {
-//     try {
-//         let input = req.body;
-//         console.log(input);
-//         let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService,input.active, input.comment, input.loadID);
-//         res.json(results);
-//         console.log(results);
-//     } catch (e) {
-//         console.log(e);
-//         res.sendStatus(500);
-//     }
-// });
+/**
+ * Update a load by their load id
+ *
+ * Example for PUT JSON:
+ * {
+    "loadTypeID": "1",
+    "facilityID": "1",
+    "tenantID": "1",
+    "invoiceTo": "1",
+    "firstInvoice": "null",
+    "intervalElectricity": "23",
+    "intervalService": "23",
+    "active": "1",
+    "comment": "blabla",
+    "loadID": "1"
+    }
+ */
+router.put('/loads', async (req, res, next) => {
+    try {
+        let input = req.body;
+        console.log(input);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo,input.firstInvoice,input.intervalElectricity,input.intervalService, input.active, input.comment, input.loadID);
+        res.json(results);
+        console.log(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
 
 /**
  * Set a load active by their id
  *
  * Example for PUT JSON:
  * {
-    "loadID": "1",
+    "loadID": "1"
     }
  */
 router.put('/loads/setActive', async (req, res, next) => {
