@@ -257,7 +257,7 @@
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.actions="{item}">
-                <v-btn x-small @click="{ }" color="blue" dark>
+                <v-btn x-small @click="exportToPDF(item)" color="blue" dark>
                   <v-icon>
                     mdi-file-download
                   </v-icon>
@@ -278,6 +278,7 @@
 <script>
 import GenerateInvoice from "./GenerateInvoice";
 import {mapGetters} from "vuex";
+import { toPDF } from "../PDFGeneration/generatePDF"
 
 export default {
 
@@ -353,6 +354,9 @@ export default {
     },
     undoPaid(item){
       item.Bezahlt = "false"
+    },
+    exportToPDF: function (item) {
+      toPDF(item,this.allUsers, this.allFacilities)
     }
   },
   computed: {

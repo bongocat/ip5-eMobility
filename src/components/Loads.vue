@@ -7,11 +7,12 @@
           <v-badge :content="allLoads.length" :value="allLoads.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
-          <LoadRegistration></LoadRegistration>
+            <LoadRegistration></LoadRegistration>
+            <LoadTypeRegistration></LoadTypeRegistration>
           <v-data-table
               style="margin-top: 20px"
               :headers="columnNames"
-              :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+              :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage === anlage.Anlage).length)"
               :single-expand="singleExpand"
               :expanded.sync="expanded"
               item-key="Anlage"
@@ -28,7 +29,7 @@
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
                     :headers="columnInnerNames"
-                    :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
+                    :items="allLoads.filter(loads => loads.Anlage === item.Anlage)"
                     item-key="inner"
                     class="elevation-5"
                 >
@@ -49,10 +50,12 @@
 import {mapGetters} from "vuex";
 import LoadRegistration from "./LoadRegistration";
 import LoadEdit from "./LoadEdit";
+import LoadTypeRegistration from "./LoadTypeRegistration";
+
 
 
 export default {
-  components: {LoadRegistration, LoadEdit},
+  components: {LoadRegistration, LoadEdit, LoadTypeRegistration},
   data() {
     return {
       expanded: [],
