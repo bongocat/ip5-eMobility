@@ -59,11 +59,11 @@ router.get('/users/:id', async (req, res, next) => {
     "city": "Night-City",
     "country": "Africa",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "Uwustreet",
-    "ShippingStreetNumber": "1337",
-    "ShippingAreaCode": "12",
-    "ShippingCity": "New York",
-    "ShippingCountry": "USA",
+    "shippingStreet": "Uwustreet",
+    "shippingStreetNumber": "1337",
+    "shippingAreaCode": "12",
+    "shippingCity": "New York",
+    "shippingCountry": "USA",
     "active": "1",
     "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021"
 }
@@ -72,7 +72,7 @@ router.post('/users', async (req, res, next) => {
     console.log("Create new user");
     try {
         let input = req.body;
-        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment);
+        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -100,11 +100,11 @@ router.post('/users', async (req, res, next) => {
     "city": "Night-City",
     "country": "Africa",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "Uwustreet",
-    "ShippingStreetNumber": "1337",
-    "ShippingAreaCode": "12",
-    "ShippingCity": "New York",
-    "ShippingCountry": "USA",
+    "shippingStreet": "Uwustreet",
+    "shippingStreetNumber": "1337",
+    "shippingAreaCode": "12",
+    "shippingCity": "New York",
+    "shippingCountry": "USA",
     "active": "1",
     "comment": "This is a fictional user to test the underlying api of the megalog application created for ip5 in 2020/2021",
     "userID": "1"
@@ -114,7 +114,7 @@ router.put('/users', async (req, res, next) => {
     console.log("Update a users");
     try {
         let input = req.body;
-        let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment, input.userID);
+        let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
         res.json(results);
     } catch (e) {
         console.log(e);
