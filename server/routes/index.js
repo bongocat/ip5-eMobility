@@ -5,8 +5,6 @@ const router = express.Router();
 const cors = require('cors');
 router.use(cors())
 
-
-
 /******************
  * User
  *****************/
@@ -74,7 +72,6 @@ router.post('/users', async (req, res, next) => {
     console.log("Create new user");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment);
         res.json(results);
     } catch (e) {
@@ -117,7 +114,6 @@ router.put('/users', async (req, res, next) => {
     console.log("Update a users");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.ShippingStreet, input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.active, input.comment, input.userID);
         res.json(results);
     } catch (e) {
@@ -272,7 +268,6 @@ router.post('/invoices', async (req, res, next) => {
     console.log("create a new invoice");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
             input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment);
@@ -328,7 +323,6 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
             input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
@@ -393,7 +387,6 @@ router.post('/loads', async (req, res, next) => {
     console.log("Create a new inactive load");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.comment);
         res.json(results);
     } catch (e) {
@@ -425,10 +418,8 @@ router.put('/loads', async (req, res, next) => {
     console.log("Update a load by id");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.active, input.comment, input.loadID);
         res.json(results);
-        console.log(results);
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -447,8 +438,6 @@ router.put('/loads/setActive', async (req, res, next) => {
     console.log("Set a user active");
     try {
         let input = req.body;
-        console.log(input);
-
         let results = await db.setLoadActiveByID(input.loadID);
         res.json(results);
     } catch (e) {
@@ -492,7 +481,6 @@ router.get('/loadtypes', async (req, res, next) => {
     try {
         let results = await db.loadtype();
         res.json(results);
-        console.log("I WORK");
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -570,7 +558,6 @@ router.post('/facilities', async (req, res, next) => {
     console.log("Create a new facility");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
         res.json(results);
     } catch (e) {
@@ -601,7 +588,6 @@ router.put('/facilities', async (req, res, next) => {
     console.log("Update facility by id");
     try {
         let input = req.body;
-        console.log(input);
         let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
         res.json(results);
     } catch (e) {
