@@ -82,7 +82,7 @@
 import FacilityRegistration from "./FacilityRegistration";
 import FacilityEdit from "./FacilityEdit";
 
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "facilities",
@@ -124,6 +124,7 @@ export default {
     }
   },
   computed: {
+    ...mapActions(['fetchFacilities']),
     ...mapGetters({
       allFacilities: 'allFacilities'
     }),
@@ -171,6 +172,10 @@ export default {
       })
       return array
     }
+
+  },
+  created() {
+    this.fetchFacilities();
   }
 }
 </script>
