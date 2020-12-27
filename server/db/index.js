@@ -359,7 +359,7 @@ megadb.invoiceposition = () => {
 
 megadb.invoicepositionByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE RechnungsPositionID = ?', [id], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE InvoicePositionID  = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -370,7 +370,7 @@ megadb.invoicepositionByID = (id) => {
 
 megadb.invoicepositionByInvoiceNummer = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ?', [id], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE  InvoiceNummer  = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -381,7 +381,7 @@ megadb.invoicepositionByInvoiceNummer = (id) => {
 
 megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ? AND RechnungsPositionID = ?', [invoiceid, positionid], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE InvoiceNummer  = ? AND InvoicePositionID  = ?', [invoiceid, positionid], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -390,4 +390,15 @@ megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
     });
 };
 
+/** create **/
+megadb.newInvoicePosition = (invoicePositionID, invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO rechnungspositionen (InvoicePositionID, InvoiceNummer, PositionName, Price, Amount, Netto, Vat, Brutto, Active, Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoicePositionID, invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 module.exports = megadb;
