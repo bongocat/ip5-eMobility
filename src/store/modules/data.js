@@ -150,76 +150,7 @@ const state = {
             positions: [],
         },
     ],
-    users: [
-        {
-            NutzerID: "1",
-            Vorname: "John",
-            Nachname: "Snow",
-            NutzerTyp: "Mieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "2077",
-            Ort: "Night-City",
-            Land: "Boletaria",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Ja",
-            Kommentar: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-        {
-            NutzerID: "2",
-            Vorname: "Maria",
-            Nachname: "Winter",
-            NutzerTyp: "Mieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "2077",
-            Ort: "Day-Forrest",
-            Land: "Schweiz",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Ja",
-            Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-        {
-            NutzerID: "3",
-            Vorname: "Maurus",
-            Nachname: "Kona",
-            NutzerTyp: "Vermieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "4090",
-            Ort: "Imma",
-            Land: "Österreich",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Nein",
-            Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n sdsdsdsdsdsdsdsd",
-        },
-        {
-            NutzerID: "4",
-            Vorname: "Maurus",
-            Nachname: "Kona",
-            NutzerTyp: "Vermieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "96",
-            PLZ: "3334",
-            Ort: "Lörrach",
-            Land: "Deutschland",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Nein",
-            Kommentar: "Is this the real Life, or iks this just Fantasy.",
-        },
-    ],
+    users: [],
     facilities: [
         {
             AnlageID: "1",
@@ -354,7 +285,7 @@ const getters = {
      * @returns inactive users
      * */
     inactiveUsers: state => {
-        return state.users.filter(user => user.Aktiv == "Nein")
+        return state.users.filter(user => user.Aktiv === "Nein")
     },
 
     /**
@@ -402,7 +333,22 @@ const actions = {
     async addNewUser({commit}, user){
         const response = await axios.post('http://localhost:3000/api/megalog/users/', user)
         commit('addNewUser', response.data)
-    }
+    },
+
+    async editUser({commit}, user){
+        const response = await axios.put('http://localhost:3000/api/megalog/users/', user)
+        commit('editUser', response.data)
+    },
+
+    async fetchInvoices({ commit }) {
+        const response = await axios.get('http://localhost:3000/api/megalog/invoices/')
+        commit('setInvoices', response.data)
+    },
+
+    async addNewInvoice({commit}, invoice){
+        const response = await axios.post('http://localhost:3000/api/megalog/invoices/', invoice)
+        commit('addNewInvoice', response.data)
+    },
 }
 
 const mutations = {
@@ -422,7 +368,8 @@ const mutations = {
         state.loads.push(load)
     },
 
-    setUsers: (state, users) => (state.users = users)
+    setUsers: (state, users) => (state.users = users),
+    setInvoices: (state, invoices) => (state.invoices = invoices),
 }
 
 export default {

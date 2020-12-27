@@ -22,61 +22,41 @@
         <v-form>
           <v-row>
             <v-col>
-              <v-text-field v-model="Betrag"
-                            label="Betrag"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="RechnungsID"
-                            label="Rechnungs ID"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="RechnungsNr"
+              <v-text-field v-model="invoiceNumber"
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
               <v-overflow-btn style="width: 400px"
-                              v-model = "RechnungsArt"
+                              v-model = "invoiceTypeID"
                               dense
                               editable
-                              :items='["Strom", "Serviceabo", "Installation" ]'
+                              :items='[{text:"Strom", value: 0}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 2}]'
                               label="Rechnungsart"
                               item-value="string"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
+            <v-col>
+
+            </v-col>
           </v-row>
           <v-row>
-            <v-col>
-              <v-text-field v-model="MieterReferenz"
-                            label="Mieter ID"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="VermieterReferenz"
-                            label="Vermieter ID"></v-text-field>
-            </v-col>
             <v-col>
               <v-overflow-btn style="width: 400px"
-                              v-model = "RechnungAn"
+                              v-model = "invoiceToRefID"
                               dense
                               editable
-                              :items='["Mieter", "Vermieter"]'
+                              :items="allUsers"
                               label="Rechnung an"
-                              item-value="string"
-                              hint="Rechnung An"
+                              hint="Rechnung an"
                               persistent-hint
+                              :item-text = "item =>item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-value= "item => item.NutzerID"
               ></v-overflow-btn>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="AnlageID"
-                            label="Anlage ID"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
-              <v-text-field v-model="LoadID"
-                            label="Load ID"></v-text-field>
-            </v-col>
             <v-col>
               <v-menu
                   ref="menuFälligAm"
@@ -287,26 +267,39 @@ export default {
       menuFaelligAm: false,
       menuZuZahlenBis: false,
       dialog: false,
-      Betrag: "",
-      RechnungsID: "",
-      RechnungsNr: "",
-      RechnungsArt: "",
-      MieterReferenz: "",
-      VermieterReferenz: "",
-      RechnungAn: "",
-      Anlagename: "",
-      AnlageID: "",
-      LoadID: "",
-      faelligAm: new Date(Date.now()).toISOString().substr(0,10),
-      zuZahlenBis: new Date(Date.now()).toISOString().substr(0,10),
-      Vorname: "",
-      Nachname: "",
-      Firma: "",
-      Kommentar: "",
-      invoicePositions: [],
-      extraPosDescription: "",
-      extraPosCount: "",
-      extraPosUnitPrice: "",
+
+      invoiceNumber: "",
+      invoiceTypeID: "",
+      customerRefID: "",
+      invoiceToRefID: "",
+      loadID: "",
+      invoiceDate: "",
+      toPayUntil: "",
+      isPayed: "",
+      name: "",
+      familyName: "",
+      salutation: "",
+      company: "",
+      phone: "",
+      mobile: "",
+      email: "",
+      street: "",
+      streetNumber: "",
+      areaCode: "",
+      city: "",
+      country: "",
+      invoiceToShippingAdress: "",
+      ShippingStreet: "",
+      ShippingStreetNumber: "",
+      ShippingAreaCode: "",
+      ShippingCity: "",
+      ShippingCountry: "",
+      counterOld: "",
+      counterOldDate: "",
+      counterNew: "",
+      counterNewDate: "",
+      active: "",
+      comment: ""
     }
   },
   methods: {

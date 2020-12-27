@@ -208,9 +208,6 @@ export default {
   },
   computed: {
     ...mapGetters(['allUsers']),
-    userID() {
-      return this.allUsers.length + 1
-    },
     formTitle () {
       return this.editedIndex === -1 ? 'Neuen Nuzer erfassen' : 'Nutzer bearbeiten'
     },
