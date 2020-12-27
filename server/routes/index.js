@@ -451,7 +451,7 @@ router.put('/loads/setActive', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-    "loadID": "1",
+    "loadID": "1"
     }
  */
 router.put('/loads/setInactive', async (req, res, next) => {
