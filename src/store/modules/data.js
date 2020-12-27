@@ -349,6 +349,11 @@ const actions = {
         const response = await axios.post('http://localhost:3000/api/megalog/invoices/', invoice)
         commit('addNewInvoice', response.data)
     },
+
+    async fetchFacilities({ commit }) {
+        const response = await axios.get('http://localhost:3000/api/megalog/facilities')
+        commit('setFacilities', response.data)
+    },
 }
 
 const mutations = {
