@@ -343,7 +343,7 @@ megadb.updateFacilityByID = (administratorID, designation, street, streetNumber,
  * Invoice Positions
  *****************/
 
-// TODO: Invoice Position functions for: Create, Update, Delete
+// TODO: Invoice Position functions for: Update, Delete
 
 /** getter **/
 megadb.invoiceposition = () => {
