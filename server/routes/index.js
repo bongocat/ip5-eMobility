@@ -2,6 +2,11 @@ const express = require('express');
 const db = require('../db');
 const router = express.Router();
 
+const cors = require('cors');
+router.use(cors())
+
+
+
 /******************
  * User
  *****************/

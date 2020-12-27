@@ -30,7 +30,7 @@
 <script>
 import UserEdit from "./UserEdit";
 import UserRegistration from "./UserRegistration";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Users",
@@ -49,6 +49,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['fetchUsers']),
     itemRowBackground: function (item) {
       return item.Kommentar.length > 125 ? 'style-1' : 'style-2'
     },
@@ -91,6 +92,9 @@ export default {
     ...mapGetters({
       allUsers: 'allUsers'
     }),
+  },
+  created() {
+    this.fetchUsers();
   }
 }
 </script>
