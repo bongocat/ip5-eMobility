@@ -11,6 +11,7 @@ const router = express.Router();
  */
 router.get('/users', async (req, res, next) => {
 
+    console.log("Get all users");
     try {
         let results = await db.user();
         res.json(results);
@@ -25,7 +26,7 @@ router.get('/users', async (req, res, next) => {
  * Get a specific user by their id
  */
 router.get('/users/:id', async (req, res, next) => {
-
+    console.log("Get user by id");
     try {
         let results = await db.userByID(req.params.id);
         res.json(results);
@@ -126,8 +127,8 @@ router.put('/users', async (req, res, next) => {
 /**
  * Get all user types
  */
-router.get('/users/types', async (req, res, next) => {
-
+router.get('/usertypes', async (req, res, next) => {
+    console.log("Get all users types");
     try {
         let results = await db.usertype();
         res.json(results);
@@ -141,8 +142,8 @@ router.get('/users/types', async (req, res, next) => {
 /**
  * Get a specific user type by their id
  */
-router.get('/users/types/:id', async (req, res, next) => {
-
+router.get('/usertypes/:id', async (req, res, next) => {
+    console.log("Get user type by id");
     try {
         let results = await db.usertypeByID(req.params.id);
         res.json(results);
@@ -161,7 +162,7 @@ router.get('/users/types/:id', async (req, res, next) => {
  * Get all invoices
  */
 router.get('/invoices', async (req, res, next) => {
-
+    console.log("Get all invoices");
     try {
         let results = await db.invoice();
         res.json(results);
@@ -176,7 +177,7 @@ router.get('/invoices', async (req, res, next) => {
  * Get a specific invoice by their id
  */
 router.get('/invoices/:id', async (req, res, next) => {
-
+    console.log("Get invoices by id");
     try {
         let results = await db.invoiceByID(req.params.id);
         res.json(results);
@@ -194,7 +195,7 @@ router.get('/invoices/:id', async (req, res, next) => {
 /**
  * Get all invoice types
  */
-router.get('/invoices/types', async (req, res, next) => {
+router.get('/invoicetypes', async (req, res, next) => {
 
     try {
         let results = await db.invoicetype();
@@ -209,7 +210,7 @@ router.get('/invoices/types', async (req, res, next) => {
 /**
  * Get a invoice type by their id
  */
-router.get('/invoices/types/:id', async (req, res, next) => {
+router.get('/invoicetypes/:id', async (req, res, next) => {
 
     try {
         let results = await db.invoicetypeByID(req.params.id);
@@ -473,11 +474,12 @@ router.put('/loads/setInactive', async (req, res, next) => {
 /**
  * Get all load types
  */
-router.get('/loads/types', async (req, res, next) => {
-
+router.get('/loadtypes', async (req, res, next) => {
+    console.log("I WORK");
     try {
         let results = await db.loadtype();
         res.json(results);
+        console.log("I WORK");
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -488,7 +490,7 @@ router.get('/loads/types', async (req, res, next) => {
 /**
  * Get a load typ by their id
  */
-router.get('/loads/types/:id', async (req, res, next) => {
+router.get('/loadtypes/:id', async (req, res, next) => {
 
     try {
         let results = await db.loadtypeByID(req.params.id);
@@ -603,7 +605,7 @@ router.put('/facilities', async (req, res, next) => {
 /**
  * Get all invoice positions. Only use when really needed
  */
-router.get('/invoices/positions', async (req, res, next) => {
+router.get('/invoicepositions', async (req, res, next) => {
 
     try {
         let results = await db.invoiceposition();
@@ -618,7 +620,7 @@ router.get('/invoices/positions', async (req, res, next) => {
 /**
  * Get a specific invoice position
  */
-router.get('/invoices/positions/:id', async (req, res, next) => {
+router.get('/invoicepositions/:id', async (req, res, next) => {
 
     try {
         let results = await db.invoicepositionByID(req.params.id);
@@ -634,7 +636,7 @@ router.get('/invoices/positions/:id', async (req, res, next) => {
  * Get all invoice positions from a specific invoice
  */
 router.get('/invoices/:id/positions', async (req, res, next) => {
-
+console.log("yep");
     try {
         let results = await db.invoicepositionByInvoiceNummer(req.params.id);
         res.json(results);
@@ -649,7 +651,7 @@ router.get('/invoices/:id/positions', async (req, res, next) => {
  * Get a specific invoice position from a specific invoice
  */
 router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) => {
-
+    console.log("pep");
     try {
         let results = await db.invoicepositionByIDByInvoiceNummer(req.params.invoiceid, req.params.positionid);
         res.json(results);
