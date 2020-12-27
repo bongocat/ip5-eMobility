@@ -69,7 +69,7 @@ megadb.updateUserByID = (userType, name, familyName, salutation, company, phone,
 /** getter **/
 megadb.usertype = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from nutzertyp', (err, results) => {
+        connection.query('SELECT * FROM nutzertyp', (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -80,7 +80,7 @@ megadb.usertype = () => {
 
 megadb.usertypeByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from nutzertyp WHERE NutzerTypID = ?', [id], (err, results) => {
+        connection.query('SELECT * FROM nutzertyp WHERE NutzerTypID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -213,9 +213,9 @@ megadb.getLoadByID = (id) => {
 };
 
 /** create **/
-megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
+megadb.newInactiveLoad = (LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID, Aktiv, Kommentar) VALUES (?,?,?,0,?)', [loadTypeID, facilityID, tenantID, comment], (err, results) => {
+        connection.query('INSERT INTO loads (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) VALUES (?,?,?,?,?,?,?,0,?)', [LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -223,11 +223,12 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
         });
     });
 };
+
 
 /** update **/
 megadb.setLoadActiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
+        connection.query('UPDATE loads SET loads.Active = 1 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -236,9 +237,9 @@ megadb.setLoadActiveByID = (id) => {
     });
 };
 
-megadb.setLoadInactiveByID = (id) => {
+   megadb.setLoadInactiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
+        connection.query('UPDATE loads SET loads.Active = 0 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -247,9 +248,10 @@ megadb.setLoadInactiveByID = (id) => {
     });
 };
 
-megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, loadid) => {
+
+megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET LoadTypID = ?, AnlageNr = ?, MieterID = ?, Aktiv = ?, Kommentar = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, active, comment, loadid], (err, results) => {
+        connection.query('UPDATE loads SET LoadTypeID = ?, FacilityID = ?, TenantID = ?, InvoiceTo = ?, FirstInvoice = ?, IntervalElectricity = ?, IntervalService = ?, Active = ?, Comment = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -276,7 +278,7 @@ megadb.loadtype = () => {
 
 megadb.loadtypeByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from loadtyp WHERE LoadTypID = ?', [id], (err, results) => {
+        connection.query('SELECT * from loadtyp WHERE LoadTypeID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -341,7 +343,7 @@ megadb.updateFacilityByID = (administratorID, designation, street, streetNumber,
  * Invoice Positions
  *****************/
 
-// TODO: Invoice Position functions for: Create, Update, Delete
+// TODO: Invoice Position functions for: Update
 
 /** getter **/
 megadb.invoiceposition = () => {
@@ -357,7 +359,7 @@ megadb.invoiceposition = () => {
 
 megadb.invoicepositionByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE RechnungsPositionID = ?', [id], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE InvoicePositionID  = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -368,7 +370,7 @@ megadb.invoicepositionByID = (id) => {
 
 megadb.invoicepositionByInvoiceNummer = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ?', [id], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE  InvoiceNumber  = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -379,7 +381,30 @@ megadb.invoicepositionByInvoiceNummer = (id) => {
 
 megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  RechnungsNummer  = ? AND RechnungsPositionID = ?', [invoiceid, positionid], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE InvoiceNumber  = ? AND InvoicePositionID  = ?', [invoiceid, positionid], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+/** create **/
+megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO rechnungspositionen (InvoiceNumber, PositionName, Price, Amount, Netto, Vat, Brutto, Active, Comment) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+/** update **/
+megadb.updateInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment, invoicePositionID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE rechnungspositionen SET InvoiceNumber = ?, PositionName = ?, Price = ?, Amount = ?, Netto = ?, Vat = ?, Brutto = ?, Active = ?, Comment = ? WHERE InvoicePositionID = ?', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment, invoicePositionID], (err, results) => {
             if (err) {
                 return reject(err);
             }

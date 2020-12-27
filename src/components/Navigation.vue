@@ -2,8 +2,9 @@
   <v-card color="basil">
     <v-card-title class="text-center justify-center py-6">
       <h1 class="font-weight-bold display-3" style="color: #96BF0D">
-        megalog
+        <v-img src="../assets/megalog_emobility_logo.png" width="300"></v-img>
       </h1>
+
     </v-card-title>
 
     <v-tabs
