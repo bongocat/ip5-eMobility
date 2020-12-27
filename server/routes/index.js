@@ -663,4 +663,35 @@ router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) 
 
 });
 
+/**
+ * Create a new Invoice position
+ *
+ * Example for POST JSON:
+ * {
+    "invoicePositionID": "1",
+    "invoiceNummer": "",
+    "positionName": "",
+    "price": "",
+    "amount": "",
+   	"netto": "",
+    "vat": "",
+    "brutto": "",
+    "active": "",
+    "comment": ""
+    }
+ */
+router.post('/invoicepositions', async (req, res, next) => {
+    console.log("Create a new invoice position");
+    try {
+        let input = req.body;
+        let results = await db.newInvoicePosition(input.invoicePositionID, input.invoiceNummer, input.positionName, input.price, input.amount,
+            input.netto, input.vat, input.brutto, input.active, input.comment)
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 module.exports = router;
