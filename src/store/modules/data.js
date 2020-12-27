@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = "http://localhost:3000"
+
 const state = {
 
     invoices: [
@@ -326,27 +328,27 @@ const getters = {
 
 const actions = {
     async fetchUsers({ commit }) {
-        const response = await axios.get('http://localhost:3000/api/megalog/users/')
+        const response = await axios.get( baseURL + '/api/megalog/users/')
         commit('setUsers', response.data)
     },
 
     async addNewUser({commit}, user){
-        const response = await axios.post('http://localhost:3000/api/megalog/users/', user)
+        const response = await axios.post(baseURL + '/api/megalog/users/', user)
         commit('addNewUser', response.data)
     },
 
     async editUser({commit}, user){
-        const response = await axios.put('http://localhost:3000/api/megalog/users/', user)
+        const response = await axios.put(baseURL + '/api/megalog/users/', user)
         commit('editUser', response.data)
     },
 
     async fetchInvoices({ commit }) {
-        const response = await axios.get('http://localhost:3000/api/megalog/invoices/')
+        const response = await axios.get(baseURL + '/api/megalog/invoices/')
         commit('setInvoices', response.data)
     },
 
     async addNewInvoice({commit}, invoice){
-        const response = await axios.post('http://localhost:3000/api/megalog/invoices/', invoice)
+        const response = await axios.post(baseURL + '/api/megalog/invoices/', invoice)
         commit('addNewInvoice', response.data)
     },
 }
