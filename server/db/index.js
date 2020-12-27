@@ -225,21 +225,10 @@ megadb.newInactiveLoad = (LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoi
 };
 
 
-// /** update **/
-// megadb.setLoadActiveByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
-   megadb.setLoadInactiveByID = (id) => {
+/** update **/
+megadb.setLoadActiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
+        connection.query('UPDATE loads SET loads.Active = 1 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -248,9 +237,9 @@ megadb.newInactiveLoad = (LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoi
     });
 };
 
-megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, loadid) => {
+   megadb.setLoadInactiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET LoadTypID = ?, AnlageNr = ?, MieterID = ?, Aktiv = ?, Kommentar = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, active, comment, loadid], (err, results) => {
+        connection.query('UPDATE loads SET loads.Active = 0 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -258,6 +247,18 @@ megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, active, comment, load
         });
     });
 };
+
+//
+// megadb.updateLoadByID = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment, LoadID) => {
+//     return new Promise((resolve, reject) => {
+//         connection.query('UPDATE loads SET LoadTypeID = ?, FacilityID = ?, TenantID = ?, InvoiceTo = ?, FirstInvoice = ?, IntervalElectricity = ?, IntervalService = ?, Active = ?, Comment = ? WHERE LoadID = ?', [LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment, LoadID], (err, results) => {
+//             if (err) {
+//                 return reject(err);
+//             }
+//             return resolve(results);
+//         });
+//     });
+// };
 
 /******************
  * Loadtype
