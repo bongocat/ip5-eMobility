@@ -343,7 +343,7 @@ megadb.updateFacilityByID = (administratorID, designation, street, streetNumber,
  * Invoice Positions
  *****************/
 
-// TODO: Invoice Position functions for: Update, Delete
+// TODO: Invoice Position functions for: Update
 
 /** getter **/
 megadb.invoiceposition = () => {
@@ -370,7 +370,7 @@ megadb.invoicepositionByID = (id) => {
 
 megadb.invoicepositionByInvoiceNummer = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE  InvoiceNummer  = ?', [id], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE  InvoiceNumber  = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -381,7 +381,7 @@ megadb.invoicepositionByInvoiceNummer = (id) => {
 
 megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from rechnungspositionen WHERE InvoiceNummer  = ? AND InvoicePositionID  = ?', [invoiceid, positionid], (err, results) => {
+        connection.query('SELECT * from rechnungspositionen WHERE InvoiceNumber  = ? AND InvoicePositionID  = ?', [invoiceid, positionid], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -393,7 +393,7 @@ megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
 /** create **/
 megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO rechnungspositionen (InvoiceNummer, PositionName, Price, Amount, Netto, Vat, Brutto, Active, Comment) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment], (err, results) => {
+        connection.query('INSERT INTO rechnungspositionen (InvoiceNumber, PositionName, Price, Amount, Netto, Vat, Brutto, Active, Comment) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -401,4 +401,5 @@ megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, v
         });
     });
 };
+
 module.exports = megadb;
