@@ -375,6 +375,7 @@ const mutations = {
 
     setUsers: (state, users) => (state.users = users),
     setInvoices: (state, invoices) => (state.invoices = invoices),
+    setFacilities: (state, facilities) => (state.facilities = facilities),
 }
 
 export default {
