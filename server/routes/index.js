@@ -157,8 +157,6 @@ router.get('/users/types/:id', async (req, res, next) => {
  * Invoice
  *****************/
 
-// TODO: Invoice routes for: Create, Update, Delete
-
 /**
  * Get all invoices
  */
