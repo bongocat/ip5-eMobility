@@ -397,6 +397,11 @@ const actions = {
     async fetchUsers({ commit }) {
         const response = await axios.get('http://localhost:3000/api/megalog/users/')
         commit('setUsers', response.data)
+    },
+
+    async addNewUser({commit}, user){
+        const response = await axios.post('http://localhost:3000/api/megalog/users/', user)
+        commit('addNewUser', response.data)
     }
 }
 
