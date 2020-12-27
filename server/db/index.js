@@ -69,7 +69,7 @@ megadb.updateUserByID = (userType, name, familyName, salutation, company, phone,
 /** getter **/
 megadb.usertype = () => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM usertype', (err, results) => {
+        connection.query('SELECT * FROM nutzertyp', (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -80,7 +80,7 @@ megadb.usertype = () => {
 
 megadb.usertypeByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM usertype WHERE userTypeID = ?', [id], (err, results) => {
+        connection.query('SELECT * FROM nutzertyp WHERE NutzerTypID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
