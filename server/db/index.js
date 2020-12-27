@@ -213,9 +213,9 @@ megadb.getLoadByID = (id) => {
 };
 
 /** create **/
-megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
+megadb.newInactiveLoad = (LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID, Aktiv, Kommentar) VALUES (?,?,?,0,?)', [loadTypeID, facilityID, tenantID, comment], (err, results) => {
+        connection.query('INSERT INTO loads (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) VALUES (?,?,?,?,?,?,?,0,?)', [LoadTypID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -224,19 +224,20 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, comment) => {
     });
 };
 
-/** update **/
-megadb.setLoadActiveByID = (id) => {
-    return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            return resolve(results);
-        });
-    });
-};
 
-megadb.setLoadInactiveByID = (id) => {
+// /** update **/
+// megadb.setLoadActiveByID = (id) => {
+//     return new Promise((resolve, reject) => {
+//         connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
+//             if (err) {
+//                 return reject(err);
+//             }
+//             return resolve(results);
+//         });
+//     });
+// };
+//
+   megadb.setLoadInactiveByID = (id) => {
     return new Promise((resolve, reject) => {
         connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
