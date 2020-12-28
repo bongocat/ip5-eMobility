@@ -58,7 +58,6 @@
               <v-switch v-model="active"
                         label="Aktiv"
                         color="success"
-
               >
               </v-switch>
             </v-col>

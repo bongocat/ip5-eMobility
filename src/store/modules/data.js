@@ -215,6 +215,7 @@ const state = {
             LoadTyp: "LoadType XYZ"
         },
     ],
+    loadTypes: []
 }
 
 const getters = {
@@ -324,6 +325,10 @@ const getters = {
     allLoads: state => {
         return state.loads
     },
+
+    allLoadTypes: state => {
+        return state.loadTypes
+    }
 }
 
 const actions = {
@@ -372,6 +377,16 @@ const actions = {
         commit('setLoads', response.data)
     },
 
+
+    async addNewLoad({commit}, load){
+        const response = await axios.post(baseURL + '/api/megalog/loads/', load)
+        commit('addNewLoad', response.data)
+    },
+    async fetchLoadTypes({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/loadTypes/')
+        commit('setLoadTypes', response.data)
+    },
+
 }
 
 const mutations = {
@@ -395,6 +410,7 @@ const mutations = {
     setInvoices: (state, invoices) => (state.invoices = invoices),
     setFacilities: (state, facilities) => (state.facilities = facilities),
     setLoads: (state, loads) => (state.loads = loads),
+    setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
     editFacility: (state, editedFacility) => {
         const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
         if (index !== -1){
