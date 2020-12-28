@@ -3,64 +3,64 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Anlagen</h1>
+          <h3>Anlagen</h3>
           <v-badge :content="allFacilities.length" :value="allFacilities.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
           <facility-registration></facility-registration>
           <v-expansion-panels style="padding-bottom: 20px; margin-top: 20px">
-            <v-expansion-panel>
-              <v-expansion-panel-header>
-                Filter
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-row dense>
-                  <v-col>
-                    <v-overflow-btn
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueProperties"
-                        label="Anlagen"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueAdministration"
-                        label="Immobilienverwaltung"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueTenants"
-                        label="PLZ"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueInvoiceCategory"
-                        label="Land"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                </v-row>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
+<!--            <v-expansion-panel>-->
+<!--              <v-expansion-panel-header>-->
+<!--                Filter-->
+<!--              </v-expansion-panel-header>-->
+<!--              <v-expansion-panel-content>-->
+<!--                <v-row dense>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueProperties"-->
+<!--                        label="Anlagen"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueAdministration"-->
+<!--                        label="Immobilienverwaltung"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueTenants"-->
+<!--                        label="PLZ"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueInvoiceCategory"-->
+<!--                        label="Land"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                </v-row>-->
+<!--              </v-expansion-panel-content>-->
+<!--            </v-expansion-panel>-->
           </v-expansion-panels>
           <v-data-table
               dense
@@ -69,9 +69,7 @@
               class="elevation-1"
               :items-per-page="20">
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <FacilityEdit :facility = "item"></FacilityEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -82,11 +80,13 @@
 
 <script>
 import FacilityRegistration from "./FacilityRegistration";
-import {mapGetters} from "vuex";
+import FacilityEdit from "./FacilityEdit";
+
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "facilities",
-  components: {FacilityRegistration},
+  components: {FacilityRegistration, FacilityEdit},
   data() {
     return {
       currentItem: {},
@@ -124,6 +124,7 @@ export default {
     }
   },
   computed: {
+    ...mapActions(['fetchFacilities']),
     ...mapGetters({
       allFacilities: 'allFacilities'
     }),
@@ -171,6 +172,10 @@ export default {
       })
       return array
     }
+
+  },
+  created() {
+    this.fetchFacilities();
   }
 }
 </script>

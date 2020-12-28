@@ -3,21 +3,22 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Nutzer</h1>
+          <h3>Nutzer</h3>
           <v-badge :content="allUsers.length" :value="allUsers.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
           <UserRegistration></UserRegistration>
-          <v-data-table style="margin-top: 20px"
+          <v-data-table
               dense
+              style="margin-top: 20px"
               :headers="columnNames"
               :items="allUsers"
               class="elevation-1"
-              :items-per-page="5">
+              :items-per-page="5"
+              :item-class="itemRowBackground"
+          >
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <UserEdit :user = "item" ></UserEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -27,12 +28,13 @@
 </template>
 
 <script>
+import UserEdit from "./UserEdit";
 import UserRegistration from "./UserRegistration";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Users",
-  components: {UserRegistration},
+  components: {UserRegistration, UserEdit},
   data() {
     return {
       showModal: false,
@@ -43,9 +45,14 @@ export default {
       dialog: false,
       dialogDelete: false,
       editedIndex: -1,
+      edit: false
     };
   },
   methods: {
+    ...mapActions(['fetchUsers']),
+    itemRowBackground: function (item) {
+      return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
+    },
     toCSV: function(item) {
 
       const outputData = [Object.keys(item), Object.values(item)];
@@ -70,21 +77,44 @@ export default {
     columnNames() {
       var computedColumnnames  = []
       Object.keys(this.allUsers[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
+        if (item === 'Kommentar'){
+          computedColumnnames.push({text: item, value: item, class: 'tableComment', width: "25%"})
+        }
+        else {
+          computedColumnnames.push({text: item, value: item})
+        }
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
+      console.log(this.allUsers)
       return computedColumnnames
     },
     ...mapGetters({
       allUsers: 'allUsers'
     }),
+  },
+  created() {
+    this.fetchUsers();
   }
 }
 </script>
 
-<style scoped>
+<style>
+
 h1, h5 {
   vertical-align: center;
   clear:both;
 }
+
+.style-1 .text-start {
+  overflow-y: auto;
+  overflow-x: auto;
+  text-overflow-ellipsis: true;
+  white-space: nowrap;
+  max-width: 300px;
+  height: 300px;
+}
+
+.style-2 {
+}
+
 </style>

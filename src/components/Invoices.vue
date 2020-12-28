@@ -3,64 +3,65 @@
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
         <v-card-title>
-          <h1>Rechnungen</h1>
+          <h3>Rechnungen</h3>
           <v-badge :content="this.allInvoices.length" :value="this.allInvoices.length" color="success" inline/>
         </v-card-title>
         <v-card-text>
+          <InvoiceExceptional></InvoiceExceptional>
           <v-data-table
               dense
               :headers="columnNames"
               :items="allInvoices"
               class="elevation-1"
-              :items-per-page="15">
+              :items-per-page="15"
+          style="margin-top: 20px">
             <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
+              <InvoiceEdit :invoice="item"></InvoiceEdit>
             </template>
           </v-data-table>
         </v-card-text>
       </v-card>
-      <v-card max-width="300">
-        <v-list dense>
-          <v-subheader>Rechnungsvorlagen</v-subheader>
-          <v-list-item-group
-              v-model="selectedItem"
-              color="primary"
-          >
-            <v-list-item
-                v-for="(vorlagen, i) in vorlagen"
-                :key="i"
-            >
-              <v-list-item-content>
-                <v-list-item-title v-text="vorlagen.text"></v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-icon>
-                <v-icon v-text="vorlagen.icon"></v-icon>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-card>
+<!--      <v-card max-width="300">-->
+<!--        <v-list dense>-->
+<!--          <v-subheader>Rechnungsvorlagen</v-subheader>-->
+<!--          <v-list-item-group-->
+<!--              v-model="selectedItem"-->
+<!--              color="primary"-->
+<!--          >-->
+<!--            <v-list-item-->
+<!--                v-for="(vorlagen, i) in vorlagen"-->
+<!--                :key="i"-->
+<!--            >-->
+<!--              <v-list-item-content>-->
+<!--                <v-list-item-title v-text="vorlagen.text"></v-list-item-title>-->
+<!--              </v-list-item-content>-->
+<!--              <v-list-item-icon>-->
+<!--                <v-icon v-text="vorlagen.icon"></v-icon>-->
+<!--              </v-list-item-icon>-->
+<!--            </v-list-item>-->
+<!--          </v-list-item-group>-->
+<!--        </v-list>-->
+<!--      </v-card>-->
     </v-container>
   </v-main>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import InvoiceEdit from "../components/InvoiceEdit";
+import InvoiceExceptional from "../components/InvoiceExceptional";
 
 export default {
   name: "Invoices",
+  components: {InvoiceEdit, InvoiceExceptional},
   data() {
     return {
-      showModal: false,
       selected: [],
       page: 1,
       pageCount: 0,
       itemsPerPage: 10,
       dialog: false,
       dialogDelete: false,
-      editedIndex: -1,
       vorlagen: [
         {text: 'Installation', icon: 'mdi-folder-open'},
         {text: 'Strom', icon: 'mdi-folder-open'},
@@ -101,6 +102,10 @@ export default {
     ...mapGetters({
       allInvoices: 'allInvoices',
     }),
+    ...mapActions(['fetchInvoices']),
+  },
+  created() {
+    this.fetchInvoices()
   }
 }
 </script>

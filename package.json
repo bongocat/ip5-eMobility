@@ -1,18 +1,34 @@
 {
   "name": "ip5_megalog",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "contributors": [
+    {
+      "name": "René Achterberg",
+      "email": "rene.achterberg@students.fhnw.ch"
+    },
+    {
+      "name": "Samuel Keller",
+      "email": "samuel.keller@students.fhnw.ch"
+    }
+  ],
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "npx nodemon server/server.js -w server"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
+    "core-js": "^3.8.1",
+    "express": "^4.17.1",
+    "fsevents": "^2.2.1",
+    "mysql": "^2.18.1",
     "normalize.css": "^8.0.1",
+    "pdfmake": "^0.1.68",
+    "puppeteer": "^5.5.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
-    "vuetify": "^2.2.11",
+    "vuetify": "^2.3.21",
     "vuex": "^3.6.0"
   },
   "devDependencies": {
@@ -20,13 +36,14 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
+    "cors": "^2.8.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "fsevents": "^2.2.1",
-    "sass": "^1.19.0",
+    "sass": "^1.30.0",
     "sass-loader": "^8.0.0",
-    "vue-cli-plugin-vuetify": "^2.0.7",
+    "vue-cli-plugin-vuetify": "^2.0.8",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.3.0"
   },
@@ -42,11 +59,16 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "optionalDependencies": {
+    "fsevents": "^2.2.1"
+  }
 }
