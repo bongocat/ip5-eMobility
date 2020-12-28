@@ -228,7 +228,7 @@ megadb.newInactiveLoad = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvo
 /** update **/
 megadb.setLoadActiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Active = 1 WHERE LoadID = ?', [id], (err, results) => {
+        connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -239,7 +239,7 @@ megadb.setLoadActiveByID = (id) => {
 
    megadb.setLoadInactiveByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET loads.Active = 0 WHERE LoadID = ?', [id], (err, results) => {
+        connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
