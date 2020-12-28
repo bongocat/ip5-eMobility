@@ -19,24 +19,51 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="Name" v-model=Anlage></v-text-field>
+              <v-text-field label="Name" v-model=designation></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Immobilienverwaltung" v-model=Immobilienverwaltung></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "administratorID"
+                              dense
+                              editable
+                              :items="allUsers"
+                              label="Rechnung an"
+                              hint="Rechnung an"
+                              persistent-hint
+                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-value= "item => item.NutzerID"
+              ></v-overflow-btn>
             </v-col>
+
             <v-col>
-              <v-text-field label="Strasse" v-model=Strasse></v-text-field>
+              <v-text-field label="Strasse" v-model=street></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=Hausnummer></v-text-field>
+              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=PLZ></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=Land></v-text-field>
+              <v-text-field label="Land" v-model=country></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field label="Stadt" v-model=city></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model=comment></v-text-field>
+            </v-col>
+            <v-col>
+              <v-switch v-model="active"
+                        label="Aktiv"
+                        color="success"
+
+              >
+              </v-switch>
             </v-col>
           </v-row>
         </v-form>
@@ -69,7 +96,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -80,37 +107,47 @@ export default {
   data() {
     return {
       dialog: false,
+
       facilityID: this.facility.AnlageID,
-      Anlage: this.facility.Anlage,
-      Immobilienverwaltung: this.facility.Immobilienverwaltung,
-      Strasse: this.facility.Strasse,
-      Hausnummer: this.facility.Hausnummer,
-      Ort: this.facility.Ort,
-      PLZ: this.facility.PLZ,
-      Land: this.facility.Land,
-      Count: this.facility.Count,
+      designation: this.facility.Bezeichnung,
+      administratorID: this.facility.VerwalterID,
+      street: this.facility.Strasse,
+      streetNumber: this.facility.StrassenNr,
+      areaCode: this.facility.PLZ,
+      country: this.facility.Land,
+      comment: this.facility.Kommentar,
+      city: this.facility.Ort,
+      active: this.facility.Aktiv,
     }
   },
   methods: {
+    ...mapActions(['editFacility']),
     ...mapMutations({
       addNewFacility: "addNewFacility"
     }),
     saveFacilityChanges() {
+
       this.dialog = false
 
-      this.facility.AnlageID = this.facilityID,
-          this.facility.Anlage = this.Anlage,
-          this.facility.Immobilienverwaltung= this.Immobilienverwaltung,
-          this.facility.Strasse= this.Strasse,
-          this.facility.Hausnummer= this.Hausnummer,
-          this.facility.PLZ= this.PLZ,
-          this.facility.Ort= this.Ort,
-          this.facility.Land= this.Land,
-          this.facility.Count= this.Count
+      const updatedFacility = {
+        facilityID: this.facilityID,
+        designation: this.designation,
+        administratorID: this.administratorID,
+          street: this.street,
+          streetNumber: this.streetNumber,
+          areaCode: this.areaCode,
+          city: this.city,
+          country: this.country,
+          active: this.active,
+          comment: this.comment,
+    }
+      this.editFacility(updatedFacility)
+
+      console.log(updatedFacility)
       },
     reset() {
-      this.facilityID = this.facility.AnlageID
-          this.Anlage = this.facility.Anlage
+
+      this.Anlage = this.facility.Anlage
           this.Immobilienverwaltung = this.facility.Immobilienverwaltung
           this.Strasse = this.facility.Strasse
           this.Hausnummer = this.facility.Hausnummer
@@ -121,7 +158,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allFacilities']),
+    ...mapGetters(['allFacilities', "allUsers"]),
   },
 }
 </script>

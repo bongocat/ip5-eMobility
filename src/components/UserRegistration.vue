@@ -169,7 +169,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addNewUser']),
+    ...mapActions(['addNewUser', 'fetchUsers']),
     createNewUserFromForm() {
       this.dialog = false
 
@@ -201,6 +201,7 @@ export default {
         invoiceToShippingAdress: this.invoiceToShippingAdress,
       }
       this.addNewUser(newUser)
+      this.fetchUsers()
     },
     reset() {
       this.$refs.form.reset()

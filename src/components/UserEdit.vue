@@ -45,7 +45,7 @@
               <v-text-field label="Strasse" v-model=street></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=userHouseNumber></v-text-field>
+              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Handynummer" v-model="mobile"></v-text-field>
@@ -53,13 +53,13 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=userZIPCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Ort" v-model=userLocation></v-text-field>
+              <v-text-field label="Ort" v-model=city></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=userCountry></v-text-field>
+              <v-text-field label="Land" v-model=country></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Telefonnummer" v-model="phone"></v-text-field>
@@ -73,11 +73,11 @@
               <v-text-field label="Firma" v-model="company"></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model="userComment"></v-text-field>
+              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
             </v-col>
             <v-col>
               <v-checkbox
-                  v-model="userActive"
+                  v-model="active"
                   label="Aktiv"
                   color="success"
               ></v-checkbox>
@@ -149,30 +149,31 @@ export default {
       editedIndex: -1,
       dialog: false,
 
-      name: this.user.name,
-      familyName: this.user.familyName,
-      userType: this.user.userType,
-      company: this.user.company,
-      salutation: this.user.salutation,
-      street: this.user.street,
-      streetNumber: this.user.userHouseNumber,
-      areaCode: this.user.userZIPCode,
-      city: this.user.userLocation,
-      country: this.user.userCountry,
-      active: this.user.userActive,
-      comment: this.user.userComment,
+      userID: this.user.NutzerID,
+      name: this.user.Vorname,
+      familyName: this.user.Nachname,
+      userType: this.user.NutzerTypID,
+      company: this.user.Firma,
+      salutation: this.user.Anrede,
+      street: this.user.WStrasse,
+      streetNumber: this.user.WStrassenNr,
+      areaCode: this.user.WPLZ,
+      city: this.user.WOrt,
+      country: this.user.WLand,
+      active: this.user.Aktiv,
+      comment: this.user.Kommentar,
 
-      phone: this.user.phone,
-      mobile: this.user.mobile,
-      email: this.user.email,
+      phone: this.user.FestnetzNummer,
+      mobile: this.user.HandyNummer,
+      email: this.user.EMailAdresse,
 
-      shippingStreet: this.user.shippingStreet,
-      shippingStreetNumber: this.user.shippingStreetNumber,
-      shippingAreaCode: this.user.shippingAreaCode,
-      shippingCity: this.user.shippingCity,
-      shippingCountry: this.user.shippingCountry,
+      shippingStreet: this.user.RStrasse,
+      shippingStreetNumber: this.user.RStrassenNr,
+      shippingAreaCode: this.user.RPLZ,
+      shippingCity: this.user.ROrt,
+      shippingCountry: this.user.RLand,
 
-      invoiceToShippingAdress: this.invoiceToShippingAdress,
+      invoiceToShippingAdress: this.RiW,
     }
   },
   methods: {
@@ -182,30 +183,33 @@ export default {
     ...mapActions(['editUser']),
 
     saveEditedUser() {
-      this.dialog = false,
-          this.user.name =  this.userFirstName,
-          this.user.familyName =  this.familyName,
-          this.user.userType =  this.userType,
-          this.user.company = this.company,
-          this.user.salutation =  this.salutation,
-          this.user.street =  this.street,
-          this.user.streetNumber = this.streetNumber,
-          this.user.areaCode = this.areaCode,
-          this.user.city = this.city,
-          this.user.country = this.country,
-          this.user.active =  this.active,
-          this.user.comment = this.comment,
-          this.user.phone = this.phone,
-          this.user.email = this.email,
-          this.user.mobile = this.email,
-          this.user.shippingStreetNumber = this.shippingStreetNumber,
-          this.user.shippingCountry = this.shippingCountry,
-          this.user.shippingAreaCode = this.shippingAreaCode,
-          this.user.shippingStreet = this.shippingStreet,
-          this.user.shippingCity = this.shippingCity,
-          this.user.invoiceToShippingAdress = this.invoiceToShippingAdress
+      this.dialog = false
 
-      this.editUser(this.user)
+          const updatedUser = {
+          userID: this.userID,
+            name: this.name,
+            familyName: this.familyName,
+            userType: this.userType,
+            company :this.company,
+            salutation :  this.salutation,
+            street:  this.street,
+            streetNumber :  this.streetNumber,
+            areaCode : this.areaCode,
+            city :  this.city,
+            country :  this.country,
+            active :  this.active,
+            comment :  this.comment,
+            phone : this.phone,
+            email : this.email,
+            mobile : this.email,
+            shippingStreetNumber:  this.shippingStreetNumber,
+            shippingCountry :  this.shippingCountry,
+            shippingAreaCode : this.shippingAreaCode,
+            shippingStreet :  this.shippingStreet,
+            shippingCity : this.shippingCity,
+            invoiceToShippingAdress:  this.invoiceToShippingAdress
+          }
+      this.editUser(updatedUser)
 
     },
     reset() {

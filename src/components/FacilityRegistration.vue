@@ -19,24 +19,48 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="Name" v-model=Anlage></v-text-field>
+              <v-text-field label="Name" v-model=facilityName></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Immobilienverwaltung" v-model=Immobilienverwaltung></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "administrationID"
+                              dense
+                              editable
+                              :items="allUsers"
+                              label="Rechnung an"
+                              hint="Rechnung an"
+                              persistent-hint
+                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-value= "item => item"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field label="Strasse" v-model=Strasse></v-text-field>
+              <v-text-field label="Strasse" v-model=street></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=Hausnummer></v-text-field>
+              <v-text-field label="Ort" v-model=city></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=PLZ></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=ZIPCode></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=Land></v-text-field>
+              <v-text-field label="Land" v-model=country></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model=comment></v-text-field>
+            </v-col>
+            <v-col>
+              <v-switch v-model="active"
+                        label="Aktiv"
+                        color="success"
+
+              >
+              </v-switch>
             </v-col>
           </v-row>
         </v-form>
@@ -69,7 +93,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -77,43 +101,44 @@ export default {
   data() {
     return {
       dialog: false,
-      Anlage: "",
-      Immobilienverwaltung: "",
-      Strasse: "",
-      Hausnummer: "",
-      PLZ: "",
-      Land: "",
-      Count: 0,
+
+      facilityName: "",
+      administrationID: "",
+      street: "",
+      streetNumber: "",
+      ZIPCode: "",
+      country: "",
+      comment: "",
+      city: "",
+      active: 0,
     }
   },
   methods: {
-    ...mapMutations({
-      addNewFacility: "addNewFacility"
-    }),
+    ...mapActions(['addNewFacility', 'fetchFacilities']),
     createNewFacilityFromForm() {
       this.dialog = false
 
       const newFacility = {
-        AnlageID: this.facilityID,
-        Anlage: this.Anlage,
-        Immobilienverwaltung: this.Immobilienverwaltung,
-        Strasse: this.Strasse,
-        Hausnummer: this.Hausnummer,
-        PLZ: this.PLZ,
-        Land: this.Land,
-        Count: this.Count,
+        administratorID: this.administrationID.NutzerID,
+        designation: this.facilityName,
+        city: this.city,
+        street: this.street,
+        streetNumber: this.streetNumber,
+        areaCode: this.ZIPCode,
+        country: this.country,
+        comment: this.comment,
+        active: this.active
       }
+
       this.addNewFacility(newFacility)
+      this.fetchFacilities()
     },
     reset() {
       this.$refs.form.reset()
     },
   },
   computed: {
-    ...mapGetters(['allFacilities']),
-    facilityID() {
-      return this.allFacilities.length + 1
-    },
+    ...mapGetters(['allFacilities', "allUsers"]),
   },
 }
 </script>

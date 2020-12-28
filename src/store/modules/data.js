@@ -231,7 +231,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Nein";
+            return invoice.RechnungGestellt >= Date.now() && invoice.RechnungGestellt <= inThirtyDays;
         })
     },
 
@@ -353,8 +353,19 @@ const actions = {
     },
 
     async fetchFacilities({ commit }) {
-        const response = await axios.get('http://localhost:3000/api/megalog/facilities')
+        const response = await axios.get(baseURL +  '/api/megalog/facilities/')
         commit('setFacilities', response.data)
+    },
+
+    async addNewFacility({commit}, facility){
+        const response = await axios.post(baseURL + '/api/megalog/facilities/', facility)
+        commit('addNewFacility', response.data)
+    },
+
+    async editFacility({commit}, facility){
+        const response = await axios.put(baseURL + '/api/megalog/facilities/', facility);
+        console.log(response.data)
+        commit('editFacility', response.data)
     },
 }
 
@@ -378,6 +389,18 @@ const mutations = {
     setUsers: (state, users) => (state.users = users),
     setInvoices: (state, invoices) => (state.invoices = invoices),
     setFacilities: (state, facilities) => (state.facilities = facilities),
+    editFacility: (state, editedFacility) => {
+        const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
+        if (index !== -1){
+            state.facilities.splice(index, 1 , editedFacility)
+        }
+    },
+    editUser: (state, editedUser) => {
+        const index = state.users.findIndex(user => user.NutzerID === editedUser.NutzerID)
+        if (index !== -1){
+            state.users.splice(index, 1 , editedUser)
+        }
+    }
 }
 
 export default {
