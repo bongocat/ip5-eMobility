@@ -367,6 +367,11 @@ const actions = {
         console.log(response.data)
         commit('editFacility', response.data)
     },
+    async fetchLoads({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/loads/')
+        commit('setLoads', response.data)
+    },
+
 }
 
 const mutations = {
@@ -389,6 +394,7 @@ const mutations = {
     setUsers: (state, users) => (state.users = users),
     setInvoices: (state, invoices) => (state.invoices = invoices),
     setFacilities: (state, facilities) => (state.facilities = facilities),
+    setLoads: (state, loads) => (state.loads = loads),
     editFacility: (state, editedFacility) => {
         const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
         if (index !== -1){
