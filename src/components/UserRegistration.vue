@@ -20,14 +20,14 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="Vorname" v-model=userFirstName></v-text-field>
+              <v-text-field label="Vorname" v-model=name></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Nachname" v-model=userLastName></v-text-field>
+              <v-text-field label="Nachname" v-model=familyName></v-text-field>
             </v-col>
             <v-col>
               <v-select
-                  v-model="userFormOfAddress"
+                  v-model="salutation"
                   :items='["Herr", "Frau"]'
                   label="Anrede"
               ></v-select>
@@ -37,15 +37,18 @@
             <v-col>
               <v-select
                   v-model="userType"
-                  :items='["Verwaltung", "Mieter"]'
+                  :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
             </v-col>
             <v-col>
-              <v-text-field label="Strasse" v-model=userStreet></v-text-field>
+              <v-text-field label="Strasse" v-model=street></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Hausnummer" v-model=userHouseNumber></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Handynummer" v-model="mobile"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -58,10 +61,16 @@
             <v-col>
               <v-text-field label="Land" v-model=userCountry></v-text-field>
             </v-col>
+            <v-col>
+              <v-text-field label="Telefonnummer" v-model="phone"></v-text-field>
+            </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Firma" v-model="userCompany"></v-text-field>
+              <v-text-field label="E-Mail" v-model="email"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Firma" v-model="company"></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Kommentar" v-model="userComment"></v-text-field>
@@ -72,6 +81,30 @@
                   label="Aktiv"
                   color="success"
               ></v-checkbox>
+            </v-col>
+            <v-col>
+                <v-switch v-model="invoiceToShippingAdress"
+                          label="Abweichende Rechnungsadresse"
+                          color="success"
+                >
+                </v-switch>
+            </v-col>
+          </v-row>
+          <v-row v-if=invoiceToShippingAdress>
+            <v-col>
+              <v-text-field label="Strasse" v-model=shippingStreet></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Hausnummer" v-model=shippingStreetNumber></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Postleitzahl" v-model=shippingAreaCode></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Ort" v-model=shippingCity></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Land" v-model=shippingCountry></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -104,8 +137,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "UserRegistration",
@@ -113,45 +145,63 @@ export default {
     return {
       editedIndex: -1,
       dialog: false,
-      userFirstName: "",
-      userLastName: "",
-      userFormOfAddress: "",
+      name: "",
+      familyName: "",
+      salutation: "",
       userType: "",
-      userCompany: "",
-      userStreet: "",
+      company: "",
+      street: "",
       userHouseNumber: "",
       userZIPCode: "",
       userLocation: "",
       userCountry: "",
       userActive: "",
       userComment: "",
+      shippingStreet: "",
+      shippingStreetNumber:"",
+      shippingAreaCode: "",
+      shippingCity: "",
+      shippingCountry: "",
+      phone: "",
+      mobile: "",
+      email: "",
+      invoiceToShippingAdress: 1,
     }
   },
   methods: {
-    ...mapMutations({
-      addNewUser: "addNewUser"
-    }),
+    ...mapActions(['addNewUser', 'fetchUsers']),
     createNewUserFromForm() {
       this.dialog = false
 
       const newUser = {
-        NutzerID: this.userID,
-        Vorname: this.userFirstName,
-        Nachname: this.userLastName,
-        NutzerTyp: this.userType,
-        Firma: this.userCompany,
-        Anrede: this.userFormOfAddress,
-        Strasse: this.userStreet,
-        Hausnummer: this.userHouseNumber,
-        PLZ: this.userZIPCode,
-        Ort: this.userLocation,
-        Land: this.userCountry,
-        Mietet: "",
-        Vermietet: "",
-        Aktiv: this.userActive,
-        Kommentar: this.userComment,
+
+        name: this.name,
+        familyName: this.familyName,
+        userType: this.userType,
+        company: this.company,
+        salutation: this.salutation,
+        street: this.street,
+        streetNumber: this.userHouseNumber,
+        areaCode: this.userZIPCode,
+        city: this.userLocation,
+        country: this.userCountry,
+        active: this.userActive,
+        comment: this.userComment,
+
+        phone: this.phone,
+        mobile: this.mobile,
+        email: this.email,
+
+        shippingStreet: this.shippingStreet,
+        shippingStreetNumber: this.shippingStreetNumber,
+        shippingAreaCode: this.shippingAreaCode,
+        shippingCity: this.shippingCity,
+        shippingCountry: this.shippingCountry,
+
+        invoiceToShippingAdress: this.invoiceToShippingAdress,
       }
       this.addNewUser(newUser)
+      this.fetchUsers()
     },
     reset() {
       this.$refs.form.reset()
@@ -159,9 +209,6 @@ export default {
   },
   computed: {
     ...mapGetters(['allUsers']),
-    userID() {
-      return this.allUsers.length + 1
-    },
     formTitle () {
       return this.editedIndex === -1 ? 'Neuen Nuzer erfassen' : 'Nutzer bearbeiten'
     },

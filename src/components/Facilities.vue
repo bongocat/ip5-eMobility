@@ -9,58 +9,58 @@
         <v-card-text>
           <facility-registration></facility-registration>
           <v-expansion-panels style="padding-bottom: 20px; margin-top: 20px">
-            <v-expansion-panel>
-              <v-expansion-panel-header>
-                Filter
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-row dense>
-                  <v-col>
-                    <v-overflow-btn
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueProperties"
-                        label="Anlagen"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueAdministration"
-                        label="Immobilienverwaltung"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueTenants"
-                        label="PLZ"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                  <v-col>
-                    <v-overflow-btn
-                        deletable-chips
-                        dense
-                        editable
-                        full-width="false"
-                        :items="getUniqueInvoiceCategory"
-                        label="Land"
-                        item-value="text"
-                    ></v-overflow-btn>
-                  </v-col>
-                </v-row>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
+<!--            <v-expansion-panel>-->
+<!--              <v-expansion-panel-header>-->
+<!--                Filter-->
+<!--              </v-expansion-panel-header>-->
+<!--              <v-expansion-panel-content>-->
+<!--                <v-row dense>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueProperties"-->
+<!--                        label="Anlagen"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueAdministration"-->
+<!--                        label="Immobilienverwaltung"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueTenants"-->
+<!--                        label="PLZ"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <v-overflow-btn-->
+<!--                        deletable-chips-->
+<!--                        dense-->
+<!--                        editable-->
+<!--                        full-width="false"-->
+<!--                        :items="getUniqueInvoiceCategory"-->
+<!--                        label="Land"-->
+<!--                        item-value="text"-->
+<!--                    ></v-overflow-btn>-->
+<!--                  </v-col>-->
+<!--                </v-row>-->
+<!--              </v-expansion-panel-content>-->
+<!--            </v-expansion-panel>-->
           </v-expansion-panels>
           <v-data-table
               dense
@@ -82,7 +82,7 @@
 import FacilityRegistration from "./FacilityRegistration";
 import FacilityEdit from "./FacilityEdit";
 
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "facilities",
@@ -124,6 +124,7 @@ export default {
     }
   },
   computed: {
+    ...mapActions(['fetchFacilities']),
     ...mapGetters({
       allFacilities: 'allFacilities'
     }),
@@ -171,6 +172,10 @@ export default {
       })
       return array
     }
+
+  },
+  created() {
+    this.fetchFacilities();
   }
 }
 </script>

@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const baseURL = "http://localhost:3000"
+
 const state = {
 
     invoices: [
@@ -16,12 +18,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date(Date.now() + (30) * 24*60*60*1000),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(Date.now()),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -39,12 +41,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-11-30'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -62,12 +64,12 @@ const state = {
             LoadID: "001",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "John",
             Nachname: "Snow",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -85,12 +87,12 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
             Firma: "",
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -108,7 +110,7 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
@@ -117,7 +119,7 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Nein",
+            Generiert: "false",
             Kommentar: "",
             Versendet: "false",
             positions: [],
@@ -135,7 +137,7 @@ const state = {
             LoadID: "003",
             ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
             ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "Nein",
+            Bezahlt: "false",
             BezahltAm: new Date(),
             Vorname: "Maria",
             Nachname: "Winter",
@@ -144,82 +146,13 @@ const state = {
             ['Datum Zählerstand Alt']: new Date('2020-01-1'),
             ZählerstandNeu: "",
             ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "Ja",
+            Generiert: "true",
             Kommentar: "",
             Versendet: "false",
             positions: [],
         },
     ],
-    users: [
-        {
-            NutzerID: "1",
-            Vorname: "John",
-            Nachname: "Snow",
-            NutzerTyp: "Mieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "2077",
-            Ort: "Night-City",
-            Land: "Boletaria",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Ja",
-            Kommentar: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-        {
-            NutzerID: "2",
-            Vorname: "Maria",
-            Nachname: "Winter",
-            NutzerTyp: "Mieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "2077",
-            Ort: "Day-Forrest",
-            Land: "Schweiz",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Ja",
-            Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-        },
-        {
-            NutzerID: "3",
-            Vorname: "Maurus",
-            Nachname: "Kona",
-            NutzerTyp: "Vermieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "42",
-            PLZ: "4090",
-            Ort: "Imma",
-            Land: "Österreich",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Nein",
-            Kommentar: "ebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n sdsdsdsdsdsdsdsd",
-        },
-        {
-            NutzerID: "4",
-            Vorname: "Maurus",
-            Nachname: "Kona",
-            NutzerTyp: "Vermieter",
-            Firma: "",
-            Anrede: "Herr",
-            Strasse: "Musterweg",
-            Hausnummer: "96",
-            PLZ: "3334",
-            Ort: "Lörrach",
-            Land: "Deutschland",
-            Mietet: "",
-            Vermietet: "",
-            Aktiv: "Nein",
-            Kommentar: "Is this the real Life, or iks this just Fantasy.",
-        },
-    ],
+    users: [],
     facilities: [
         {
             AnlageID: "1",
@@ -282,6 +215,7 @@ const state = {
             LoadTyp: "LoadType XYZ"
         },
     ],
+    loadTypes: []
 }
 
 const getters = {
@@ -306,7 +240,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let beforeThirtyDays = new Date();
             beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
-            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "Ja";
+            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "true";
         })
     },
 
@@ -314,7 +248,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "false";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "false";
         })
     },
 
@@ -322,7 +256,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Ja" && invoice.Bezahlt == "Nein" && invoice.Versendet == "true";
+            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "true";
         })
     },
 
@@ -345,7 +279,7 @@ const getters = {
      * @returns active users
      */
     activeUsers: state => {
-        return state.users.filter(user => user.Aktiv == "Ja")
+        return state.users.filter(user => user.Aktiv == "true")
     },
 
     /**
@@ -354,7 +288,7 @@ const getters = {
      * @returns inactive users
      * */
     inactiveUsers: state => {
-        return state.users.filter(user => user.Aktiv == "Nein")
+        return state.users.filter(user => user.Aktiv === "Nein")
     },
 
     /**
@@ -391,13 +325,68 @@ const getters = {
     allLoads: state => {
         return state.loads
     },
+
+    allLoadTypes: state => {
+        return state.loadTypes
+    }
 }
 
 const actions = {
     async fetchUsers({ commit }) {
-        const response = await axios.get('http://localhost:3000/api/megalog/users/')
+        const response = await axios.get( baseURL + '/api/megalog/users/')
         commit('setUsers', response.data)
-    }
+    },
+
+    async addNewUser({commit}, user){
+        const response = await axios.post(baseURL + '/api/megalog/users/', user)
+        commit('addNewUser', response.data)
+    },
+
+    async editUser({commit}, user){
+        const response = await axios.put(baseURL + '/api/megalog/users/', user)
+        commit('editUser', response.data)
+    },
+
+    async fetchInvoices({ commit }) {
+        const response = await axios.get(baseURL + '/api/megalog/invoices/')
+        commit('setInvoices', response.data)
+    },
+
+    async addNewInvoice({commit}, invoice){
+        const response = await axios.post(baseURL + '/api/megalog/invoices/', invoice)
+        commit('addNewInvoice', response.data)
+    },
+
+    async fetchFacilities({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/facilities/')
+        commit('setFacilities', response.data)
+    },
+
+    async addNewFacility({commit}, facility){
+        const response = await axios.post(baseURL + '/api/megalog/facilities/', facility)
+        commit('addNewFacility', response.data)
+    },
+
+    async editFacility({commit}, facility){
+        const response = await axios.put(baseURL + '/api/megalog/facilities/', facility);
+        console.log(response.data)
+        commit('editFacility', response.data)
+    },
+    async fetchLoads({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/loads/')
+        commit('setLoads', response.data)
+    },
+
+
+    async addNewLoad({commit}, load){
+        const response = await axios.post(baseURL + '/api/megalog/loads/', load)
+        commit('addNewLoad', response.data)
+    },
+    async fetchLoadTypes({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/loadTypes/')
+        commit('setLoadTypes', response.data)
+    },
+
 }
 
 const mutations = {
@@ -417,7 +406,23 @@ const mutations = {
         state.loads.push(load)
     },
 
-    setUsers: (state, users) => (state.users = users)
+    setUsers: (state, users) => (state.users = users),
+    setInvoices: (state, invoices) => (state.invoices = invoices),
+    setFacilities: (state, facilities) => (state.facilities = facilities),
+    setLoads: (state, loads) => (state.loads = loads),
+    setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
+    editFacility: (state, editedFacility) => {
+        const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
+        if (index !== -1){
+            state.facilities.splice(index, 1 , editedFacility)
+        }
+    },
+    editUser: (state, editedUser) => {
+        const index = state.users.findIndex(user => user.NutzerID === editedUser.NutzerID)
+        if (index !== -1){
+            state.users.splice(index, 1 , editedUser)
+        }
+    }
 }
 
 export default {

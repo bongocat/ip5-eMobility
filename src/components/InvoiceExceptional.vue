@@ -22,60 +22,39 @@
         <v-form>
           <v-row>
             <v-col>
-              <v-text-field v-model="Betrag"
-                            label="Betrag"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="RechnungsID"
-                            label="Rechnungs ID"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="RechnungsNr"
+              <v-text-field v-model="invoiceNumber"
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
               <v-overflow-btn style="width: 400px"
-                              v-model = "RechnungsArt"
+                              v-model = "invoiceTypeID"
                               dense
                               editable
-                              :items='["Strom", "Serviceabo", "Installation" ]'
+                              :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
                               item-value="string"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
               <v-text-field v-model="MieterReferenz"
                             label="Mieter ID"></v-text-field>
             </v-col>
-            <v-col>
-              <v-text-field v-model="VermieterReferenz"
-                            label="Vermieter ID"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-overflow-btn style="width: 400px"
-                              v-model = "RechnungAn"
-                              dense
-                              editable
-                              :items='["Mieter", "Vermieter"]'
-                              label="Rechnung an"
-                              item-value="string"
-                              hint="Rechnung An"
-                              persistent-hint
-              ></v-overflow-btn>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="AnlageID"
-                            label="Anlage ID"></v-text-field>
-            </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field v-model="LoadID"
-                            label="Load ID"></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "currentUser"
+                              dense
+                              editable
+                              :items="allUsers"
+                              label="Rechnung an"
+                              hint="Rechnung an"
+                              persistent-hint
+                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-value= "item => item"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-menu
@@ -89,7 +68,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                      v-model="faelligAm"
+                      v-model="invoiceDate"
                       label="Fällig Am"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -98,7 +77,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                    v-model="faelligAm"
+                    v-model="invoiceDate"
                     no-title
                     scrollable
                 >
@@ -113,7 +92,7 @@
                   <v-btn
                       text
                       color="primary"
-                      @click="$refs.menuFälligAm.save(faelligAm)"
+                      @click="$refs.menuFälligAm.save(invoiceDate)"
                   >
                     OK
                   </v-btn>
@@ -132,7 +111,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                      v-model="zuZahlenBis"
+                      v-model="toPayUntil"
                       label="Zu Zahlen Bis"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -141,7 +120,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                    v-model="zuZahlenBis"
+                    v-model="toPayUntil"
                     no-title
                     scrollable
                 >
@@ -156,7 +135,7 @@
                   <v-btn
                       text
                       color="primary"
-                      @click="$refs.menuZuZahlenBis.save(zuZahlenBis)"
+                      @click="$refs.menuZuZahlenBis.save(toPayUntil)"
                   >
                     OK
                   </v-btn>
@@ -277,7 +256,7 @@
 
 <script>
 
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations, mapActions} from "vuex";
 
 
 export default {
@@ -287,57 +266,88 @@ export default {
       menuFaelligAm: false,
       menuZuZahlenBis: false,
       dialog: false,
-      Betrag: "",
-      RechnungsID: "",
-      RechnungsNr: "",
-      RechnungsArt: "",
-      MieterReferenz: "",
-      VermieterReferenz: "",
-      RechnungAn: "",
-      Anlagename: "",
-      AnlageID: "",
-      LoadID: "",
-      faelligAm: new Date(Date.now()).toISOString().substr(0,10),
-      zuZahlenBis: new Date(Date.now()).toISOString().substr(0,10),
-      Vorname: "",
-      Nachname: "",
-      Firma: "",
-      Kommentar: "",
-      invoicePositions: [],
+      currentUser: {},
+
+      invoiceNumber: "",
+      invoiceTypeID: "",
+      customerRefID: "",
+      invoiceToRefID: "",
+      loadID: "",
+      invoiceDate: "",
+      toPayUntil: "",
+      isPayed: "",
+      name: "",
+      familyName: "",
+      salutation: "",
+      company: "",
+      phone: "",
+      mobile: "",
+      email: "",
+      street: "",
+      streetNumber: "",
+      areaCode: "",
+      city: "",
+      country: "",
+      invoiceToShippingAdress: "",
+      ShippingStreet: "",
+      ShippingStreetNumber: "",
+      ShippingAreaCode: "",
+      ShippingCity: "",
+      ShippingCountry: "",
+      counterOld: "",
+      counterOldDate: "",
+      counterNew: "",
+      counterNewDate: "",
+      active: "",
+      comment: "",
+
       extraPosDescription: "",
-      extraPosCount: "",
-      extraPosUnitPrice: "",
+      extraPosCount: 0,
+      extraPosUnitPrice: 0.0,
+      invoicePositions: []
     }
   },
   methods: {
-    ...mapMutations({
-      addNewInvoice: "addNewInvoice"
-    }),
+    ...mapActions(['addNewInvoice']),
     createExceptionalInvoice() {
       this.dialog = false
 
+      console.log(this.currentUser);
+
       const invoice = {
-          Betrag: 0,
-          RechnungsID: this.RechnungsID,
-          RechnungsNr: this.RechnungsNr,
-          RechnungsArt: this.RechnungsArt,
-          MieterReferenz: this.MieterReferenz,
-          VermieterReferenz: this.VermieterReferenz,
-          RechnungAn: this.RechnungAn,
-          Anlagename: this.Anlagename,
-          AnlageID: this.AnlageID,
-          LoadID: this.LoadID,
-        ['Fällig Am']: new Date(this.faelligAm),
-        ['Zu Zahlen Bis']: new Date(this.zuZahlenBis),
-          Vorname: this.Vorname,
-          Nachname: this.Nachname,
-          Firma: this.Firma,
-          Kommentar: this.Kommentar,
-          invoicePositions: this.invoicePositions,
-          BezahltAm: "",
-          Generiert: "Nein",
-          Versendet: "false",
-          Bezahlt: "Nein",
+
+        invoiceNumber: this.invoiceNumber,
+        invoiceTypeID: this.invoiceTypeID,
+        customerRefID: this.currentUser.NutzerID,
+        invoiceToRefID: this.currentUser.NutzerID,
+        loadID: 4,
+        invoiceDate: new Date(this.invoiceDate),
+        toPayUntil: new Date(this.toPayUntil),
+        isPayed: 0,
+        name: this.currentUser.Vorname,
+        familyName: this.currentUser.Nachname,
+        salutation: this.currentUser.Anrede,
+        company: this.currentUser.Firma,
+        phone: this.currentUser.FestnetzNummer,
+        mobile: this.currentUser.HandyNummer,
+        email: this.currentUser.EMailAdresse,
+        street: this.currentUser.WStrasse,
+        streetNumber: this.currentUser.WStrassenNr,
+        areaCode: this.currentUser.WPLZ,
+        city: this.currentUser.WOrt,
+        country: this.currentUser.WLand,
+        invoiceToShippingAdress: this.currentUser.RiW,
+        ShippingStreet: this.currentUser.RStrasse,
+        ShippingStreetNumber: this.currentUser.RStrassenNr,
+        ShippingAreaCode: this.currentUser.RPLZ,
+        ShippingCity: this.currentUser.ROrt,
+        ShippingCountry: this.currentUser.RLand,
+        counterOld: "",
+        counterOldDate: "",
+        counterNew: 0,
+        counterNewDate: 0,
+        active: this.currentUser.Aktiv,
+        comment: this.comment,
       }
       console.log(invoice)
       this.addNewInvoice(invoice)

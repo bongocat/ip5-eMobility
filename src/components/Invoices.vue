@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import InvoiceEdit from "../components/InvoiceEdit";
 import InvoiceExceptional from "../components/InvoiceExceptional";
 
@@ -102,6 +102,10 @@ export default {
     ...mapGetters({
       allInvoices: 'allInvoices',
     }),
+    ...mapActions(['fetchInvoices']),
+  },
+  created() {
+    this.fetchInvoices()
   }
 }
 </script>

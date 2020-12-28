@@ -8,13 +8,15 @@
         </v-card-title>
         <v-card-text>
           <LoadRegistration></LoadRegistration>
+          <LoadTypeRegistration></LoadTypeRegistration>
           <v-data-table
+              dense
               style="margin-top: 20px"
               :headers="columnNames"
               :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
               :single-expand="singleExpand"
               :expanded.sync="expanded"
-              item-key="Anlage"
+              item-key="AnlageID"
               show-expand
               class="elevation-1"
           >
@@ -28,7 +30,7 @@
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
                     :headers="columnInnerNames"
-                    :items="allLoads.filter(loads => loads.Anlage == item.Anlage)"
+                    :items="allLoads.filter(loads => loads.AnlageNr == item.AnlageID)"
                     item-key="inner"
                     class="elevation-5"
                 >
@@ -46,13 +48,15 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import LoadRegistration from "./LoadRegistration";
 import LoadEdit from "./LoadEdit";
+import LoadTypeRegistration from "./LoadTypeRegistration";
+
 
 
 export default {
-  components: {LoadRegistration, LoadEdit},
+  components: {LoadRegistration, LoadEdit, LoadTypeRegistration},
   data() {
     return {
       expanded: [],
@@ -83,6 +87,7 @@ export default {
     }),
   },
   methods: {
+    ...mapActions(['fetchLoads']),
     toCSV: function (item) {
 
       const outputData = [Object.keys(item), Object.values(item)];
@@ -103,6 +108,9 @@ export default {
       link.click();
     }
   },
+  created() {
+    this.fetchLoads()
+  }
 }
 </script>
 

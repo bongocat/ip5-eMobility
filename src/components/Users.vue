@@ -18,7 +18,7 @@
               :item-class="itemRowBackground"
           >
             <template v-slot:item.actions="{item}">
-              <UserEdit :user="item" ></UserEdit>
+              <UserEdit :user = "item" ></UserEdit>
             </template>
           </v-data-table>
         </v-card-text>
@@ -51,7 +51,7 @@ export default {
   methods: {
     ...mapActions(['fetchUsers']),
     itemRowBackground: function (item) {
-      return item.Kommentar.length > 125 ? 'style-1' : 'style-2'
+      return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
     },
     toCSV: function(item) {
 
@@ -77,7 +77,6 @@ export default {
     columnNames() {
       var computedColumnnames  = []
       Object.keys(this.allUsers[0]).forEach(function (item) {
-        console.log(item)
         if (item === 'Kommentar'){
           computedColumnnames.push({text: item, value: item, class: 'tableComment', width: "25%"})
         }
@@ -86,7 +85,7 @@ export default {
         }
       })
       computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
-      console.log(computedColumnnames)
+      console.log(this.allUsers)
       return computedColumnnames
     },
     ...mapGetters({

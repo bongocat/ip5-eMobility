@@ -15,7 +15,7 @@
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">Load erfassen</h1>
+        <h1 class="headline">Load bearbeiten</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -104,7 +104,7 @@
                       v-model="paymentIntervalElectricity"
                       :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
                       label="Zahlunsintervall"
-                      hint="Rechnungsintervall Service"
+                      hint="Rechnungsintervall Serviece"
                       persistent-hint
                       return-object
                       single-line
@@ -147,13 +147,13 @@
         >
           Schliessen
         </v-btn>
-        <v-btn
-                text
-                color="warning"
-                @click="reset"
-        >
-          Zurücksetzen
-        </v-btn>
+<!--        <v-btn-->
+<!--                text-->
+<!--                color="warning"-->
+<!--                @click="reset"-->
+<!--        >-->
+<!--          Zurücksetzen-->
+<!--        </v-btn>-->
       </v-card-actions>
     </v-card>
   </v-dialog>

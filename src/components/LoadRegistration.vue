@@ -19,67 +19,68 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="AnlageID" v-model=anlageID></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "facilityID"
+                              dense
+                              editable
+                              :items="allFacilities"
+                              label="Anlage"
+                              hint="Anlage"
+                              persistent-hint
+                              :item-text = "item => item.AnlageID + ' - ' + item.Bezeichnung"
+                              :item-value= "item => item.AnlageID"
+              ></v-overflow-btn>
             </v-col>
-            <v-col>
-              <v-text-field label="Anlagenname" v-model=anlageName></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Verwalter" v-model=anlageVermieter></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Mieter" v-model=anlageMieter></v-text-field>
-            </v-col>
-            <v-col>
-              <v-select
-                      v-model="invoiceTo"
-                      :items="['Mieter', 'Verwaltung']"
-                      label="Rechnung an"
-                      hint="Rechnung an"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
+              <v-col>
+                <v-overflow-btn style="width: 400px"
+                                v-model = "tenantID"
+                                dense
+                                editable
+                                :items="allUsers"
+                                label="Mieter"
+                                hint="Mieter"
+                                persistent-hint
+                                :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                                :item-value= "item => item.NutzerID"
+                ></v-overflow-btn>
+              </v-col>
             <v-col>
               <v-menu
-                      ref="menuFirstPayment"
-                      v-model="menuFirstPayment"
-                      :close-on-content-click="false"
-                      :return-value.sync=firstPayment
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
+                  ref="menuFirstPayment"
+                  v-model="menuFirstPayment"
+                  :close-on-content-click="false"
+                  :return-value.sync=firstInvoice
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                          v-model="firstPayment"
-                          label="Erste Zahlung"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
+                      v-model="firstInvoice"
+                      label="Erste Zahlung"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                        v-model="firstPayment"
-                        no-title
-                        scrollable
+                    v-model="firstInvoice"
+                    no-title
+                    scrollable
                 >
                   <v-spacer></v-spacer>
                   <v-btn
-                          text
-                          color="primary"
-                          @click="menuFirstPayment = false"
+                      text
+                      color="primary"
+                      @click="menuFirstPayment = false"
                   >
                     Cancel
                   </v-btn>
                   <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menuFirstPayment.save(firstPayment)"
+                      text
+                      color="primary"
+                      @click="$refs.menuFirstPayment.save(firstInvoice)"
                   >
                     OK
                   </v-btn>
@@ -87,19 +88,21 @@
               </v-menu>
             </v-col>
             <v-col>
-                <v-select
-                        v-model="paymentIntervalService"
-                        :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
-                        label="Zahlunsintervall"
-                        hint="Rechnungsintervall Strom"
-                        persistent-hint
-                        return-object
-                        single-line
-                ></v-select>
+              <v-select
+                  v-model="intervalService"
+                  :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                  label="Zahlunsintervall"
+                  hint="Rechnungsintervall Strom"
+                  persistent-hint
+                  return-object
+                  single-line
+              ></v-select>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-select
-                      v-model="paymentIntervalElectricity"
+                      v-model="intervalElectricity"
                       :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Service"
@@ -110,14 +113,26 @@
             </v-col>
             <v-col>
               <v-select
-                      v-model="loadType"
-                      :items="['LoadType A', 'LoadType XY', 'LoadType 123', 'LoadType HASD']"
+                      v-model="loadTypeID"
+                      :items="allLoadTypes"
                       label="Load Typ"
                       hint="Load Typ"
                       persistent-hint
                       return-object
                       single-line
+                      :item-text = "item => item.LoadTypID + ' - ' + item.Bezeichnung"
+                      :item-value = "item => item.LoadTypID"
               ></v-select>
+            </v-col>
+            <v-col>
+              <v-select
+                  v-model="invoiceTo"
+                  :items='["Mieter", "Verwaltung"]'
+                  label="Rechnung An"
+              ></v-select>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model=comment></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"
@@ -158,46 +173,47 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
-import {mapGetters} from 'vuex'
+import {mapMutations, mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "LoadRegistration",
   data() {
     return {
       dialog: false,
-      anlageID: "",
-      anlageName: "",
-      anlageVermieter: "",
-      anlageMieter: "",
+
+      loadTypeID: "",
+      facilityID: "",
+      tenantID: "",
       invoiceTo: "",
-      menuFirstPayment: false,
-      firstPayment: new Date(Date.now()).toISOString().substr(0,10),
-      paymentIntervalService: 'jährlich',
-      paymentIntervalElectricity: 'jährlich',
-      loadType: '',
-      active: true
+      firstInvoice: new Date().toISOString().substr(0, 10),
+      intervalElectricity: "",
+      intervalService: "",
+      comment: "",
+      active: 0
+
     }
   },
   methods: {
     ...mapMutations({
       addNewLoad: "addNewLoad"
     }),
+    ...mapActions(['fetchLoadTypes', 'addNewLoad']),
     createNewLoadFromForm() {
       this.dialog = false
 
       const newLoad = {
-        LoadID: this.loadNummer,
-        AnlageID: this.anlageID,
-        Anlage: this.anlageName,
-        Vermieter: this.anlageVermieter,
-        Mieter: this.anlageMieter,
-        ['Rechnung an']: this.invoiceTo,
-        ErstesZahlungsdatum: new Date(this.firstPayment),
-        RechnungsIntervallStrom: this.paymentIntervalElectricity,
-        RechnungsIntervallService: this.paymentIntervalService,
-        LoadTyp: this.loadType,
+        loadTypeID: this.loadTypeID.LoadTypID,
+        facilityID: this.facilityID,
+        tenantID: this.tenantID,
+        invoiceTo: this.invoiceTo,
+        firstInvoice: this.firstInvoice,
+        intervalElectricity: this.intervalElectricity,
+        intervalService: this.intervalService,
+        comment: this.comment,
       }
+
+      console.log(newLoad)
+
       this.addNewLoad(newLoad)
     },
     reset() {
@@ -207,10 +223,13 @@ export default {
   computed: {
     ...mapGetters({
       allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers'
     }),
-    loadNummer() {
-      return this.allLoads.length + 1
-    },
   },
+  created() {
+    this.fetchLoadTypes()
+  }
 }
 </script>
