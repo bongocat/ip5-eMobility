@@ -50,10 +50,12 @@
 import {mapActions, mapGetters} from "vuex";
 import LoadRegistration from "./LoadRegistration";
 import LoadEdit from "./LoadEdit";
+import LoadTypeRegistration from "./LoadTypeRegistration";
+
 
 
 export default {
-  components: {LoadRegistration, LoadEdit},
+  components: {LoadRegistration, LoadEdit, LoadTypeRegistration},
   data() {
     return {
       expanded: [],

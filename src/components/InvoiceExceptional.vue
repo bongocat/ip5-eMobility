@@ -32,9 +32,16 @@
                               editable
                               :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
+                              item-value="string"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="MieterReferenz"
+                            label="Mieter ID"></v-text-field>
             </v-col>
             <v-col>
 
@@ -256,7 +263,7 @@
 
 <script>
 
-import {mapGetters, mapActions} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 
 export default {
