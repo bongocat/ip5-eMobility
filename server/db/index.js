@@ -215,7 +215,7 @@ megadb.getLoadByID = (id) => {
 /** create **/
 megadb.newInactiveLoad = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID , InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Aktiv, Kommentar) VALUES (?,?,?,?,?,?,?,0,?)', [LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment], (err, results) => {
+        connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID , RechnungAn, ErsteRechnung, StromIntervall, ServiceIntervall, Aktiv, Kommentar) VALUES (?,?,?,?,?,?,?,0,?)', [LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -250,7 +250,7 @@ megadb.setLoadActiveByID = (id) => {
 
 megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE loads SET LoadTypID = ?, AnlageNr  = ?, MieterID  = ?, InvoiceTo = ?, FirstInvoice = ?, IntervalElectricity = ?, IntervalService = ?, Aktiv = ?, Kommentar = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID], (err, results) => {
+        connection.query('UPDATE loads SET LoadTypID = ?, AnlageNr  = ?, MieterID  = ?, RechnungAn  = ?, ErsteRechnung = ?, StromIntervall = ?, ServiceIntervall = ?, Aktiv = ?, Kommentar = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID], (err, results) => {
             if (err) {
                 return reject(err);
             }
