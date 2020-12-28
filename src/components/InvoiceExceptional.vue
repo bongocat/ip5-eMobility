@@ -26,25 +26,19 @@
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="width: 300px"
                               v-model = "invoiceTypeID"
                               dense
                               editable
                               :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
-                              item-value="string"
+                              item-value="value"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field v-model="MieterReferenz"
-                            label="Mieter ID"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="width: 300px"
                               v-model = "currentUser"
                               dense
                               editable
@@ -56,12 +50,14 @@
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-menu
                   ref="menuFälligAm"
                   v-model="menuFaelligAm"
                   :close-on-content-click="false"
-                  :return-value.sync=faelligAm
+                  :return-value.sync=invoiceDate
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -104,7 +100,7 @@
                   ref="menuZuZahlenBis"
                   v-model= "menuZuZahlenBis"
                   :close-on-content-click="false"
-                  :return-value.sync=zuZahlenBis
+                  :return-value.sync=toPayUntil
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -142,10 +138,8 @@
                 </v-date-picker>
               </v-menu>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
-              <v-text-field v-model="Kommentar"
+              <v-text-field v-model="comment"
                             label="Kommentar"></v-text-field>
             </v-col>
           </v-row>
@@ -257,6 +251,7 @@
 <script>
 
 import {mapGetters, mapMutations, mapActions} from "vuex";
+import {exceptionalInvoiceToPDF, normalInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 
 export default {
@@ -342,8 +337,8 @@ export default {
         ShippingAreaCode: this.currentUser.RPLZ,
         ShippingCity: this.currentUser.ROrt,
         ShippingCountry: this.currentUser.RLand,
-        counterOld: "",
-        counterOldDate: "",
+        counterOld: 0,
+        counterOldDate: 0,
         counterNew: 0,
         counterNewDate: 0,
         active: this.currentUser.Aktiv,
@@ -351,7 +346,7 @@ export default {
       }
       console.log(invoice)
       this.addNewInvoice(invoice)
-
+      exceptionalInvoiceToPDF(invoice, this.allUsers ,this.allFacilities )
     },
     reset() {
       this.$refs.form.reset()

@@ -30,7 +30,7 @@
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
                     :headers="columnInnerNames"
-                    :items="allLoads.filter(loads => loads.AnlageNr == item.AnlageID)"
+                    :items="allLoads.filter(loads => loads.AnlageNr === item.AnlageID)"
                     item-key="inner"
                     class="elevation-5"
                 >

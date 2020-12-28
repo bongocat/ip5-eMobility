@@ -16,7 +16,13 @@
               :items-per-page="15"
           style="margin-top: 20px">
             <template v-slot:item.actions="{item}">
-              <InvoiceEdit :invoice="item"></InvoiceEdit>
+              <v-btn
+                  text
+                  color="success"
+                  @click="exportToPDF(item)"
+              >
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
@@ -48,12 +54,12 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import InvoiceEdit from "../components/InvoiceEdit";
 import InvoiceExceptional from "../components/InvoiceExceptional";
+import {invoiceFromDatabase} from "@/PDFGeneration/generatePDF";
 
 export default {
   name: "Invoices",
-  components: {InvoiceEdit, InvoiceExceptional},
+  components: {InvoiceExceptional},
   data() {
     return {
       selected: [],
@@ -70,24 +76,8 @@ export default {
     };
   },
   methods: {
-    toCSV: function (item) {
-
-      const outputData = [Object.keys(item), Object.values(item)];
-
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
-
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
+    exportToPDF: function (item) {
+      invoiceFromDatabase(item)
     }
   },
   computed: {
@@ -102,9 +92,13 @@ export default {
     ...mapGetters({
       allInvoices: 'allInvoices',
     }),
-    ...mapActions(['fetchInvoices']),
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes']),
   },
   created() {
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
     this.fetchInvoices()
   }
 }

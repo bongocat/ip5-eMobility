@@ -177,45 +177,9 @@ const state = {
             Count: "0",
         },
     ],
-    loads: [
-        {
-            LoadID: "001",
-            Anlage: "ABCD",
-            AnlageID: "1",
-            Mieter: "1",
-            Vermieter: "3",
-            ['Rechnung an']: "Mieter",
-            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
-            RechnungsIntervallStrom: 'jährlich',
-            RechnungsIntervallService: 'jährlich',
-            LoadTyp: "LoadType 123"
-        },
-        {
-            LoadID: "002",
-            Anlage: "ABCD",
-            AnlageID: "1",
-            Mieter: "",
-            Vermieter: "4",
-            ['Rechnung an']: "Mieter",
-            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
-            RechnungsIntervallStrom: 'jährlich',
-            RechnungsIntervallService: 'jährlich',
-            LoadTyp: "LoadType ABC"
-        },
-        {
-            LoadID: "003",
-            Anlage: "XXXX",
-            AnlageID: "2",
-            Mieter: "2",
-            Vermieter: "4",
-            ['Rechnung an']: "Vermieter",
-            ErstesZahlungsdatum: new Date(Date.now() + (20) * 24*60*60*1000),
-            RechnungsIntervallStrom: 'jährlich',
-            RechnungsIntervallService: 'jährlich',
-            LoadTyp: "LoadType XYZ"
-        },
-    ],
-    loadTypes: []
+    loads: [],
+    loadTypes: [],
+    invoiceTypes: [],
 }
 
 const getters = {
@@ -232,7 +196,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "Nein";
+            return (new Date(invoice.ZuZahlenBis)) >= Date.now() && new Date(invoice.ZuZahlenBis) <= inThirtyDays //todo generiert == false;
         })
     },
 
@@ -240,7 +204,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let beforeThirtyDays = new Date();
             beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
-            return invoice.BezahltAm <= Date.now() && invoice.BezahltAm >= beforeThirtyDays && invoice.Bezahlt == "true";
+            return invoice.RechnungBezahlt <= Date.now() && invoice.RechnungBezahlt >= beforeThirtyDays && invoice.Bezahlt == "true";
         })
     },
 
@@ -248,7 +212,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "false";
+            return invoice.ZuZahlenBis >= Date.now() && invoice.ZuZahlenBis <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "false";
         })
     },
 
@@ -256,7 +220,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice["Fällig Am"] >= Date.now() && invoice["Fällig Am"] <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "true";
+            return invoice.ZuZahlenBis >= Date.now() && invoice.ZuZahlenBis <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "true";
         })
     },
 
@@ -387,6 +351,11 @@ const actions = {
         commit('setLoadTypes', response.data)
     },
 
+    async fetchInvoiceTypes({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/invoiceTypes/')
+        commit('setInvoiceTypes', response.data)
+    },
+
 }
 
 const mutations = {
@@ -411,6 +380,7 @@ const mutations = {
     setFacilities: (state, facilities) => (state.facilities = facilities),
     setLoads: (state, loads) => (state.loads = loads),
     setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
+    setInvoiceTypes: (state, invoiceTypes) => (state.invoiceTypes = invoiceTypes),
     editFacility: (state, editedFacility) => {
         const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
         if (index !== -1){

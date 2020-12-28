@@ -278,7 +278,7 @@
 <script>
 import GenerateInvoice from "./GenerateInvoice";
 import {mapActions, mapGetters} from "vuex";
-import { toPDF } from "../PDFGeneration/generatePDF"
+import { regularInvoiceToPDF } from "../PDFGeneration/generatePDF"
 
 export default {
 
@@ -356,9 +356,9 @@ export default {
       item.Bezahlt = "false"
     },
     exportToPDF: function (item) {
-      toPDF(item,this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item,this.allUsers, this.allFacilities)
     },
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes'])
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes'])
   },
   created() {
     this.fetchLoadTypes()
@@ -366,6 +366,7 @@ export default {
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
+    this.fetchInvoiceTypes()
   },
   computed: {
     ...mapGetters({
