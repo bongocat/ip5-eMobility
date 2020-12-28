@@ -14,148 +14,148 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
                 <v-expansion-panels style="padding-bottom: 20px">
-                  <v-expansion-panel>
-                    <v-expansion-panel-header>
-                      Filter
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      <v-row dense>
-                        <v-col>
-                          <v-overflow-btn
-                              dense
-                              editable
-                              full-width="false"
-                              :items="getUniqueProperties"
-                              label="Anlagen"
-                              item-value="text"
-                              v-model="filterProperties"
-                          ></v-overflow-btn>
-                        </v-col>
-                        <v-col>
-                          <v-overflow-btn
-                              deletable-chips
-                              dense
-                              editable
-                              full-width="false"
-                              :items="getUniqueAdministration"
-                              label="Verwaltungen"
-                              item-value="text"
-                              v-model="filterAdministration"
-                          ></v-overflow-btn>
-                        </v-col>
-                        <v-col>
-                          <v-overflow-btn
-                              deletable-chips
-                              dense
-                              editable
-                              full-width="false"
-                              :items="getUniqueTenants"
-                              label="Mieter"
-                              item-value="text"
-                              v-model="filterTenants"
-                          ></v-overflow-btn>
-                        </v-col>
-                        <v-col>
-                          <v-overflow-btn
-                              deletable-chips
-                              dense
-                              editable
-                              full-width="false"
-                              :items="getUniqueInvoiceCategory"
-                              label="Rechnungsart"
-                              item-value="text"
-                              v-model="filterCategory"
-                          ></v-overflow-btn>
-                        </v-col>
-                        <v-col>
-                          <v-menu
-                              ref="menuStartingDate"
-                              v-model="menuStartingDate"
-                              :close-on-content-click="false"
-                              :return-value.sync="startingDate"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="290px"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                  v-model="startingDate"
-                                  label="Startdatum"
-                                  prepend-icon="mdi-calendar"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                                v-model="startingDate"
-                                no-title
-                                scrollable
-                            >
-                              <v-spacer></v-spacer>
-                              <v-btn
-                                  text
-                                  color="primary"
-                                  @click="menuStartingDate = false"
-                              >
-                                Cancel
-                              </v-btn>
-                              <v-btn
-                                  text
-                                  color="primary"
-                                  @click="$refs.menuStartingDate.save(startingDate)"
-                              >
-                                OK
-                              </v-btn>
-                            </v-date-picker>
-                          </v-menu>
-                        </v-col>
-                        <v-col>
-                          <v-menu
-                              ref="menuEndDate"
-                              v-model="menuEndDate"
-                              :close-on-content-click="false"
-                              :return-value.sync="endDate"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="290px"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                  v-model="endDate"
-                                  label="Enddatum"
-                                  prepend-icon="mdi-calendar"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                                v-model="endDate"
-                                no-title
-                                scrollable
-                            >
-                              <v-spacer></v-spacer>
-                              <v-btn
-                                  text
-                                  color="primary"
-                                  @click="menuEndDate = false"
-                              >
-                                Cancel
-                              </v-btn>
-                              <v-btn
-                                  text
-                                  color="primary"
-                                  @click="$refs.menuEndDate.save(endDate)"
-                              >
-                                OK
-                              </v-btn>
-                            </v-date-picker>
-                          </v-menu>
-                        </v-col>
-                      </v-row>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
+<!--                  <v-expansion-panel>-->
+<!--                    <v-expansion-panel-header>-->
+<!--                      Filter-->
+<!--                    </v-expansion-panel-header>-->
+<!--                    <v-expansion-panel-content>-->
+<!--                      <v-row dense>-->
+<!--                        <v-col>-->
+<!--                          <v-overflow-btn-->
+<!--                              dense-->
+<!--                              editable-->
+<!--                              full-width="false"-->
+<!--                              :items="getUniqueProperties"-->
+<!--                              label="Anlagen"-->
+<!--                              item-value="text"-->
+<!--                              v-model="filterProperties"-->
+<!--                          ></v-overflow-btn>-->
+<!--                        </v-col>-->
+<!--                        <v-col>-->
+<!--                          <v-overflow-btn-->
+<!--                              deletable-chips-->
+<!--                              dense-->
+<!--                              editable-->
+<!--                              full-width="false"-->
+<!--                              :items="getUniqueAdministration"-->
+<!--                              label="Verwaltungen"-->
+<!--                              item-value="text"-->
+<!--                              v-model="filterAdministration"-->
+<!--                          ></v-overflow-btn>-->
+<!--                        </v-col>-->
+<!--                        <v-col>-->
+<!--                          <v-overflow-btn-->
+<!--                              deletable-chips-->
+<!--                              dense-->
+<!--                              editable-->
+<!--                              full-width="false"-->
+<!--                              :items="getUniqueTenants"-->
+<!--                              label="Mieter"-->
+<!--                              item-value="text"-->
+<!--                              v-model="filterTenants"-->
+<!--                          ></v-overflow-btn>-->
+<!--                        </v-col>-->
+<!--                        <v-col>-->
+<!--                          <v-overflow-btn-->
+<!--                              deletable-chips-->
+<!--                              dense-->
+<!--                              editable-->
+<!--                              full-width="false"-->
+<!--                              :items="getUniqueInvoiceCategory"-->
+<!--                              label="Rechnungsart"-->
+<!--                              item-value="text"-->
+<!--                              v-model="filterCategory"-->
+<!--                          ></v-overflow-btn>-->
+<!--                        </v-col>-->
+<!--                        <v-col>-->
+<!--                          <v-menu-->
+<!--                              ref="menuStartingDate"-->
+<!--                              v-model="menuStartingDate"-->
+<!--                              :close-on-content-click="false"-->
+<!--                              :return-value.sync="startingDate"-->
+<!--                              transition="scale-transition"-->
+<!--                              offset-y-->
+<!--                              min-width="290px"-->
+<!--                          >-->
+<!--                            <template v-slot:activator="{ on, attrs }">-->
+<!--                              <v-text-field-->
+<!--                                  v-model="startingDate"-->
+<!--                                  label="Startdatum"-->
+<!--                                  prepend-icon="mdi-calendar"-->
+<!--                                  readonly-->
+<!--                                  v-bind="attrs"-->
+<!--                                  v-on="on"-->
+<!--                              ></v-text-field>-->
+<!--                            </template>-->
+<!--                            <v-date-picker-->
+<!--                                v-model="startingDate"-->
+<!--                                no-title-->
+<!--                                scrollable-->
+<!--                            >-->
+<!--                              <v-spacer></v-spacer>-->
+<!--                              <v-btn-->
+<!--                                  text-->
+<!--                                  color="primary"-->
+<!--                                  @click="menuStartingDate = false"-->
+<!--                              >-->
+<!--                                Cancel-->
+<!--                              </v-btn>-->
+<!--                              <v-btn-->
+<!--                                  text-->
+<!--                                  color="primary"-->
+<!--                                  @click="$refs.menuStartingDate.save(startingDate)"-->
+<!--                              >-->
+<!--                                OK-->
+<!--                              </v-btn>-->
+<!--                            </v-date-picker>-->
+<!--                          </v-menu>-->
+<!--                        </v-col>-->
+<!--                        <v-col>-->
+<!--                          <v-menu-->
+<!--                              ref="menuEndDate"-->
+<!--                              v-model="menuEndDate"-->
+<!--                              :close-on-content-click="false"-->
+<!--                              :return-value.sync="endDate"-->
+<!--                              transition="scale-transition"-->
+<!--                              offset-y-->
+<!--                              min-width="290px"-->
+<!--                          >-->
+<!--                            <template v-slot:activator="{ on, attrs }">-->
+<!--                              <v-text-field-->
+<!--                                  v-model="endDate"-->
+<!--                                  label="Enddatum"-->
+<!--                                  prepend-icon="mdi-calendar"-->
+<!--                                  readonly-->
+<!--                                  v-bind="attrs"-->
+<!--                                  v-on="on"-->
+<!--                              ></v-text-field>-->
+<!--                            </template>-->
+<!--                            <v-date-picker-->
+<!--                                v-model="endDate"-->
+<!--                                no-title-->
+<!--                                scrollable-->
+<!--                            >-->
+<!--                              <v-spacer></v-spacer>-->
+<!--                              <v-btn-->
+<!--                                  text-->
+<!--                                  color="primary"-->
+<!--                                  @click="menuEndDate = false"-->
+<!--                              >-->
+<!--                                Cancel-->
+<!--                              </v-btn>-->
+<!--                              <v-btn-->
+<!--                                  text-->
+<!--                                  color="primary"-->
+<!--                                  @click="$refs.menuEndDate.save(endDate)"-->
+<!--                              >-->
+<!--                                OK-->
+<!--                              </v-btn>-->
+<!--                            </v-date-picker>-->
+<!--                          </v-menu>-->
+<!--                        </v-col>-->
+<!--                      </v-row>-->
+<!--                    </v-expansion-panel-content>-->
+<!--                  </v-expansion-panel>-->
                 </v-expansion-panels>
                 <v-data-table
                     dense
@@ -277,7 +277,7 @@
 
 <script>
 import GenerateInvoice from "./GenerateInvoice";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import { toPDF } from "../PDFGeneration/generatePDF"
 
 export default {
@@ -357,7 +357,15 @@ export default {
     },
     exportToPDF: function (item) {
       toPDF(item,this.allUsers, this.allFacilities)
-    }
+    },
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes'])
+  },
+  created() {
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchInvoices()
   },
   computed: {
     ...mapGetters({

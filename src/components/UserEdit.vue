@@ -124,13 +124,13 @@
         >
           Schliessen
         </v-btn>
-        <v-btn
-            text
-            color="warning"
-            @click="reset"
-        >
-          Zurücksetzen
-        </v-btn>
+<!--        <v-btn-->
+<!--            text-->
+<!--            color="warning"-->
+<!--            @click="reset"-->
+<!--        >-->
+<!--          Zurücksetzen-->
+<!--        </v-btn>-->
       </v-card-actions>
     </v-card>
   </v-dialog>

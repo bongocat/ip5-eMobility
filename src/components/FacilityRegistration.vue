@@ -130,7 +130,6 @@ export default {
       }
 
       this.addNewFacility(newFacility)
-      this.fetchFacilities()
     },
     reset() {
       this.$refs.form.reset()

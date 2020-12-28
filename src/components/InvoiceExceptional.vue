@@ -37,14 +37,9 @@
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
               <v-text-field v-model="MieterReferenz"
                             label="Mieter ID"></v-text-field>
-            </v-col>
-            <v-col>
-
             </v-col>
           </v-row>
           <v-row>
@@ -61,8 +56,6 @@
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
               <v-menu
                   ref="menuFälligAm"
@@ -263,7 +256,7 @@
 
 <script>
 
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations, mapActions} from "vuex";
 
 
 export default {

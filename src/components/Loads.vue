@@ -8,6 +8,7 @@
         </v-card-title>
         <v-card-text>
           <LoadRegistration></LoadRegistration>
+          <LoadTypeRegistration></LoadTypeRegistration>
           <v-data-table
               dense
               style="margin-top: 20px"
