@@ -346,6 +346,13 @@ const actions = {
         const response = await axios.post(baseURL + '/api/megalog/loads/', load)
         commit('addNewLoad', response.data)
     },
+
+    async editLoad({commit}, load){
+        const response = await axios.put(baseURL + '/api/megalog/loads/', load);
+        console.log(response.data)
+        commit('editLoad', response.data)
+    },
+
     async fetchLoadTypes({ commit }) {
         const response = await axios.get(baseURL +  '/api/megalog/loadTypes/')
         commit('setLoadTypes', response.data)
@@ -392,7 +399,13 @@ const mutations = {
         if (index !== -1){
             state.users.splice(index, 1 , editedUser)
         }
-    }
+    },
+    editLoad: (state, editedLoad) => {
+        const index = state.loads.findIndex(load => load.LoadID === editedLoad.LoadID)
+        if (index !== -1){
+            state.loads.splice(index, 1 , editedLoad)
+        }
+    },
 }
 
 export default {

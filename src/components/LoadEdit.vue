@@ -21,21 +21,35 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="AnlageID" v-model=anlageID></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "facilityNumber"
+                              dense
+                              editable
+                              :items="allFacilities"
+                              label="Anlage"
+                              hint="Anlage"
+                              persistent-hint
+                              :item-text = "item => item.AnlageID + ' - ' + item.Bezeichnung"
+                              :item-value= "item => item.AnlageID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field label="Anlagenname" v-model=anlageName></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Verwalter" v-model=anlageVermieter></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Mieter" v-model=anlageMieter></v-text-field>
+              <v-overflow-btn style="width: 400px"
+                              v-model = "tenantID"
+                              dense
+                              editable
+                              :items="allUsers"
+                              label="Rechnung an"
+                              hint="Rechnung an"
+                              persistent-hint
+                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-value= "item => item.NutzerID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-select
                       v-model="invoiceTo"
-                      :items="['Mieter', 'Vermieter']"
+                      :items="[{text: 'Mieter', value: 0}, {text: 'Vermieter', value: 1}]"
                       label="Rechnung an"
                       hint="Rechnung an"
                       persistent-hint
@@ -91,7 +105,7 @@
             <v-col>
               <v-select
                       v-model="paymentIntervalService"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                      :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Strom"
                       persistent-hint
@@ -102,7 +116,7 @@
             <v-col>
               <v-select
                       v-model="paymentIntervalElectricity"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                      :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Serviece"
                       persistent-hint
@@ -111,15 +125,17 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-select
-                      v-model="loadType"
-                      :items="['LoadType A', 'LoadType XY', 'LoadType 123', 'LoadType HASD']"
-                      label="Load Typ"
-                      hint="Load Typ"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
+              <v-overflow-btn style="width: 400px"
+                              v-model="loadType"
+                              dense
+                              editable
+                              :items="allLoadTypes"
+                              label="Load Typ"
+                              hint="Load Typ"
+                              persistent-hint
+                              :item-text = "item => item.LoadTypID + ' - ' + item.Bezeichnung"
+                              :item-value= "item => item.LoadTypID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-switch v-model="active"
@@ -138,7 +154,7 @@
                 text
                 @click="saveLoadChanges"
         >
-          Anlage erfassen
+          Load anpassen
         </v-btn>
         <v-btn
                 color="error"
@@ -160,8 +176,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "LoadEdit",
@@ -171,30 +186,27 @@ export default {
   data() {
     return {
       dialog: false,
-      loadID: this.load.LoadID,
-      anlageName: this.load.Anlage,
-      anlageVermieter: this.load.Vermieter,
-      anlageMieter: this.load.Mieter,
-      rechnungAn: this.load['Rechnung an'],
-      anlageID: this.load.AnlageID,
-      invoiceTo: this.load.RechnungAn,
       menuFirstPayment: false,
-      firstPayment: this.load.ErstesZahlungsdatum.toISOString().substr(0,10),
-      paymentIntervalService: this.load.RechnungsIntervallService,
-      paymentIntervalElectricity: this.load.RechnungsIntervallStrom,
-      loadType: this.load.LoadTyp,
-      active: this.load.active
+
+      loadID: this.load.LoadID,
+      loadType: this.load.LoadTypID,
+      facilityNumber: this.load.AnlageNr,
+      tenantID: this.load.MieterID,
+      invoiceTo: this.load.RechnungAn,
+      firstPayment: this.load.ErsteRechnung.toISOString().substr(0,10),
+      paymentIntervalService: this.load.ServiceIntervall,
+      paymentIntervalElectricity: this.load.StromIntervall,
+      active: this.load.Aktiv,
+      comment: this.load.Kommentar
+
     }
   },
   methods: {
-    ...mapMutations({
-      addNewLoad: "addNewLoad"
-    }),
     saveLoadChanges() {
       this.dialog = false
+
       this.load.LoadID = this.loadID,
-      this.load.AnlageID = this.anlageID,
-      this.load.Anlage = this.anlageName,
+      this.load.Anlage = this.facilityNumber,
       this.load.Vermieter = this.anlageVermieter,
       this.load.Mieter = this.anlageMieter,
       this.load['Rechnung an'] =  this.invoiceTo,
@@ -203,11 +215,12 @@ export default {
       this.load.RechnungsIntervallStrom = this.paymentIntervalElectricity
       this.load.LoadTyp = this.loadType
       this.load.active = this.active
+
     },
     reset() {
       this.loadNummer = this.load.LoadID
       this.anlageID = this.load.AnlageID
-      this.anlageName = this.load.Anlage
+      this.facilityNumber = this.load.Anlage
       this.anlageVermieter = this.load.Vermieter
       this.anlageMieter = this.load.Mieter
       this.invoiceTo = this.load['Rechnung an']
@@ -217,14 +230,12 @@ export default {
       this.loadType = this.load.LoadTyp
       this.active = this.load.active
     },
+    ...mapActions(['editLoad'])
   },
   computed: {
-    ...mapGetters({
-      allLoads: 'allLoads',
-    }),
-    loadNummer() {
-      return this.allLoads.length + 1
-    },
+    ...mapGetters(['allFacilities', 'allUsers', 'allLoads', 'allLoadTypes']),
   },
+  created() {
+  }
 }
 </script>

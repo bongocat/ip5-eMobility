@@ -20,11 +20,6 @@
               show-expand
               class="elevation-1"
           >
-            <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
-            </template>
             <template v-slot:expanded-item="{ headers, item }">
               <td :colspan="headers.length">
                 <v-data-table

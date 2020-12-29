@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations} from 'vuex'
+import {mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -122,9 +122,6 @@ export default {
   },
   methods: {
     ...mapActions(['editFacility']),
-    ...mapMutations({
-      addNewFacility: "addNewFacility"
-    }),
     saveFacilityChanges() {
 
       this.dialog = false
@@ -158,7 +155,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allFacilities', "allUsers"]),
+    ...mapGetters(['allFacilities', 'allUsers']),
   },
 }
 </script>
