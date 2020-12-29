@@ -7,6 +7,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="console.log('loadID: ', this.loadID)"
       >
         <v-icon small>
           mdi-pencil
@@ -53,7 +54,6 @@
                       label="Rechnung an"
                       hint="Rechnung an"
                       persistent-hint
-                      return-object
                       single-line
               ></v-select>
             </v-col>
@@ -109,7 +109,6 @@
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Strom"
                       persistent-hint
-                      return-object
                       single-line
               ></v-select>
             </v-col>
@@ -118,9 +117,8 @@
                       v-model="paymentIntervalElectricity"
                       :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
                       label="Zahlunsintervall"
-                      hint="Rechnungsintervall Serviece"
+                      hint="Rechnungsintervall Service"
                       persistent-hint
-                      return-object
                       single-line
               ></v-select>
             </v-col>
@@ -193,7 +191,7 @@ export default {
       facilityNumber: this.load.AnlageNr,
       tenantID: this.load.MieterID,
       invoiceTo: this.load.RechnungAn,
-      firstPayment: this.load.ErsteRechnung.toISOString().substr(0,10),
+      firstPayment: new Date (this.load.ErsteRechnung).toISOString().substr(0,10),
       paymentIntervalService: this.load.ServiceIntervall,
       paymentIntervalElectricity: this.load.StromIntervall,
       active: this.load.Aktiv,
@@ -205,16 +203,22 @@ export default {
     saveLoadChanges() {
       this.dialog = false
 
-      this.load.LoadID = this.loadID,
-      this.load.Anlage = this.facilityNumber,
-      this.load.Vermieter = this.anlageVermieter,
-      this.load.Mieter = this.anlageMieter,
-      this.load['Rechnung an'] =  this.invoiceTo,
-      this.load.ErstesZahlungsdatum = this.firstPayment,
-      this.load.RechnungsIntervallService = this.paymentIntervalService
-      this.load.RechnungsIntervallStrom = this.paymentIntervalElectricity
-      this.load.LoadTyp = this.loadType
-      this.load.active = this.active
+      const newLoad = {
+        loadID: this.loadID,
+        loadTypeID: this.loadType,
+        facilityID: this.facilityNumber,
+        tenantID: this.tenantID,
+        invoiceTo: this.invoiceTo,
+        firstInvoice: new Date (this.firstPayment),
+        intervalService: this.paymentIntervalService,
+        intervalElectricity: this.paymentIntervalElectricity,
+        active: this.active,
+        comment: this.comment
+      }
+
+      console.log(newLoad)
+
+      this.editLoad(newLoad)
 
     },
     reset() {
