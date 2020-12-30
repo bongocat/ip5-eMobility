@@ -117,17 +117,17 @@ megadb.invoiceByID = (id) => {
 };
 
 /** create **/
-megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName,
+megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
-                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment) => {
+                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment) => {
     return new Promise((resolve, reject) => {
         connection.query('INSERT INTO rechnung (RechnungsNummer, RechnungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis, RechnungBezahlt, ' +
             'Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ' +
             'ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
-                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName, salutation,
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName, salutation,
                 company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
-                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment
+                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment
             ], (err, results) => {
                 if (err) {
                     return reject(err);
