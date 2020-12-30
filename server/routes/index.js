@@ -291,7 +291,6 @@ router.post('/invoices', async (req, res, next) => {
     "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "no",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -314,6 +313,7 @@ router.post('/invoices', async (req, res, next) => {
     "counterOldDate": "1",
     "counterNew": "1",
     "counterNewDate": "1",
+    "status": "1",
     "active": "1",
     "comment": "Your mom is nice",
     "invoiceID": "8"
@@ -323,9 +323,9 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
+        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.name, input.familyName,
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
+            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.status, input.active, input.comment, input.invoiceID);
         res.json(results);
     } catch (e) {
         console.log(e);
