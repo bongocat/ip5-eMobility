@@ -121,9 +121,9 @@ megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID
                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
                      ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO rechnung (RechnungsNummer, RechnungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis, RechnungBezahlt, ' +
+        connection.query('INSERT INTO rechnung (RechnungsNummer, RechnungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis,' +
             'Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ' +
-            'ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Status, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
                 invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName, salutation,
                 company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
