@@ -138,17 +138,17 @@ megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID
 };
 
 /** update **/
-megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName,
+megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
-                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment, invoiceID) => {
+                     ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment, invoiceID) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE rechnung SET RechnungsNummer = ?, RechnungsTypID = ?, KundenReferenzID = ?, RechnungAnReferenzID = ?, LoadID = ?, RechnungGestellt = ?, ZuZahlenBis = ?, RechnungBezahlt = ?, ' +
+        connection.query('UPDATE rechnung SET RechnungsNummer = ?, RechnungsTypID = ?, KundenReferenzID = ?, RechnungAnReferenzID = ?, LoadID = ?, RechnungGestellt = ?, ZuZahlenBis = ?, ' +
             'Vorname = ?, Nachname = ?, Anrede = ?, Firma = ?, FestnetzNummer = ?, HandyNummer = ?, EMailAdresse = ?, WStrasse = ?, WStrassenNr = ?, WPLZ = ?, WOrt = ?, WLand = ?, RStrasse = ?, RStrassenNr = ?, RPLZ = ?, ROrt = ?, RLand = ?, ' +
-            'ZählerAlt = ?, ZählerAltDatum = ?, ZählerNeu = ?, ZählerNeuDatum = ?, Aktiv = ?, Kommentar = ? WHERE RechnungID = ?',
+            'ZählerAlt = ?, ZählerAltDatum = ?, ZählerNeu = ?, ZählerNeuDatum = ?, Status = ?, Aktiv = ?, Kommentar = ? WHERE RechnungID = ?',
             [
-                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, isPayed, name, familyName, salutation,
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName, salutation,
                 company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
-                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, active, comment, invoiceID
+                ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment, invoiceID
             ], (err, results) => {
                 if (err) {
                     return reject(err);
