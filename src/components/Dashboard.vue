@@ -333,14 +333,15 @@ export default {
   methods: {
     markAsPaid(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Bezahlt = "true"
-        this.sentInvoicesSelected.splice(this.sentInvoicesSelected.indexOf(items[i]), 1)
+        items[i].Status += 1
+        items[i].RechnungBezahlt = new Date()
+        this.editInvoice(items[i])
       }
     },
     markAsSent(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Versendet = "true"
-        this.openInvoicesSelected.splice(this.openInvoicesSelected.indexOf(items[i]), 1)
+        items[i].Status += 1
+        this.editInvoice(items[i])
       }
     },
     resetSelectedOpen() {
@@ -350,15 +351,17 @@ export default {
       this.sentInvoicesSelected = []
     },
     undoSending(item){
-      item.Versendet = "false"
+      item.Status -= 1
+      this.editInvoice(item)
     },
     undoPaid(item){
-      item.Bezahlt = "false"
+      item.Status -= 1
+      this.editInvoice(item)
     },
     exportToPDF: function (item) {
       regularInvoiceToPDF(item,this.allUsers, this.allFacilities)
     },
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes'])
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice'])
   },
   created() {
     this.fetchLoadTypes()

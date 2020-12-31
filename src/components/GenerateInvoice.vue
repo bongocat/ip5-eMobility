@@ -166,7 +166,7 @@
 
 <script>
 
-import { mapGetters}  from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import { regularInvoiceToPDF } from "../PDFGeneration/generatePDF"
 
 
@@ -195,6 +195,7 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
+    ...mapActions(['editInvoice']),
     newInvoicePosition(){
       this.invoicePositions.push({
         extraPosDescription: this.extraPosDescription,
@@ -211,6 +212,8 @@ export default {
     },
     exportToPDF: function (item) {
 
+
+
       item.RechnungsNummer = this.invoiceNumber
       item.Kommentar = this.comment
       if (this.meterReadingOld == true) {
@@ -224,6 +227,9 @@ export default {
       console.log(this.due)
       item.ZuZahlenBis = new Date(Date.now() + (this.due + 1) * 24*60*60*1000);
       console.log(item.ZuZahlenBis.toString())
+      item.Status += 1
+      this.editInvoice(item)
+      console.log(item)
       regularInvoiceToPDF(item,this.allUsers, this.allFacilities)
     }
   },
@@ -240,7 +246,9 @@ export default {
             return !(this.meterReadingOld || this.meterReadingNew)
         }
     },
-  watch: {},
+  watch: {
+
+  },
 
 }
 </script>

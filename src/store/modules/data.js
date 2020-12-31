@@ -196,31 +196,25 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return (new Date(invoice.ZuZahlenBis)) >= Date.now() && new Date(invoice.ZuZahlenBis) <= inThirtyDays //todo generiert == false;
+            return (new Date(invoice.ZuZahlenBis)) >= Date.now() && new Date(invoice.ZuZahlenBis) <= inThirtyDays && invoice.Status === 1//todo generiert == false;
         })
     },
 
     paidInvoices: state => {
         return state.invoices.filter(invoice => {
-            let beforeThirtyDays = new Date();
-            beforeThirtyDays.setDate(beforeThirtyDays.getDate() - 30);
-            return invoice.RechnungBezahlt <= Date.now() && invoice.RechnungBezahlt >= beforeThirtyDays && invoice.Bezahlt == "true";
+            return invoice.Status === 4;
         })
     },
 
     openInvoices: state => {
         return state.invoices.filter(invoice => {
-            let inThirtyDays = new Date();
-            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice.ZuZahlenBis >= Date.now() && invoice.ZuZahlenBis <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "false";
+            return invoice.Status === 2;
         })
     },
 
     sentInvoices: state => {
         return state.invoices.filter(invoice => {
-            let inThirtyDays = new Date();
-            inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return invoice.ZuZahlenBis >= Date.now() && invoice.ZuZahlenBis <= inThirtyDays && invoice.Generiert == "true" && invoice.Bezahlt == "false" && invoice.Versendet == "true";
+            return invoice.Status === 3;
         })
     },
 
@@ -321,6 +315,12 @@ const actions = {
         commit('addNewInvoice', response.data)
     },
 
+    async editInvoice({commit}, invoice){
+        const response = await axios.put(baseURL + '/api/megalog/invoices/', invoice);
+        console.log(response.data)
+        commit('editInvoice', response.data)
+    },
+
     async fetchFacilities({ commit }) {
         const response = await axios.get(baseURL +  '/api/megalog/facilities/')
         commit('setFacilities', response.data)
@@ -404,6 +404,13 @@ const mutations = {
         const index = state.loads.findIndex(load => load.LoadID === editedLoad.LoadID)
         if (index !== -1){
             state.loads.splice(index, 1 , editedLoad)
+        }
+    },
+
+    editInvoice: (state, editedInvoice) => {
+        const index = state.invoices.findIndex(invoice => invoice.LoadID === editedInvoice.LoadID)
+        if (index !== -1){
+            state.invoices.splice(index, 1 , editedInvoice)
         }
     },
 }

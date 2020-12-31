@@ -323,9 +323,9 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
+        let results = await db.updateInvoice(input.RechnungsNummer, input.RechnungsTypID, input.KundenReferenzID, input.RechnungAnReferenzID, input.LoadID, input.RechnungGestellt, input.ZuZahlenBis, input.Status, input.Vorname, input.Nachname,
+            input.Anrede, input.Firma, input.FestnetzNummer, input.HandyNummer, input.EMailAdresse, input.WStrasse, input.WStrassenNr, input.WPLZ, input.WOrt, input.WLand, input.RStrasse,
+            input.RStrassenNr, input.RPLZ, input.ROrt, input.RLand, input.ZählerAlt, input.ZählerAltDatum, input.ZählerNeu, input.ZählerNeuDatum, input.Aktiv, input.Kommentar, input.RechnungID);
         res.json(results);
     } catch (e) {
         console.log(e);
