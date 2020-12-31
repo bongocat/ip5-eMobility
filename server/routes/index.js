@@ -40,6 +40,7 @@ router.get('/users/:id', async (req, res, next) => {
 
 });
 
+// TODO userType -> userTypeID
 /**
  * Create a new user
  *
@@ -537,7 +538,7 @@ router.get('/facilities/:id', async (req, res, next) => {
 
 });
 
-
+// TODO: administratorID -> administrationID
 /**
  * Create a new facility
  *
