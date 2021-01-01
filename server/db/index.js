@@ -275,17 +275,17 @@ megadb.loadtype = () => {
     });
 };
 
-// megadb.loadtypeByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from loadtyp WHERE LoadTypeID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results[0]);
-//         });
-//     });
-// };
-//
+megadb.loadtypeByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loadtypes WHERE loadTypeID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 // /******************
 //  * Facility
 //  *****************/
