@@ -201,17 +201,17 @@ megadb.getAllLoads = () => {
     });
 };
 
-// megadb.getLoadByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results[0]);
-//         });
-//     });
-// };
-//
+megadb.getLoadByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loads WHERE loadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 // /** create **/
 // megadb.newInactiveLoad = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) => {
 //     return new Promise((resolve, reject) => {
