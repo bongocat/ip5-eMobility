@@ -313,18 +313,18 @@ megadb.facilityByID = (id) => {
     });
 };
 
-// /** create **/
-// megadb.newFacility = (administratorID, designation, street, streetNumber, areaCode, city, country, active, comment) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('INSERT INTO anlagen (VerwalterID, Bezeichnung, Strasse, StrassenNr, PLZ, Ort, Land, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [administratorID, designation, street, streetNumber, areaCode, city, country, active, comment], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/** create **/
+megadb.newFacility = (administrationID, designation, street, streetNumber, areaCode, city, country, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO facilities (administrationID, designation, street, streetNumber, areaCode, city, country, active, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [administrationID, designation, street, streetNumber, areaCode, city, country, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // /** update **/
 // megadb.updateFacilityByID = (administratorID, designation, street, streetNumber, areaCode, city, country, active, comment, facilityID) => {
 //     return new Promise((resolve, reject) => {
