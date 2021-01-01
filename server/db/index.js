@@ -185,22 +185,22 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
-// /******************
-//  * Loads
-//  *****************/
-//
-// /** getter **/
-// megadb.getAllLoads = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from loads', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/******************
+ * Loads
+ *****************/
+
+/** getter **/
+megadb.getAllLoads = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loads', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.getLoadByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from loads WHERE LoadID = ?', [id], (err, results) => {
