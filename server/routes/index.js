@@ -245,7 +245,20 @@ router.get('/invoicestatus', async (req, res, next) => {
 
 });
 
+/**
+ * Get a invoice status by their id
+ */
+router.get('/invoicestatus/:id', async (req, res, next) => {
+    console.log("Get a invoice status by id");
+    try {
+        let results = await db.invoicetypeByID(req.params.id);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
 
+});
 
 
 /**
