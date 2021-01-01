@@ -415,7 +415,7 @@ megadb.invoicepositionByID = (id) => {
  *****************/
 
 /** getter **/
-megadb.invoicepstatus = () => {
+megadb.invoicestatus = () => {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * from invoicestatus', (err, results) => {
             if (err) {
