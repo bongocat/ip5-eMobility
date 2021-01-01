@@ -27,17 +27,17 @@ megadb.user = () => {
     });
 };
 
-// megadb.userByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from nutzer WHERE NutzerID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results[0]);
-//         });
-//     });
-// };
-//
+megadb.userByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from users WHERE userID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 // /** create **/
 // megadb.newUser = (userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment) => {
 //     return new Promise((resolve, reject) => {
