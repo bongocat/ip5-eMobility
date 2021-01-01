@@ -325,19 +325,19 @@ megadb.newFacility = (administrationID, designation, street, streetNumber, areaC
     });
 };
 
-// /** update **/
-// megadb.updateFacilityByID = (administratorID, designation, street, streetNumber, areaCode, city, country, active, comment, facilityID) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE anlagen SET VerwalterID = ?, Bezeichnung = ?, Strasse = ?, StrassenNr = ?, PLZ = ?, Ort = ?, Land = ?, Aktiv = ?, Kommentar = ? WHERE AnlageID = ?', [administratorID, designation, street, streetNumber, areaCode, city, country, active, comment, facilityID], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
-//
+/** update **/
+megadb.updateFacilityByID = (administrationID, designation, street, streetNumber, areaCode, city, country, active, comment, facilityID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE facilities SET administrationID = ?, designation = ?, street = ?, streetNumber = ?, areaCode = ?, city = ?,country = ?, active = ?, comment = ? WHERE facilityID = ?', [administrationID, designation, street, streetNumber, areaCode, city, country, active, comment, facilityID], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
 /******************
  * Invoice Positions
  *****************/
