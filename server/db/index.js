@@ -11,22 +11,22 @@ const connection = mysql.createPool({
 
 let megadb = {}
 
-// /******************
-//  * User
-//  *****************/
-//
-// /** getter **/
-// megadb.user = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from nutzer', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/******************
+ * User
+ *****************/
+
+/** getter **/
+megadb.user = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from users', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.userByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from nutzer WHERE NutzerID = ?', [id], (err, results) => {
