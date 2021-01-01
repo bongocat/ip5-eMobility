@@ -606,7 +606,7 @@ router.post('/facilities', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -622,7 +622,7 @@ router.put('/facilities', async (req, res, next) => {
     console.log("Update facility by id");
     try {
         let input = req.body;
-        let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
+        let results = await db.updateFacilityByID(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
         res.json(results);
     } catch (e) {
         console.log(e);
