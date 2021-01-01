@@ -105,16 +105,16 @@ megadb.invoice = () => {
     });
 };
 
-// megadb.invoiceByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnung WHERE RechnungID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results[0]);
-//         });
-//     });
-// };
+megadb.invoiceByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoices WHERE invoiceID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
 //
 // /** create **/
 // megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
