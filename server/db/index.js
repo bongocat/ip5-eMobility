@@ -286,22 +286,22 @@ megadb.loadtypeByID = (id) => {
     });
 };
 
-// /******************
-//  * Facility
-//  *****************/
-//
-// /** getter **/
-// megadb.facility = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from anlagen', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/******************
+ * Facility
+ *****************/
+
+/** getter **/
+megadb.facility = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from facilities', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.facilityByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from anlagen WHERE AnlageID = ?', [id], (err, results) => {
