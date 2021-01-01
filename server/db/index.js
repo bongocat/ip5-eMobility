@@ -89,22 +89,22 @@ megadb.usertypeByID = (id) => {
     });
 };
 
-// /******************
-//  * Invoice
-//  *****************/
-//
-// /** getter **/
-// megadb.invoice = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnung', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/******************
+ * Invoice
+ *****************/
+
+/** getter **/
+megadb.invoice = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoices', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.invoiceByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from rechnung WHERE RechnungID = ?', [id], (err, results) => {
