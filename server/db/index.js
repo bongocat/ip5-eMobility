@@ -258,23 +258,23 @@ megadb.invoicetypeByID = (id) => {
 //         });
 //     });
 // };
-//
-// /******************
-//  * Loadtype
-//  *****************/
-//
-// /** getter **/
-// megadb.loadtype = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from loadtyp', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+
+/******************
+ * Loadtype
+ *****************/
+
+/** getter **/
+megadb.loadtype = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from loadtypes', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.loadtypeByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from loadtyp WHERE LoadTypeID = ?', [id], (err, results) => {
