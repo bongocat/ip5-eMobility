@@ -410,4 +410,22 @@ megadb.invoicepositionByID = (id) => {
 //     });
 // };
 
+/******************
+ * Invoice Status
+ *****************/
+
+/** getter **/
+megadb.invoicepstatus = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoicestatus', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
+
 module.exports = megadb;
