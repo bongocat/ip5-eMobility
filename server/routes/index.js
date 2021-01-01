@@ -260,7 +260,6 @@ router.get('/invoicestatus/:id', async (req, res, next) => {
 
 });
 
-
 /**
  * Create a new invoice
  *
@@ -573,13 +572,12 @@ router.get('/facilities/:id', async (req, res, next) => {
 
 });
 
-// TODO: administratorID -> administrationID
 /**
  * Create a new facility
  *
  * Example for POST JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -594,7 +592,7 @@ router.post('/facilities', async (req, res, next) => {
     console.log("Create a new facility");
     try {
         let input = req.body;
-        let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
+        let results = await db.newFacility(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
