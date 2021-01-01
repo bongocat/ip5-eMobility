@@ -226,6 +226,28 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
 
 });
 
+/******************
+ * Invoice Status
+ *****************/
+
+/**
+ * Get all invoice status
+ */
+router.get('/invoicestatus', async (req, res, next) => {
+    console.log("Get all invoice status");
+    try {
+        let results = await db.invoicetype();
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+
+
+
 /**
  * Create a new invoice
  *
