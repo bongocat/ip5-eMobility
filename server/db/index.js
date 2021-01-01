@@ -174,17 +174,17 @@ megadb.invoicetype = () => {
     });
 };
 
-// megadb.invoicetypeByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnungstyp WHERE RechnungsTypID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results[0]);
-//         });
-//     });
-// };
-//
+megadb.invoicetypeByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoicetypes WHERE invoiceTypeID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
 // /******************
 //  * Loads
 //  *****************/
