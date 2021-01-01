@@ -338,24 +338,22 @@ megadb.facilityByID = (id) => {
 // };
 //
 //
-// /******************
-//  * Invoice Positions
-//  *****************/
-//
-// // TODO: Invoice Position functions for: Update
-//
-// /** getter **/
-// megadb.invoiceposition = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnungspositionen', (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/******************
+ * Invoice Positions
+ *****************/
+
+/** getter **/
+megadb.invoiceposition = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoicepositions', (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.invoicepositionByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('SELECT * from rechnungspositionen WHERE InvoicePositionID  = ?', [id], (err, results) => {
