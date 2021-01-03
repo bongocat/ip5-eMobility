@@ -40,6 +40,7 @@ router.get('/users/:id', async (req, res, next) => {
 
 });
 
+// TODO userType -> userTypeID
 /**
  * Create a new user
  *
@@ -225,6 +226,40 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
 
 });
 
+/******************
+ * Invoice Status
+ *****************/
+
+/**
+ * Get all invoice status
+ */
+router.get('/invoicestatus', async (req, res, next) => {
+    console.log("Get all invoice status");
+    try {
+        let results = await db.invoicetype();
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Get a invoice status by their id
+ */
+router.get('/invoicestatus/:id', async (req, res, next) => {
+    console.log("Get a invoice status by id");
+    try {
+        let results = await db.invoicetypeByID(req.params.id);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /**
  * Create a new invoice
  *
@@ -237,7 +272,6 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
     "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "1",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -260,17 +294,18 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
     "counterOldDate": "1",
     "counterNew": "1",
     "counterNewDate": "1",
+    "status": "1",
     "active": "1",
-    "comment": "1"
+    "comment": "Your mom is nice"
     }
  */
 router.post('/invoices', async (req, res, next) => {
     console.log("create a new invoice");
     try {
         let input = req.body;
-        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
+        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.name, input.familyName,
             input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment);
+            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.status, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -291,7 +326,6 @@ router.post('/invoices', async (req, res, next) => {
     "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "no",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -314,6 +348,7 @@ router.post('/invoices', async (req, res, next) => {
     "counterOldDate": "1",
     "counterNew": "1",
     "counterNewDate": "1",
+    "status": "1",
     "active": "1",
     "comment": "Your mom is nice",
     "invoiceID": "8"
@@ -323,9 +358,9 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        let results = await db.updateInvoice(input.RechnungsNummer, input.RechnungsTypID, input.KundenReferenzID, input.RechnungAnReferenzID, input.LoadID, input.RechnungGestellt, input.ZuZahlenBis, input.Status, input.Vorname, input.Nachname,
-            input.Anrede, input.Firma, input.FestnetzNummer, input.HandyNummer, input.EMailAdresse, input.WStrasse, input.WStrassenNr, input.WPLZ, input.WOrt, input.WLand, input.RStrasse,
-            input.RStrassenNr, input.RPLZ, input.ROrt, input.RLand, input.ZählerAlt, input.ZählerAltDatum, input.ZählerNeu, input.ZählerNeuDatum, input.Aktiv, input.Kommentar, input.RechnungID);
+        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
+            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.status, input.active, input.comment, input.invoiceID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -537,13 +572,12 @@ router.get('/facilities/:id', async (req, res, next) => {
 
 });
 
-
 /**
  * Create a new facility
  *
  * Example for POST JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -558,7 +592,7 @@ router.post('/facilities', async (req, res, next) => {
     console.log("Create a new facility");
     try {
         let input = req.body;
-        let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
+        let results = await db.newFacility(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -572,7 +606,7 @@ router.post('/facilities', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -588,7 +622,7 @@ router.put('/facilities', async (req, res, next) => {
     console.log("Update facility by id");
     try {
         let input = req.body;
-        let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
+        let results = await db.updateFacilityByID(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
         res.json(results);
     } catch (e) {
         console.log(e);
