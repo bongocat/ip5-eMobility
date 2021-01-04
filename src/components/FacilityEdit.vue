@@ -23,15 +23,15 @@
             </v-col>
             <v-col>
               <v-overflow-btn style="width: 400px"
-                              v-model = "administratorID"
+                              v-model = "administrationID"
                               dense
                               editable
                               :items="allUsers"
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
-                              :item-value= "item => item.NutzerID"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
+                              :item-value= "item => item.userID"
               ></v-overflow-btn>
             </v-col>
 
@@ -108,16 +108,16 @@ export default {
     return {
       dialog: false,
 
-      facilityID: this.facility.AnlageID,
-      designation: this.facility.Bezeichnung,
-      administratorID: this.facility.VerwalterID,
-      street: this.facility.Strasse,
-      streetNumber: this.facility.StrassenNr,
-      areaCode: this.facility.PLZ,
-      country: this.facility.Land,
-      comment: this.facility.Kommentar,
-      city: this.facility.Ort,
-      active: this.facility.Aktiv,
+      facilityID: this.facility.facilityID,
+      designation: this.facility.designation,
+      administrationID: this.facility.administrationID,
+      street: this.facility.street,
+      streetNumber: this.facility.streetNumber,
+      areaCode: this.facility.areaCode,
+      country: this.facility.country,
+      comment: this.facility.comment,
+      city: this.facility.city,
+      active: this.facility.active,
     }
   },
   methods: {
@@ -129,7 +129,7 @@ export default {
       const updatedFacility = {
         facilityID: this.facilityID,
         designation: this.designation,
-        administratorID: this.administratorID,
+        administratorID: this.administrationID,
           street: this.street,
           streetNumber: this.streetNumber,
           areaCode: this.areaCode,
@@ -140,7 +140,6 @@ export default {
     }
       this.editFacility(updatedFacility)
 
-      console.log(updatedFacility)
       },
     reset() {
 

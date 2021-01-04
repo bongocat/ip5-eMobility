@@ -22,7 +22,7 @@
               <v-text-field label="Name" v-model=facilityName></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "administrationID"
                               dense
                               editable
@@ -30,7 +30,7 @@
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
@@ -109,7 +109,7 @@ export default {
       country: "",
       comment: "",
       city: "",
-      active: 0,
+      active: 1,
     }
   },
   methods: {
@@ -118,7 +118,7 @@ export default {
       this.dialog = false
 
       const newFacility = {
-        administratorID: this.administrationID.NutzerID,
+        administratorID: this.administrationID.userID,
         designation: this.facilityName,
         city: this.city,
         street: this.street,

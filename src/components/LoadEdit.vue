@@ -22,20 +22,20 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-overflow-btn style="width: 400px"
-                              v-model = "facilityNumber"
+              <v-overflow-btn style="min-width: 250px"
+                              v-model = "facilityID"
                               dense
                               editable
                               :items="allFacilities"
                               label="Anlage"
                               hint="Anlage"
                               persistent-hint
-                              :item-text = "item => item.AnlageID + ' - ' + item.Bezeichnung"
-                              :item-value= "item => item.AnlageID"
+                              :item-text = "item => item.facilityID + ' - ' + item.designation"
+                              :item-value= "item => item.facilityID"
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "tenantID"
                               dense
                               editable
@@ -43,8 +43,8 @@
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
-                              :item-value= "item => item.NutzerID"
+                              :item-text = "item => item.tenantID + ' - ' + item.name +'  '+ item.familyName"
+                              :item-value= "item => item.tenantID"
               ></v-overflow-btn>
             </v-col>
             <v-col>
@@ -64,14 +64,14 @@
                       ref="menuFirstPayment"
                       v-model="menuFirstPayment"
                       :close-on-content-click="false"
-                      :return-value.sync=firstPayment
+                      :return-value.sync=firstInvoice
                       transition="scale-transition"
                       offset-y
                       min-width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                          v-model="firstPayment"
+                          v-model="firstInvoice"
                           label="Erste Zahlung"
                           prepend-icon="mdi-calendar"
                           readonly
@@ -80,7 +80,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                        v-model="firstPayment"
+                        v-model="firstInvoice"
                         no-title
                         scrollable
                 >
@@ -95,7 +95,7 @@
                   <v-btn
                           text
                           color="primary"
-                          @click="$refs.menuFirstPayment.save(firstPayment)"
+                          @click="$refs.menuFirstPayment.save(firstInvoice)"
                   >
                     OK
                   </v-btn>
@@ -104,7 +104,7 @@
             </v-col>
             <v-col>
               <v-select
-                      v-model="paymentIntervalService"
+                      v-model="intervalService"
                       :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Strom"
@@ -114,7 +114,7 @@
             </v-col>
             <v-col>
               <v-select
-                      v-model="paymentIntervalElectricity"
+                      v-model="intervalElectricity"
                       :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Service"
@@ -123,16 +123,16 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
-                              v-model="loadType"
+              <v-overflow-btn style="min-width: 250px"
+                              v-model="loadTypeID"
                               dense
                               editable
                               :items="allLoadTypes"
                               label="Load Typ"
                               hint="Load Typ"
                               persistent-hint
-                              :item-text = "item => item.LoadTypID + ' - ' + item.Bezeichnung"
-                              :item-value= "item => item.LoadTypID"
+                              :item-text = "item => item.loadTypeID + ' - ' + item.designation"
+                              :item-value= "item => item.loadTypeID"
               ></v-overflow-btn>
             </v-col>
             <v-col>
@@ -186,16 +186,20 @@ export default {
       dialog: false,
       menuFirstPayment: false,
 
-      loadID: this.load.LoadID,
-      loadType: this.load.LoadTypID,
-      facilityNumber: this.load.AnlageNr,
-      tenantID: this.load.MieterID,
-      invoiceTo: this.load.RechnungAn,
-      firstPayment: new Date (this.load.ErsteRechnung).toISOString().substr(0,10),
-      paymentIntervalService: this.load.ServiceIntervall,
-      paymentIntervalElectricity: this.load.StromIntervall,
-      active: this.load.Aktiv,
-      comment: this.load.Kommentar
+      loadID: this.load.loadID,
+      loadTypeID: this.load.loadTypeID,
+      facilityID: this.load.facilityID,
+      tenantID: this.load.tenantID,
+      invoiceTo: this.load.invoiceTo,
+      firstInvoice: new Date (this.load.firstInvoice).toISOString().substr(0,10),
+      intervalElectricity: this.load.intervalElectricity,
+      intervalService: this.load.intervalService,
+      counterOld: this.load.counterOld,
+      counterOldDate: new Date (this.load.counterOldDate).toISOString().substr(0,10),
+      counterNew: this.load.counterNew,
+      counterNewDate: new Date (this.load.counterNewDate).toISOString().substr(0,10),
+      active: this.load.active,
+      comment: this.load.comment
 
     }
   },
@@ -204,14 +208,19 @@ export default {
       this.dialog = false
 
       const newLoad = {
+
         loadID: this.loadID,
-        loadTypeID: this.loadType,
-        facilityID: this.facilityNumber,
+        loadTypeID: this.loadTypeID,
+        facilityID: this.facilityID,
         tenantID: this.tenantID,
         invoiceTo: this.invoiceTo,
-        firstInvoice: new Date (this.firstPayment),
-        intervalService: this.paymentIntervalService,
-        intervalElectricity: this.paymentIntervalElectricity,
+        firstInvoice: new Date (this.firstInvoice),
+        intervalService: this.intervalService,
+        intervalElectricity: this.intervalElectricity,
+        counterOld: this.counterOld,
+        counterOldDate: new Date (this.counterOldDate),
+        counterNew: this.counterNew,
+        counterNewDate: new Date (this.counterNewDate),
         active: this.active,
         comment: this.comment
       }
@@ -222,17 +231,19 @@ export default {
 
     },
     reset() {
-      this.loadNummer = this.load.LoadID
-      this.anlageID = this.load.AnlageID
-      this.facilityNumber = this.load.Anlage
-      this.anlageVermieter = this.load.Vermieter
-      this.anlageMieter = this.load.Mieter
-      this.invoiceTo = this.load['Rechnung an']
-      this.firstPayment = this.load.ErstesZahlungsdatum
-      this.paymentIntervalService = this.load.RechnungsIntervallService
-      this.paymentIntervalElectricity = this.load.RechnungsIntervallStrom
-      this.loadType = this.load.LoadTyp
+      this.loadTypeID = this.load.loadTypeID
+      this.facilityID = this.load.facilityID
+      this.tenantID = this.load.tenantID
+      this.invoiceTo = this.load.invoiceTo
+      this.firstInvoice = this.load.firstInvoice
+      this.intervalService = this.load.intervalService
+      this.intervalElectricity = this.load.intervalElectricity
+      this.counterOld = this.load.counterOld
+      this.counterOldDate = new Date (this.load.counterOldDate)
+      this.counterNew = this.load.counterNew
+      this.counterNewDate = new Date (this.load.counterNewDate)
       this.active = this.load.active
+      this.comment = this.load.comment
     },
     ...mapActions(['editLoad'])
   },

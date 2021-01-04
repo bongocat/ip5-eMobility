@@ -26,7 +26,7 @@
                                  label="Rechnungsnummer"></v-text-field>
                </v-col>
                 <v-col>
-                    <v-overflow-btn style="width: 400px"
+                    <v-overflow-btn style="min-width: 250px"
                                     v-model = "due"
                                     dense
                                     editable
@@ -184,11 +184,12 @@ export default {
       due: 10,
       comment: "",
       dialog: false,
+
       name: '',
       invoiceNumber: 0,
-        meterReadingOld: false,
-        meterReadingNew: false,
-        meterDifference: false,
+      meterReadingOld: false,
+      meterReadingNew: false,
+      meterDifference: false,
     }
   },
   methods: {

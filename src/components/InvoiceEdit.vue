@@ -34,7 +34,7 @@
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "RechnungsArt"
                               dense
                               editable
@@ -56,7 +56,7 @@
                              label="Vermieter ID"></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "RechnungAn"
                               dense
                               editable
