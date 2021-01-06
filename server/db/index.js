@@ -122,28 +122,28 @@ megadb.invoiceByID = (id) => {
         });
     });
 };
-//
-// /** create **/
-// megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
-//                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
-//                      ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('INSERT INTO rechnung (RechnungsNummer, RechnungsTypID, KundenReferenzID, RechnungAnReferenzID, LoadID, RechnungGestellt, ZuZahlenBis,' +
-//             'Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, ' +
-//             'ZählerAlt, ZählerAltDatum, ZählerNeu, ZählerNeuDatum, Status, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-//             [
-//                 invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName, salutation,
-//                 company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
-//                 ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment
-//             ], (err, results) => {
-//                 if (err) {
-//                     return reject(err);
-//                 }
-//                 return resolve(results);
-//             });
-//     });
-// };
-//
+
+/** create **/
+megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,
+                     salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
+                     shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO invoices (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName, ' +
+            'salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,' +
+            'shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,
+                salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
+                shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment
+            ], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+    });
+};
+
 // /** update **/
 // megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
 //                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
