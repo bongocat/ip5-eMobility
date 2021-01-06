@@ -363,7 +363,7 @@ megadb.invoiceposition = () => {
 
 megadb.invoicepositionByID = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * from invoicepositions WHERE invoicePositionID  = ?', [id], (err, results) => {
+        connection.query('SELECT * from invoicepositions WHERE invoicePositionID = ?', [id], (err, results) => {
             if (err) {
                 return reject(err);
             }
@@ -382,17 +382,17 @@ megadb.invoicepositionByInvoiceNummer = (id) => {
         });
     });
 };
-//
-// megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnungspositionen WHERE InvoiceNumber  = ? AND InvoicePositionID  = ?', [invoiceid, positionid], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
+
+megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoicepositions WHERE invoiceNumber = ? AND invoicePositionID = ?', [invoiceid, positionid], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 //
 // /** create **/
 // megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment) => {
