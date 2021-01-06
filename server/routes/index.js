@@ -575,11 +575,11 @@ router.post('/loadtypes', async (req, res, next) => {
         "loadTypeID": "1"
     }
  */
-router.post('/loadtypes', async (req, res, next) => {
+router.put('/loadtypes', async (req, res, next) => {
     console.log("Update a loadtype");
     try {
         let input = req.body;
-        let results = await db.newLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment, input.loadTypeID);
+        let results = await db.updateLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment, input.loadTypeID);
         res.json(results);
     } catch (e) {
         console.log(e);
