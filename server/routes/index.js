@@ -452,6 +452,7 @@ router.post('/loads', async (req, res, next) => {
     "counterOldDate": "null",
     "counterNew": "34",
     "counterNewDate": "null",
+    "active": "1",
     "comment": "blabla",
     "loadID": "13"
 }
@@ -460,7 +461,7 @@ router.put('/loads', async (req, res, next) => {
     console.log("Update a load by id");
     try {
         let input = req.body;
-        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate,input.comment, input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.loadID);
         res.json(results);
     } catch (e) {
         console.log(e);
