@@ -4,154 +4,7 @@ const baseURL = "http://localhost:3000"
 
 const state = {
 
-    invoices: [
-        {
-            Betrag: 100,
-            RechnungsID: "1",
-            RechnungsNr: "1",
-            RechnungsArt: "Installation",
-            MieterReferenz: "1",
-            VermieterReferenz: "3",
-            RechnungAn: "Mieter",
-            Anlagename: "Anlagé",
-            AnlageID: "1",
-            LoadID: "001",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date(Date.now() + (30) * 24*60*60*1000),
-            Bezahlt: "false",
-            BezahltAm: new Date(Date.now()),
-            Vorname: "John",
-            Nachname: "Snow",
-            Firma: "",
-            Generiert: "false",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-        {
-            Betrag: 200,
-            RechnungsID: "2",
-            RechnungsNr: "2",
-            RechnungsArt: "Abo",
-            MieterReferenz: "1",
-            VermieterReferenz: "3",
-            RechnungAn: "Vermieter",
-            Anlagename: "Anlagé",
-            AnlageID: "1",
-            LoadID: "001",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2020-11-30'),
-            Bezahlt: "false",
-            BezahltAm: new Date(),
-            Vorname: "John",
-            Nachname: "Snow",
-            Firma: "",
-            Generiert: "false",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-        {
-            Betrag: 300,
-            RechnungsID: "3",
-            RechnungsNr: "3",
-            RechnungsArt: "Strom",
-            MieterReferenz: "1",
-            VermieterReferenz: "3",
-            RechnungAn: "Mieter",
-            Anlagename: "Anlagé",
-            AnlageID: "1",
-            LoadID: "001",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "false",
-            BezahltAm: new Date(),
-            Vorname: "John",
-            Nachname: "Snow",
-            Firma: "",
-            Generiert: "false",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-        {
-            Betrag: 444,
-            RechnungsID: "4",
-            RechnungsNr: "4",
-            RechnungsArt: "Installation",
-            MieterReferenz: "2",
-            VermieterReferenz: "4",
-            RechnungAn: "Vermieter",
-            Anlagename: "Mega Anlage",
-            AnlageID: "2",
-            LoadID: "003",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "false",
-            BezahltAm: new Date(),
-            Vorname: "Maria",
-            Nachname: "Winter",
-            Firma: "",
-            Generiert: "false",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-        {
-            Betrag: 521,
-            RechnungsID: "5",
-            RechnungsNr: "5",
-            RechnungsArt: "Abo",
-            MieterReferenz: "2",
-            VermieterReferenz: "4",
-            RechnungAn: "Vermieter",
-            Anlagename: "Mega Anlage",
-            AnlageID: "2",
-            LoadID: "003",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "false",
-            BezahltAm: new Date(),
-            Vorname: "Maria",
-            Nachname: "Winter",
-            Firma: "",
-            ZählerstandAlt: "",
-            ['Datum Zählerstand Alt']: new Date('2020-01-1'),
-            ZählerstandNeu: "",
-            ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "false",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-        {
-            Betrag: 521,
-            RechnungsID: "6",
-            RechnungsNr: "6",
-            RechnungsArt: "Strom",
-            MieterReferenz: "2",
-            VermieterReferenz: "4",
-            RechnungAn: "Vermieter",
-            Anlagename: "Mega Anlage",
-            AnlageID: "2",
-            LoadID: "003",
-            ['Fällig Am']: new Date(Date.now() + (20) * 24*60*60*1000),
-            ['Zu Zahlen Bis']: new Date('2020-12-31'),
-            Bezahlt: "false",
-            BezahltAm: new Date(),
-            Vorname: "Maria",
-            Nachname: "Winter",
-            Firma: "",
-            ZählerstandAlt: "",
-            ['Datum Zählerstand Alt']: new Date('2020-01-1'),
-            ZählerstandNeu: "",
-            ['Datum Zählerstand Neu']: new Date('2020-12-31'),
-            Generiert: "true",
-            Kommentar: "",
-            Versendet: "false",
-            positions: [],
-        },
-    ],
+    invoices: [],
     users: [],
     facilities: [
         {
@@ -239,7 +92,7 @@ const getters = {
      * @returns active users
      */
     activeUsers: state => {
-        return state.users.filter(user => user.Aktiv == "true")
+        return state.users.filter(user => user.active === 1)
     },
 
     /**
@@ -248,7 +101,7 @@ const getters = {
      * @returns inactive users
      * */
     inactiveUsers: state => {
-        return state.users.filter(user => user.Aktiv === "Nein")
+        return state.users.filter(user => user.active === 0)
     },
 
     /**
@@ -292,6 +145,7 @@ const getters = {
 }
 
 const actions = {
+
     async fetchUsers({ commit }) {
         const response = await axios.get( baseURL + '/api/megalog/users/')
         commit('setUsers', response.data)

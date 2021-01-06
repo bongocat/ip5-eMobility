@@ -14,7 +14,7 @@
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">{{ formTitle }}</h1>
+        <h1 class="headline">Nutzer bearbeiten</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">

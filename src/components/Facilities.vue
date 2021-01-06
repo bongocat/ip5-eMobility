@@ -90,15 +90,13 @@ export default {
   data() {
     return {
       currentItem: {},
-      selected: [],
       page: 1,
       pageCount: 0,
       itemsPerPage: 5,
       dialog: false,
       editedIndex: -1,
-      paidInvoices: [],
       facilityHeaders: [
-        {text: 'Name', value: 'facilityName'},
+        {text: 'Name', value: 'designation'},
         {text: 'Verwaltung', value: 'administration'},
         {text: 'Strasse', value: 'street'},
         {text: 'Hausnummer', value: 'streetNumber'},
@@ -111,22 +109,27 @@ export default {
     };
   },
   methods: {
-    resetSelected() {
-      this.selected = []
-    },
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
   },
   computed: {
-    ...mapActions(['fetchFacilities']),
     ...mapGetters({
-      allFacilities: 'allFacilities'
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers'
     }),
+
     fillObjectKeys: function (){
 
       var fullFacilities = this.allFacilities
+      var allUsers = this.allUsers
+
+      console.log("all users", allUsers)
 
       fullFacilities.forEach(function (item, index) {
-        var administration = this.allUsers.filter(user => user.administrationID === item.facilityID)
-        var itemAdministration = {administration: '' + administration.familyName + ' ' + administration.name}
+
+
+        var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
+        var itemAdministration = {administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
+
 
         Object.assign(item, itemAdministration)
       });
@@ -135,7 +138,12 @@ export default {
     }
   },
   created() {
-    this.fetchFacilities();
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchInvoices()
+    this.fetchInvoiceTypes()
   }
 }
 </script>

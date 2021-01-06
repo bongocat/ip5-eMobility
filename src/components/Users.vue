@@ -50,6 +50,7 @@ export default {
         {text: 'Vorname', value: 'name'},
         {text: 'Nachname', value: 'familyName'},
         {text: 'Nutzertyp', value: 'userTypeFull'},
+        {text: 'Firma', value: 'company'},
         {text: 'Strasse', value: 'street'},
         {text: 'Hausnummer', value: 'company'},
         {text: 'PLZ', value: 'areaCode' },
@@ -58,22 +59,28 @@ export default {
         {text: 'Festnetz', value: 'phone'},
         {text: 'Mobil', value: 'mobile'},
         {text: 'EMail', value: 'email'},
-        {text: 'Rechnungsaddr.', value: 'shippingStreet'},
-        {text: '', value: 'shippingStreetNumber'},
-        {text: '', value: 'shippingAreaCode'},
-        {text: '', value: 'shippingCity'},
-        {text: '', value: 'shippingCountry'},
+        {text: 'Rechnungsaddresse: Strasse', value: 'shippingStreet'},
+        {text: "Hausnummer", value: 'shippingStreetNumber'},
+        {text: 'PLZ', value: 'shippingAreaCode'},
+        {text: 'Ort', value: 'shippingCity'},
+        {text: 'Land', value: 'shippingCountry'},
         {text: 'Kommentar', value: 'comment', class: 'tableComment', width: "25%"},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
   },
   methods: {
-    ...mapActions(['fetchUsers']),
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads']),
     itemRowBackground: function (item) {
-      return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
+      return item.comment.length > 100 ? 'style-1' : 'style-2'
     },
-    fillObjectKeys(){
+  },
+  computed: {
+    ...mapGetters([
+        'allUsers',
+        'allFacilities',
+    ]),
+    fillObjectKeys: function(){
 
       var fullUsers = this.allUsers
       var fullUserType = {}
@@ -81,30 +88,17 @@ export default {
       fullUsers.forEach(function (item, index) {
 
         if (item.userType === 0){
-          fullUserType = {
-            userTypeFull: "Mieter"
-          }
+          fullUserType = {userTypeFull: "Mieter"}
         }
         else {
-          fullUserType = {
-            userTypeFull: "Vermieter"
-          }
+          fullUserType = {userTypeFull: "Vermieter"}
         }
-
-        var administration = this.allUsertypes.filter(user => user.administrationID === item.facilityID)
-        var itemAdministration = {administration: '' + administration.familyName + ' ' + administration.name}
 
         Object.assign(item, fullUserType)
       });
 
       return fullUsers
     }
-
-  },
-  computed: {
-    ...mapGetters({
-      allUsers: 'allUsers',
-    }),
   },
   created() {
     this.fetchUsers();

@@ -118,7 +118,7 @@ export default {
       this.dialog = false
 
       const newFacility = {
-        administratorID: this.administrationID.userID,
+        administrationID: this.administrationID.userID,
         designation: this.facilityName,
         city: this.city,
         street: this.street,

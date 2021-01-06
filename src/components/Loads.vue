@@ -108,6 +108,7 @@ export default {
   methods: {
     ...mapActions(['fetchLoads']),
     fillObjectKeys(){
+
       var fullLoads = this.allLoads
 
       fullLoads.forEach(function (item, index) {

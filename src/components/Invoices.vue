@@ -89,7 +89,8 @@ export default {
   methods: {
     exportToPDF: function (item) {
       invoiceFromDatabase(item)
-    }
+    },
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads']),
   },
   computed: {
     fillObjectKeys(){
@@ -97,9 +98,9 @@ export default {
 
       fullInvoices.forEach(function (item, index) {
         var load = this.allLoads.filter(load => load.loadID === item.loadID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
 
-        var itemFacility = {facility: facility.facilityName}
+        var itemFacility = {facility: facility[0].facilityName}
         Object.assign(item, itemFacility)
       });
 
@@ -110,7 +111,6 @@ export default {
       allLoads: 'allLoads',
       allFacilities: 'allFacilities'
     }),
-    ...mapActions(['fetchInvoices', 'fetchLoadTypes']),
   },
   created() {
     this.fetchLoadTypes()
