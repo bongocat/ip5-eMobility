@@ -701,22 +701,23 @@ router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) 
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "",
-    "positionName": "",
-    "price": "",
-    "amount": "",
-   	"netto": "",
-    "vat": "",
-    "brutto": "",
-    "active": "",
-    "comment": ""
+    "invoiceNumber": "33",
+    "positionName": "hewo",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
+    "active": "1",
+    "comment": ", this is a wowobbery"
     }
  */
 router.post('/invoicepositions', async (req, res, next) => {
     console.log("Create a new invoice position");
     try {
         let input = req.body;
-        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment)
         res.json(results);
     } catch (e) {
