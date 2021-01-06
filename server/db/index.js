@@ -310,7 +310,7 @@ megadb.newLoadtype = (designation, standardPriceWhenActive, standardPriceWhenIna
 /** update **/
 megadb.updateLoadtype = (designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment, loadTypeID) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE facilities SET loadtypes = ?, standardPriceWhenActive = ?, standardPriceWhenInactive = ?, active = ?, comment = ? WHERE loadTypeID = ?', [designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment, loadTypeID], (err, results) => {
+        connection.query('UPDATE loadtypes  SET designation = ?, standardPriceWhenActive = ?, standardPriceWhenInactive = ?, active = ?, comment = ? WHERE loadTypeID = ?', [designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment, loadTypeID], (err, results) => {
             if (err) {
                 return reject(err);
             }
