@@ -40,13 +40,12 @@ router.get('/users/:id', async (req, res, next) => {
 
 });
 
-// TODO userType -> userTypeID
 /**
  * Create a new user
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name" : "Metro",
     "familyName" : "Deamon",
     "salutation": "Mister",
@@ -73,7 +72,7 @@ router.post('/users', async (req, res, next) => {
     console.log("Create new user");
     try {
         let input = req.body;
-        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
+        let results = await db.newUser(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -87,7 +86,7 @@ router.post('/users', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name": "Metro",
     "familyName": "Deamon",
     "salutation": "Mister",
@@ -115,7 +114,7 @@ router.put('/users', async (req, res, next) => {
     console.log("Update a users");
     try {
         let input = req.body;
-        let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
+        let results = await db.updateUserByID(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
         res.json(results);
     } catch (e) {
         console.log(e);
