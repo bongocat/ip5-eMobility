@@ -407,9 +407,9 @@ megadb.newInvoicePosition = (invoiceNumber, positionName, loadID, price, amount,
 };
 
 /** update **/
-megadb.updateInvoicePosition = (invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, invoicePositionID) => {
+megadb.updateInvoicePosition = (invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, comment, invoicePositionID) => {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE invoicepositions SET invoiceNumber = ?, positionName = ?, loadID = ?, price = ?, amount = ?, netto = ?, vat = ?, brutto = ?, active = ? WHERE invoicePositionID = 3', [invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, invoicePositionID], (err, results) => {
+        connection.query('UPDATE invoicepositions SET invoiceNumber = ?, positionName = ?, loadID = ?, price = ?, amount = ?, netto = ?, vat = ?, brutto = ?, active = ?, comment = ? WHERE invoicePositionID = ?', [invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, comment, invoicePositionID], (err, results) => {
             if (err) {
                 return reject(err);
             }
