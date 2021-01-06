@@ -144,26 +144,26 @@ megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID
     });
 };
 
-// /** update **/
-// megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName,
-//                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet,
-//                      ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment, invoiceID) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE rechnung SET RechnungsNummer = ?, RechnungsTypID = ?, KundenReferenzID = ?, RechnungAnReferenzID = ?, LoadID = ?, RechnungGestellt = ?, ZuZahlenBis = ?, ' +
-//             'Vorname = ?, Nachname = ?, Anrede = ?, Firma = ?, FestnetzNummer = ?, HandyNummer = ?, EMailAdresse = ?, WStrasse = ?, WStrassenNr = ?, WPLZ = ?, WOrt = ?, WLand = ?, RStrasse = ?, RStrassenNr = ?, RPLZ = ?, ROrt = ?, RLand = ?, ' +
-//             'ZählerAlt = ?, ZählerAltDatum = ?, ZählerNeu = ?, ZählerNeuDatum = ?, Status = ?, Aktiv = ?, Kommentar = ? WHERE RechnungID = ?',
-//             [
-//                 invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, loadID, invoiceDate, toPayUntil, name, familyName, salutation,
-//                 company, phone, mobile, email, street, streetNumber, areaCode, city, country, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity,
-//                 ShippingCountry, counterOld, counterOldDate, counterNew, counterNewDate, status, active, comment, invoiceID
-//             ], (err, results) => {
-//                 if (err) {
-//                     return reject(err);
-//                 }
-//                 return resolve(results);
-//             });
-//     });
-// };
+/** update **/
+megadb.updateInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,
+                        salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
+                        shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment, invoiceID) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE invoices SET invoiceNumber = ?, invoiceTypeID = ?, customerRefID = ?, invoiceToRefID = ?, invoiceDate = ?, toPayUntil = ?, payedOn = ?, name = ?, familyName = ?,' +
+            'salutation = ?, company = ?, phone = ?, mobile = ?, email = ?, street = ?, streetNumber = ?, areaCode = ?, city = ?, country = ?, invoiceToShippingAdress = ?, shippingStreet = ?,' +
+            'shippingStreetNumber = ?, shippingAreaCode = ?, shippingCity = ?, shippingCountry = ?, invoiceStatusID = ?, active = ?, comment = ? WHERE invoiceID = ?',
+            [
+                invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,
+                salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
+                shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment, invoiceID
+            ], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+    });
+};
 
 /******************
  * Invoicetype
