@@ -393,18 +393,19 @@ megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
         });
     });
 };
-//
-// /** create **/
-// megadb.newInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('INSERT INTO rechnungspositionen (InvoiceNumber, PositionName, Price, Amount, Netto, Vat, Brutto, Active, Comment) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
+
+/** create **/
+megadb.newInvoicePosition = (invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO invoicepositions (invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, comment) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [invoiceNumber, positionName, loadID, price, amount, netto, vat, brutto, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // /** update **/
 // megadb.updateInvoicePosition = (invoiceNummer, positionName, price,amount, netto, vat, brutto, active, comment, invoicePositionID) => {
 //     return new Promise((resolve, reject) => {
