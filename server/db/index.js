@@ -372,16 +372,16 @@ megadb.invoicepositionByID = (id) => {
     });
 };
 
-// megadb.invoicepositionByInvoiceNummer = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * from rechnungspositionen WHERE  InvoiceNumber  = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
+megadb.invoicepositionByInvoiceNummer = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * from invoicepositions WHERE  invoiceNumber = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 //
 // megadb.invoicepositionByIDByInvoiceNummer = (invoiceid, positionid) => {
 //     return new Promise((resolve, reject) => {
