@@ -40,13 +40,12 @@ router.get('/users/:id', async (req, res, next) => {
 
 });
 
-// TODO userType -> userTypeID
 /**
  * Create a new user
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name" : "Metro",
     "familyName" : "Deamon",
     "salutation": "Mister",
@@ -73,7 +72,7 @@ router.post('/users', async (req, res, next) => {
     console.log("Create new user");
     try {
         let input = req.body;
-        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
+        let results = await db.newUser(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -87,7 +86,7 @@ router.post('/users', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name": "Metro",
     "familyName": "Deamon",
     "salutation": "Mister",
@@ -115,7 +114,7 @@ router.put('/users', async (req, res, next) => {
     console.log("Update a users");
     try {
         let input = req.body;
-        let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
+        let results = await db.updateUserByID(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -415,6 +414,10 @@ router.get('/loads/:id', async (req, res, next) => {
     "firstInvoice": "null",
     "intervalElectricity": "23",
     "intervalService": "23",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
     "comment": "blabla"
     }
  */
@@ -422,7 +425,7 @@ router.post('/loads', async (req, res, next) => {
     console.log("Create a new inactive load");
     try {
         let input = req.body;
-        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.comment);
+        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate,input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -439,13 +442,17 @@ router.post('/loads', async (req, res, next) => {
  * {
     "loadTypeID": "1",
     "facilityID": "1",
-    "tenantID": "eeee",
-    "invoiceTo": "sdfsdf",
-    "firstInvoice": "2020-10-10",
+    "tenantID": "1",
+    "invoiceTo": "1",
+    "firstInvoice": "null",
     "intervalElectricity": "23",
-    "intervalService": "43",
-    "active": "0",
-    "comment": "ba",
+    "intervalService": "23",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
+    "active": "1",
+    "comment": "blabla",
     "loadID": "13"
 }
  */
@@ -453,7 +460,7 @@ router.put('/loads', async (req, res, next) => {
     console.log("Update a load by id");
     try {
         let input = req.body;
-        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.active, input.comment, input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.loadID);
         res.json(results);
     } catch (e) {
         console.log(e);
