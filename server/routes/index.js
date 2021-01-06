@@ -341,7 +341,7 @@ router.post('/invoices', async (req, res, next) => {
     "shippingCountry": "1",
     "invoiceStatusID": "1",
     "active": "1",
-    "comment": "Your mom is nice"
+    "comment": "Your mom is nice",
     "invoiceID": "8"
     }
  */
