@@ -38,18 +38,18 @@ megadb.userByID = (id) => {
     });
 };
 
-// /** create **/
-// megadb.newUser = (userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('INSERT INTO nutzer (NutzerTypID, Vorname, Nachname, Anrede, Firma, FestnetzNummer, HandyNummer, EMailAdresse, WStrasse, WStrassenNr, WPLZ, WOrt, WLand, RiW, RStrasse, RStrassenNr, RPLZ, ROrt, RLand, Aktiv, Kommentar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/** create **/
+megadb.newUser = (userTypeID, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet, shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO users (userTypeID, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet, shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, active, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [userTypeID, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet, shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // /** update **/
 // megadb.updateUserByID = (userType, name, familyName, salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, ShippingStreet, ShippingStreetNumber, ShippingAreaCode, ShippingCity, ShippingCountry, active, comment, userID) => {
 //     return new Promise((resolve, reject) => {
