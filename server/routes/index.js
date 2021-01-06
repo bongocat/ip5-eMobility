@@ -415,6 +415,10 @@ router.get('/loads/:id', async (req, res, next) => {
     "firstInvoice": "null",
     "intervalElectricity": "23",
     "intervalService": "23",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
     "comment": "blabla"
     }
  */
@@ -422,7 +426,7 @@ router.post('/loads', async (req, res, next) => {
     console.log("Create a new inactive load");
     try {
         let input = req.body;
-        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.comment);
+        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate,input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
