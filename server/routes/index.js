@@ -443,13 +443,16 @@ router.post('/loads', async (req, res, next) => {
  * {
     "loadTypeID": "1",
     "facilityID": "1",
-    "tenantID": "eeee",
-    "invoiceTo": "sdfsdf",
-    "firstInvoice": "2020-10-10",
+    "tenantID": "1",
+    "invoiceTo": "1",
+    "firstInvoice": "null",
     "intervalElectricity": "23",
-    "intervalService": "43",
-    "active": "0",
-    "comment": "ba",
+    "intervalService": "23",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
+    "comment": "blabla",
     "loadID": "13"
 }
  */
@@ -457,7 +460,7 @@ router.put('/loads', async (req, res, next) => {
     console.log("Update a load by id");
     try {
         let input = req.body;
-        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.active, input.comment, input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate,input.comment, input.loadID);
         res.json(results);
     } catch (e) {
         console.log(e);
