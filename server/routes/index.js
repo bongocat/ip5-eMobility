@@ -268,9 +268,9 @@ router.get('/invoicestatus/:id', async (req, res, next) => {
     "invoiceTypeID": "1",
     "customerRefID": "1",
     "invoiceToRefID": "1",
-    "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
+    "payedOn": "1",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -284,16 +284,12 @@ router.get('/invoicestatus/:id', async (req, res, next) => {
     "city": "1",
     "country": "1",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "1",
-    "ShippingStreetNumber": "1",
-    "ShippingAreaCode": "1",
-    "ShippingCity": "2",
-    "ShippingCountry": "1",
-    "counterOld": "1",
-    "counterOldDate": "1",
-    "counterNew": "1",
-    "counterNewDate": "1",
-    "status": "1",
+    "shippingStreet": "1",
+    "shippingStreetNumber": "1",
+    "shippingAreaCode": "1",
+    "shippingCity": "2",
+    "shippingCountry": "1",
+    "invoiceStatusID": "1",
     "active": "1",
     "comment": "Your mom is nice"
     }
@@ -302,9 +298,9 @@ router.post('/invoices', async (req, res, next) => {
     console.log("create a new invoice");
     try {
         let input = req.body;
-        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.status, input.active, input.comment);
+        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.invoiceDate, input.toPayUntil, input.payedOn, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress,input.shippingStreet,
+            input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.invoiceStatusID, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -318,13 +314,13 @@ router.post('/invoices', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-    "invoiceNumber": "3",
+     "invoiceNumber": "3",
     "invoiceTypeID": "1",
     "customerRefID": "1",
     "invoiceToRefID": "1",
-    "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
+    "payedOn": "1",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -338,16 +334,12 @@ router.post('/invoices', async (req, res, next) => {
     "city": "1",
     "country": "1",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "1",
-    "ShippingStreetNumber": "1",
-    "ShippingAreaCode": "1",
-    "ShippingCity": "2",
-    "ShippingCountry": "1",
-    "counterOld": "1",
-    "counterOldDate": "1",
-    "counterNew": "1",
-    "counterNewDate": "1",
-    "status": "1",
+    "shippingStreet": "1",
+    "shippingStreetNumber": "1",
+    "shippingAreaCode": "1",
+    "shippingCity": "2",
+    "shippingCountry": "1",
+    "invoiceStatusID": "1",
     "active": "1",
     "comment": "Your mom is nice",
     "invoiceID": "8"
@@ -357,9 +349,9 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.status, input.active, input.comment, input.invoiceID);
+        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.invoiceDate, input.toPayUntil, input.payedOn, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress,input.shippingStreet,
+            input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.invoiceStatusID, input.active, input.comment, input.invoiceID);
         res.json(results);
     } catch (e) {
         console.log(e);
