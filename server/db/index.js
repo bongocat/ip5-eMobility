@@ -192,6 +192,8 @@ megadb.invoicetypeByID = (id) => {
     });
 };
 
+
+
 /******************
  * Loads
  *****************/
@@ -292,6 +294,19 @@ megadb.loadtypeByID = (id) => {
         });
     });
 };
+
+/** create **/
+megadb.newLoadtype = (designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO loadtypes (designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment) VALUES (?,?,?,?,?)', [designation, standardPriceWhenActive, standardPriceWhenInactive, active, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 
 /******************
  * Facility
