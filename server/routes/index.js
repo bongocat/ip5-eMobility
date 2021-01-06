@@ -732,15 +732,16 @@ router.post('/invoicepositions', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "1",
-    "positionName": "test",
-    "price": "23",
-    "amount": "42",
-   	"netto": "2233",
-    "vat": "22",
-    "brutto": "2323",
+    "invoiceNumber": "33",
+    "positionName": "x3",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
     "active": "1",
-    "comment": "ererererer",
+    "comment": ", it was a jowoke",
     "invoicePositionID": "1"
 }
  */
@@ -748,9 +749,11 @@ router.put('/invoicepositions', async (req, res, next) => {
     console.log("Update a invoice position");
     try {
         let input = req.body;
-        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment, input.invoicePositionID)
         res.json(results);
+        console.log(results)
+        console.log(input)
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
