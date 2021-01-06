@@ -538,7 +538,7 @@ router.get('/loadtypes/:id', async (req, res, next) => {
 });
 
 /**
- * Create a new inactive load
+ * Create a new loadtype
  *
  * Example for POST JSON:
  *  {
