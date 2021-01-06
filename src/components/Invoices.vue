@@ -10,8 +10,8 @@
           <InvoiceExceptional></InvoiceExceptional>
           <v-data-table
               dense
-              :headers="columnNames"
-              :items="allInvoices"
+              :headers="invoiceHeaders"
+              :items="fillObjectKeys"
               class="elevation-1"
               :items-per-page="15"
           style="margin-top: 20px">
@@ -68,6 +68,17 @@ export default {
       itemsPerPage: 10,
       dialog: false,
       dialogDelete: false,
+      invoiceHeaders: [
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'customerRefID'},
+        {text: 'Rechnung An', value: 'RechnungAn'},
+        {text: 'Anlage', value: 'facility' },
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Mieter Vorname', value: 'name'},
+        {text: 'Mieter Nachname', value: 'familyName'},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
       vorlagen: [
         {text: 'Installation', icon: 'mdi-folder-open'},
         {text: 'Strom', icon: 'mdi-folder-open'},
@@ -81,16 +92,23 @@ export default {
     }
   },
   computed: {
-    columnNames() {
-      var computedColumnnames = []
-      Object.keys(this.allInvoices[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
-      })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false})
-      return computedColumnnames
+    fillObjectKeys(){
+      var fullInvoices = this.allInvoices
+
+      fullInvoices.forEach(function (item, index) {
+        var load = this.allLoads.filter(load => load.loadID === item.loadID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
+
+        var itemFacility = {facility: facility.facilityName}
+        Object.assign(item, itemFacility)
+      });
+
+      return fullInvoices
     },
     ...mapGetters({
       allInvoices: 'allInvoices',
+      allLoads: 'allLoads',
+      allFacilities: 'allFacilities'
     }),
     ...mapActions(['fetchInvoices', 'fetchLoadTypes']),
   },

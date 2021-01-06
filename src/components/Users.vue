@@ -11,8 +11,8 @@
           <v-data-table
               dense
               style="margin-top: 20px"
-              :headers="columnNames"
-              :items="allUsers"
+              :headers="userHeaders"
+              :items="fillObjectKeys"
               class="elevation-1"
               :items-per-page="5"
               :item-class="itemRowBackground"
@@ -45,7 +45,27 @@ export default {
       dialog: false,
       dialogDelete: false,
       editedIndex: -1,
-      edit: false
+      edit: false,
+      userHeaders: [
+        {text: 'Vorname', value: 'name'},
+        {text: 'Nachname', value: 'familyName'},
+        {text: 'Nutzertyp', value: 'userTypeFull'},
+        {text: 'Strasse', value: 'street'},
+        {text: 'Hausnummer', value: 'company'},
+        {text: 'PLZ', value: 'areaCode' },
+        {text: 'Land', value: 'country'},
+        {text: 'Stadt', value: 'city'},
+        {text: 'Festnetz', value: 'phone'},
+        {text: 'Mobil', value: 'mobile'},
+        {text: 'EMail', value: 'email'},
+        {text: 'Rechnungsaddr.', value: 'shippingStreet'},
+        {text: '', value: 'shippingStreetNumber'},
+        {text: '', value: 'shippingAreaCode'},
+        {text: '', value: 'shippingCity'},
+        {text: '', value: 'shippingCountry'},
+        {text: 'Kommentar', value: 'comment', class: 'tableComment', width: "25%"},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
     };
   },
   methods: {
@@ -53,43 +73,37 @@ export default {
     itemRowBackground: function (item) {
       return item.Kommentar.length > 100 ? 'style-1' : 'style-2'
     },
-    toCSV: function(item) {
+    fillObjectKeys(){
 
-      const outputData = [Object.keys(item), Object.values(item)];
+      var fullUsers = this.allUsers
+      var fullUserType = {}
 
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
+      fullUsers.forEach(function (item, index) {
 
-      outputData.forEach(function(outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
-    }
-  },
-  computed: {
-    columnNames() {
-      var computedColumnnames  = []
-      Object.keys(this.allUsers[0]).forEach(function (item) {
-        if (item === 'Kommentar'){
-          computedColumnnames.push({text: item, value: item, class: 'tableComment', width: "25%"})
+        if (item.userType === 0){
+          fullUserType = {
+            userTypeFull: "Mieter"
+          }
         }
         else {
-          computedColumnnames.push({text: item, value: item})
+          fullUserType = {
+            userTypeFull: "Vermieter"
+          }
         }
-      })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false })
-      console.log(this.allUsers)
-      return computedColumnnames
-    },
+
+        var administration = this.allUsertypes.filter(user => user.administrationID === item.facilityID)
+        var itemAdministration = {administration: '' + administration.familyName + ' ' + administration.name}
+
+        Object.assign(item, fullUserType)
+      });
+
+      return fullUsers
+    }
+
+  },
+  computed: {
     ...mapGetters({
-      allUsers: 'allUsers'
+      allUsers: 'allUsers',
     }),
   },
   created() {

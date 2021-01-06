@@ -46,7 +46,7 @@
               <v-text-field label="Ort" v-model=city></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=ZIPCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Land" v-model=country></v-text-field>
@@ -105,7 +105,7 @@ export default {
       administrationID: "",
       street: "",
       streetNumber: "",
-      ZIPCode: "",
+      areaCode: "",
       country: "",
       comment: "",
       city: "",
@@ -123,7 +123,7 @@ export default {
         city: this.city,
         street: this.street,
         streetNumber: this.streetNumber,
-        areaCode: this.ZIPCode,
+        areaCode: this.areaCode,
         country: this.country,
         comment: this.comment,
         active: this.active

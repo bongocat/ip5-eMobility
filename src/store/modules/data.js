@@ -155,26 +155,28 @@ const state = {
     users: [],
     facilities: [
         {
-            AnlageID: "1",
-            Anlage: "ABCD",
-            Immobilienverwaltung: "3",
-            Strasse: "Döbeligut",
-            Hausnummer: "69",
-            PLZ: "4665",
-            Ort: "Oftringen",
-            Land: "Schweiz",
-            Count: "0",
+            facilityID: 0,
+            facilityName: "test",
+            administrationID: 1,
+            street: "TestStreet",
+            streetNumber: 4,
+            ZIPCode: 4556,
+            country: "CH",
+            comment: "",
+            city: "Stadt",
+            active: 1,
         },
         {
-            AnlageID: "2",
-            Anlage: "XXXX",
-            Immobilienverwaltung: "3",
-            Strasse: "Chrischonaweg",
-            Hausnummer: "42",
-            PLZ: "4058",
-            Ort: "Basel",
-            Land: "Schweiz",
-            Count: "0",
+            facilityID: 2,
+            facilityName: "test",
+            administrationID: 2,
+            street: "TestStreet",
+            streetNumber: 4,
+            ZIPCode: 4556,
+            country: "CH",
+            comment: "",
+            city: "Stadt",
+            active: 1,
         },
     ],
     loads: [],
@@ -363,6 +365,11 @@ const actions = {
         commit('setInvoiceTypes', response.data)
     },
 
+    async addNewLoadType({commit}, loadtype){
+        const response = await axios.post(baseURL + '/api/megalog/loadTypes/', loadtype)
+        commit('addNewLoadType', response.data)
+    },
+
 }
 
 const mutations = {
@@ -380,6 +387,10 @@ const mutations = {
 
     addNewLoad (state, load){
         state.loads.push(load)
+    },
+
+    addNewLoadType (state, loadType){
+        state.loadTypes.push(loadType)
     },
 
     setUsers: (state, users) => (state.users = users),

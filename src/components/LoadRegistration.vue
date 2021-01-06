@@ -208,7 +208,7 @@ export default {
       this.dialog = false
 
       const newLoad = {
-        loadTypeID: this.loadTypeID.LoadTypID,
+        loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
         tenantID: this.tenantID,
         invoiceTo: this.invoiceTo,

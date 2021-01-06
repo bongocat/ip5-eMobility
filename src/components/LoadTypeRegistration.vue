@@ -7,6 +7,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          style="margin-left: 10px"
       >
         Neuen Loadtyp erfassen
       </v-btn>
@@ -18,7 +19,7 @@
       <v-card-text>
         <v-form ref="form">
             <v-col>
-              <v-text-field label="Name" v-model=loadTypeName></v-text-field>
+              <v-text-field label="Name" v-model=designation></v-text-field>
             </v-col>
         </v-form>
       </v-card-text>
@@ -26,7 +27,7 @@
         <v-btn
             color="success"
             text
-            @click="createNewLoadFromForm"
+            @click="createNewLoadTypeFromForm"
         >
           Loadtyp erfassen
         </v-btn>
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapMutations, mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -58,15 +59,29 @@ export default {
   data() {
     return {
       dialog: false,
-      loadTypeName: "",
+      designation: "",
+      active: 1,
+      comment: ""
     }
   },
   methods: {
     ...mapMutations({
       addNewLoad: "addNewLoad"
     }),
-    createNewLoadFromForm() {
+    ...mapActions(['fetchLoadTypes', 'addNewLoad', 'addNewLoadType']),
+    createNewLoadTypeFromForm() {
       this.dialog = false
+
+      const newLoadType = {
+        designation: this.designation,
+        active: this.active,
+        comment: this.comment,
+      }
+
+      console.log(newLoadType)
+
+      this.addNewLoadType(newLoadType)
+
     },
     reset() {
       this.$refs.form.reset()

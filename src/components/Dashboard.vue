@@ -160,7 +160,7 @@
                 <v-data-table
                     dense
                     :headers="upcomingHeaders"
-                    :items="upcomingInvoices"
+                    :items="fillObjectKeys"
                     class="elevation-1"
                     :items-per-page="5">
                   <template v-slot:item.actions="{item}">
@@ -303,29 +303,25 @@ export default {
       dialog: false,
       editedIndex: -1,
       upcomingHeaders: [
-        {text: 'Rechnungs ID', value: 'RechnungsID'},
-        {text: 'Rechnungsart', value: 'RechnungsArt'},
-        {text: 'Betrag', value: 'Betrag'},
-        {text: 'Vermieter', value: 'VermieterReferenz'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Rechnung An', value: 'RechnungAn'},
-        {text: 'Anlagename', value: 'Anlagename'},
-        {text: 'Load ID', value: 'LoadID'},
-        {text: 'Fällig Am', value: 'Fällig Am'},
-        {text: 'Mieter Vorname', value: 'Vorname'},
-        {text: 'Mieter Nachname', value: 'Nachname'},
+        {text: 'Anlage', value: 'facility' },
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Mieter Vorname', value: 'name'},
+        {text: 'Mieter Nachname', value: 'familyName'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
       openInvoicesHeaders: [
-        {text: 'Rechnungs ID', value: 'RechnungsID'},
-        {text: 'Rechnungsart', value: 'RechnungsArt'},
-        {text: 'Betrag', value: 'Betrag'},
-        {text: 'Vermieter', value: 'VermieterReferenz'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Rechnung An', value: 'RechnungAn'},
-        {text: 'Anlagename', value: 'Anlagename'},
-        {text: 'Load ID', value: 'LoadID'},
-        {text: 'Zu Zahlen Bis', value: 'Zu Zahlen Bis'},
-        {text: 'Mieter Vorname', value: 'Vorname'},
-        {text: 'Mieter Nachname', value: 'Nachname'},
+        {text: 'Anlage', value: 'facility' },
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Mieter Vorname', value: 'name'},
+        {text: 'Mieter Nachname', value: 'familyName'},
         {text: 'Actions', value: 'actions', sortable: false}
       ]
     };
@@ -381,43 +377,21 @@ export default {
       allUsers: 'allUsers',
       allLoads: 'allLoads'
     }),
-    getUniqueProperties() {
-      var array = [];
-      this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.AnlageID)) {
-          array.push(item.AnlageID)
-        }
-      })
-      return array
-    },
-    getUniqueAdministration() {
-      var array = [];
-      this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.Anlagename)) {
-          array.push(item.Anlagename)
-        }
-      })
-      return array
-    },
-    getUniqueTenants() {
-      var array = [];
-      this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.Nachname)) {
-          array.push(item.Nachname)
-        }
-      })
-      return array
-    },
-    getUniqueInvoiceCategory() {
-      var array = [];
-      this.upcomingInvoices.forEach(function (item) {
-        if (!array.includes(item.RechnungsArt)) {
-          array.push(item.RechnungsArt)
-        }
-      })
-      return array
-    },
+    fillObjectKeys(){
+      var fullInvoices = this.upcomingInvoices
+
+      fullInvoices.forEach(function (item, index) {
+        var load = this.allLoads.filter(load => load.loadID === item.loadID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
+
+        var itemFacility = {facility: facility.facilityName}
+        Object.assign(item, itemFacility)
+      });
+
+      return fullInvoices
+    }
   },
+
 }
 
 Date.prototype.toString = function () {
