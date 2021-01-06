@@ -537,6 +537,31 @@ router.get('/loadtypes/:id', async (req, res, next) => {
 
 });
 
+/**
+ * Create a new inactive load
+ *
+ * Example for POST JSON:
+ *  {
+        "designation": "This is a test",
+        "standardPriceWhenActive": "33.33",
+        "standardPriceWhenInactive": "2.0",
+        "active": "1",
+        "comment": "This is a comment"
+    }
+ */
+router.post('/loadtypes', async (req, res, next) => {
+    console.log("Create a new loadtype");
+    try {
+        let input = req.body;
+        let results = await db.newLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /******************
  * Facility
  *****************/
