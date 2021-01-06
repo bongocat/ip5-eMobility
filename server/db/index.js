@@ -212,18 +212,18 @@ megadb.getLoadByID = (id) => {
     });
 };
 
-// /** create **/
-// megadb.newInactiveLoad = (LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('INSERT INTO loads (LoadTypID, AnlageNr, MieterID , RechnungAn, ErsteRechnung, StromIntervall, ServiceIntervall, Aktiv, Kommentar) VALUES (?,?,?,?,?,?,?,0,?)', [LoadTypeID, FacilityID, TenantID, InvoiceTo, FirstInvoice, IntervalElectricity, IntervalService, Active, Comment], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+/** create **/
+megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, counterOld, counterOldDate, counterNew, counterNewDate, comment) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO loads (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, counterOld, counterOldDate, counterNew, counterNewDate, active, comment) VALUES (?,?,?,?,?,?,?,?,?,?,?,0,?)', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, counterOld, counterOldDate, counterNew, counterNewDate, comment], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 //
 // /** update **/
 // megadb.setLoadActiveByID = (id) => {
