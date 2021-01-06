@@ -224,19 +224,19 @@ megadb.newInactiveLoad = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvo
     });
 };
 
-//
-// /** update **/
-// megadb.setLoadActiveByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE loads SET loads.Aktiv = 1 WHERE LoadID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+
+/** update **/
+megadb.setLoadActiveByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE loads SET loads.active = 1 WHERE loadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 //    megadb.setLoadInactiveByID = (id) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
