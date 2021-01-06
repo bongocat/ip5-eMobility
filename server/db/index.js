@@ -237,17 +237,17 @@ megadb.setLoadActiveByID = (id) => {
     });
 };
 
-//    megadb.setLoadInactiveByID = (id) => {
-//     return new Promise((resolve, reject) => {
-//         connection.query('UPDATE loads SET loads.Aktiv = 0 WHERE LoadID = ?', [id], (err, results) => {
-//             if (err) {
-//                 return reject(err);
-//             }
-//             return resolve(results);
-//         });
-//     });
-// };
-//
+megadb.setLoadInactiveByID = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE loads SET loads.active = 0 WHERE loadID = ?', [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
 // megadb.updateLoadByID = (loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID) => {
 //     return new Promise((resolve, reject) => {
 //         connection.query('UPDATE loads SET LoadTypID = ?, AnlageNr  = ?, MieterID  = ?, RechnungAn  = ?, ErsteRechnung = ?, StromIntervall = ?, ServiceIntervall = ?, Aktiv = ?, Kommentar = ? WHERE LoadID = ?', [loadTypeID, facilityID, tenantID, invoiceTo, firstInvoice, intervalElectricity, intervalService, active, comment, loadID], (err, results) => {
