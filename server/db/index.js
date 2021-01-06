@@ -128,9 +128,9 @@ megadb.newInvoice = (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID
                      salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
                      shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO invoices (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName, ' +
+        connection.query('INSERT INTO invoices (invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,' +
             'salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,' +
-            'shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'shippingStreetNumber, shippingAreaCode, shippingCity, shippingCountry, invoiceStatusID, active, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
             [
                 invoiceNumber, invoiceTypeID, customerRefID, invoiceToRefID, invoiceDate, toPayUntil, payedOn, name, familyName,
                 salutation, company, phone, mobile, email, street, streetNumber, areaCode, city, country, invoiceToShippingAdress, shippingStreet,
