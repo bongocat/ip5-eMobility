@@ -38,7 +38,7 @@
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field label="Strasse" v-model=street
+              <v-text-field label="Strasse" v-model="street"
                             counter
                             maxlength="50"
               ></v-text-field>
@@ -131,7 +131,6 @@ export default {
       comment: "",
       city: "",
       active: 1,
-      rules: { required: value => !!value || 'Required.'},
     }
   },
   methods: {
