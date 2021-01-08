@@ -36,7 +36,7 @@
           <v-row>
             <v-col>
               <v-select
-                  v-model="userType"
+                  v-model="userTypeID"
                   :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
@@ -186,10 +186,10 @@ export default {
       this.dialog = false
 
           const updatedUser = {
-            userID: this.userID,
+            userID: this.user.userID,
+            userTypeID: this.userTypeID,
             name: this.name,
             familyName: this.familyName,
-            userType: this.userType,
             company :this.company,
             salutation :  this.salutation,
             street:  this.street,
@@ -210,37 +210,10 @@ export default {
             invoiceToShippingAdress:  this.invoiceToShippingAdress
           }
       this.editUser(updatedUser)
-
-    },
-    reset() {
-          this.name = this.user.name,
-          this.familyName = this.user.familyName,
-          this.userType = this.user.userType,
-          this.company = this.user.company,
-          this.salutation = this.user.salutation,
-          this.street = this.user.street,
-          this.streetNumber = this.user.streetNumber,
-          this.areaCode = this.user.areaCode,
-          this.city = this.user.city,
-          this.country = this.user.country,
-          this.active = this.user.active,
-          this.comment = this.user.comment,
-          this.phone = this.user.phone,
-          this.email = this.user.email,
-          this.mobile = this.user.mobile,
-          this.shippingStreetNumber = this.user.shippingStreetNumber,
-          this.shippingCountry = this.user.shippingCountry,
-          this.shippingAreaCode = this.user.shippingAreaCode,
-          this.shippingStreet = this.user.shippingStreet,
-          this.shippingCity = this.user.shippingCity,
-          this.invoiceToShippingAdress = this.user.invoiceToShippingAdress
     },
   },
   computed: {
     ...mapGetters(['allUsers']),
-    formTitle () {
-      return 'Nutzer bearbeiten'
-    },
   },
   created() {
     console.log(this.user)

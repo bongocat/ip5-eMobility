@@ -28,7 +28,7 @@
                   return-object
                   single-line
                   :item-text = "item => item.loadTypeID + ' - ' + item.designation"
-                  :item-value = "item => item.loadTypeID"
+                  :item-value= "item => item.loadTypeID"
               ></v-select>
             </v-col>
             <v-col>
@@ -208,6 +208,7 @@ export default {
       this.dialog = false
 
       const newLoad = {
+
         loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
         tenantID: this.tenantID,

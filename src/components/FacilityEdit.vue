@@ -129,7 +129,7 @@ export default {
       const updatedFacility = {
         facilityID: this.facilityID,
         designation: this.designation,
-        administratorID: this.administrationID,
+        administrationID: this.administrationID,
           street: this.street,
           streetNumber: this.streetNumber,
           areaCode: this.areaCode,
