@@ -304,19 +304,19 @@ export default {
     createExceptionalInvoice() {
       this.dialog = false
 
-      console.log(this.currentUser);
+      console.log("CURRENT USER", this.currentUser);
 
       const invoice = {
 
         invoiceNumber: this.invoiceNumber,
         invoiceTypeID: this.invoiceTypeID,
-        customerRefID: this.currentUser.customerRefID,
-        invoiceToRefID: this.currentUser.customerRefID,
+        customerRefID: this.currentUser.userID,
+        invoiceToRefID: this.currentUser.userID,
         invoiceDate: new Date(this.invoiceDate),
         toPayUntil: new Date(this.toPayUntil),
         isPayed: 1,
-        name: this.currentUser.Vorname,
-        familyName: this.currentUser.Nachname,
+        name: this.currentUser.name,
+        familyName: this.currentUser.familyName,
         salutation: this.currentUser.salutation,
         company: this.currentUser.company,
         phone: this.currentUser.phone,
@@ -327,6 +327,7 @@ export default {
         areaCode: this.currentUser.areaCode,
         city: this.currentUser.city,
         country: this.currentUser.country,
+
         invoiceToShippingAdress: this.currentUser.invoiceToShippingAdress,
         shippingStreet: this.currentUser.shippingStreet,
         shippingStreetNumber: this.currentUser.shippingStreetNumber,
