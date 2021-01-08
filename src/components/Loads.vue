@@ -65,7 +65,7 @@ export default {
         {text: 'Letze Rechnung', value: 'firstInvoice' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
-        {text: 'letzter Zählerstand', value: 'counterNew'},
+        {text: 'Letzter Zählerstand', value: 'counterNew'},
         {text: 'Kommentar', value: 'comment'},
         {text: 'Aktiv', value: 'active'},
         {text: 'Actions', value: 'actions', sortable: false},
