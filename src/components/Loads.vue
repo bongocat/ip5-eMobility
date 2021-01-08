@@ -57,7 +57,7 @@ export default {
       expanded: [],
       singleExpand: false,
       innerHeaders: [
-        {text: 'Name', value: 'facilityName'},
+        {text: 'Load ID', value: 'loadID'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Mieter', value: 'tenant'},
         {text: 'Loadtyp', value: 'loadType'},
@@ -68,6 +68,8 @@ export default {
         {text: 'letzter Zählerstand', value: 'counterNew'},
         {text: 'Kommentar', value: 'comment'},
         {text: 'Aktiv', value: 'active'},
+        {text: 'Actions', value: 'actions', sortable: false},
+
       ],
       outerHeaders: [
         {text: 'Name', value: 'designation'},
@@ -105,7 +107,7 @@ export default {
         var facility = facilities.filter(facility => facility.facilityID === item.facilityID)
         var user = users.filter(user => user.userID === item.tenantID)
 
-        var itemFacility = {facility: facility[0].facilityName}
+        var itemFacility = {facility: facility[0].designation}
         var itemLoadType = {loadType: loadType[0].designation}
         var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
 
