@@ -229,26 +229,25 @@ export default {
 
       this.editLoad(newLoad)
 
+      this.fetchUsers()
+      this.fetchLoadTypes()
+      this.fetchFacilities()
+      this.fetchLoads()
+      this.fetchInvoiceTypes()
+      this.fetchInvoices()
+
     },
-    reset() {
-      this.loadTypeID = this.load.loadTypeID
-      this.facilityID = this.load.facilityID
-      this.tenantID = this.load.tenantID
-      this.invoiceTo = this.load.invoiceTo
-      this.firstInvoice = this.load.firstInvoice
-      this.intervalService = this.load.intervalService
-      this.intervalElectricity = this.load.intervalElectricity
-      this.counterOld = this.load.counterOld
-      this.counterOldDate = new Date (this.load.counterOldDate)
-      this.counterNew = this.load.counterNew
-      this.counterNewDate = new Date (this.load.counterNewDate)
-      this.active = this.load.active
-      this.comment = this.load.comment
-    },
-    ...mapActions(['editLoad'])
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes', 'editLoad']),
+
   },
   computed: {
-    ...mapGetters(['allFacilities', 'allUsers', 'allLoads', 'allLoadTypes']),
+    ...mapGetters({
+      allInvoices: 'allInvoices',
+      allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
+    }),
   },
   created() {
   }

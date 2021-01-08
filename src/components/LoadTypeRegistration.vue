@@ -89,7 +89,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
   },
 }

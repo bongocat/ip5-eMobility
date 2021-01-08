@@ -61,7 +61,7 @@ export default {
         {text: 'Anlage', value: 'facility'},
         {text: 'Mieter', value: 'tenant'},
         {text: 'Loadtyp', value: 'loadType'},
-        {text: 'Rechnung An', value: 'invoiceTo'},
+        {text: 'Rechnung An', value: 'invoiceToAsString'},
         {text: 'Letze Rechnung', value: 'firstInvoice' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
@@ -87,10 +87,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
       allFacilities: 'allFacilities',
       allLoadTypes: 'allLoadTypes',
-      allUsers: 'allUsers'
+      allUsers: 'allUsers',
     }),
     fillObjectKeysLoads: function(){
 
@@ -98,10 +99,9 @@ export default {
       var loadTypes = this.allLoadTypes
       var facilities = this.allFacilities
       var users = this.allUsers
+      var invoiceToAsString = {}
 
       fullLoads.forEach(function (item, index) {
-
-        console.log(loadTypes)
 
         var loadType = loadTypes.filter(loadType => loadType.loadTypeID === item.loadTypeID)
         var facility = facilities.filter(facility => facility.facilityID === item.facilityID)
@@ -116,6 +116,16 @@ export default {
         Object.assign(item, itemFacility)
         Object.assign(item, itemLoadType)
         Object.assign(item, itemUser)
+
+        if (item.invoiceTo === 2){
+          invoiceToAsString = {invoiceToAsString: "Mieter"}
+        }
+        else {
+          invoiceToAsString = {invoiceToAsString: "Vermieter"}
+        }
+
+        Object.assign(item, invoiceToAsString)
+
       });
       return fullLoads
     },

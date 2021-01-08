@@ -113,8 +113,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
+      allLoads: 'allLoads',
       allFacilities: 'allFacilities',
-      allUsers: 'allUsers'
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
 
     fillObjectKeys: function (){

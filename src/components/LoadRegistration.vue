@@ -235,10 +235,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
-      allLoadTypes: 'allLoadTypes',
       allFacilities: 'allFacilities',
-      allUsers: 'allUsers'
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
   },
   created() {
