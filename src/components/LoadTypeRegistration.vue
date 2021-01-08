@@ -21,6 +21,20 @@
             <v-col>
               <v-text-field label="Name" v-model=designation></v-text-field>
             </v-col>
+          <v-col>
+            <v-text-field label="Preis Aktiv" v-model=standardPriceWhenActive
+                          type="number"
+                          step="0.01"
+                          min="0.00"
+                          suffix="CHF"></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field label="Preis Inaktiv" v-model=standardPriceWhenInactive
+                          type="number"
+                          step="0.01"
+                          min="0.00"
+                          suffix="CHF"></v-text-field>
+          </v-col>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -59,7 +73,10 @@ export default {
   data() {
     return {
       dialog: false,
+      loadTypeID: "",
       designation: "",
+      standardPriceWhenActive: "",
+      standardPriceWhenInactive: "",
       active: 1,
       comment: ""
     }
@@ -74,6 +91,8 @@ export default {
 
       const newLoadType = {
         designation: this.designation,
+        standardPriceWhenActive: this.standardPriceWhenActive,
+        standardPriceWhenInactive: this.standardPriceWhenInactive,
         active: this.active,
         comment: this.comment,
       }
