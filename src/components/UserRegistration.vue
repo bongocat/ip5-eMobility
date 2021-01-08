@@ -36,7 +36,7 @@
           <v-row>
             <v-col>
               <v-select
-                  v-model="userType"
+                  v-model="userTypeID"
                   :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
@@ -148,7 +148,7 @@ export default {
       name: "",
       familyName: "",
       salutation: "",
-      userType: "",
+      userTypeID: "",
       company: "",
       street: "",
       streetNumber: "",
@@ -177,7 +177,7 @@ export default {
 
         name: this.name,
         familyName: this.familyName,
-        userType: this.userType,
+        userTypeID: this.userTypeID,
         company: this.company,
         salutation: this.salutation,
         street: this.street,

@@ -40,8 +40,8 @@
                               label="Anlage"
                               hint="Anlage"
                               persistent-hint
-                              :item-text = "item => item.AnlageID + ' - ' + item.designation"
-                              :item-value= "item => item.AnlageID"
+                              :item-text = "item => item.facilityID + ' - ' + item.designation"
+                              :item-value= "item => item.facilityID"
               ></v-overflow-btn>
             </v-col>
               <v-col>

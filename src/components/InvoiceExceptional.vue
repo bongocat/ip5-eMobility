@@ -30,7 +30,7 @@
                               v-model = "invoiceTypeID"
                               dense
                               editable
-                              :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
+                              :items='[{text:"Diverses", value: 4},{text:"Strom", value: 3}, {text:"Serviceabo", value: 2}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
                               item-value="value"
                               hint="Rechnungsart"
