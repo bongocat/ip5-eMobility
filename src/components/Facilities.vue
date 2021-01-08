@@ -122,10 +122,7 @@ export default {
       var fullFacilities = this.allFacilities
       var allUsers = this.allUsers
 
-      console.log("all users", allUsers)
-
       fullFacilities.forEach(function (item, index) {
-
 
         var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
         var itemAdministration = {administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}

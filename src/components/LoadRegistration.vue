@@ -19,17 +19,17 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-select
-                  v-model="loadTypeID"
-                  :items="allLoadTypes"
-                  label="Load Typ"
-                  hint="Load Typ"
-                  persistent-hint
-                  return-object
-                  single-line
-                  :item-text = "item => item.loadTypeID + ' - ' + item.designation"
-                  :item-value= "item => item.loadTypeID"
-              ></v-select>
+              <v-overflow-btn style="min-width: 250px"
+                              v-model = "loadTypeID"
+                              dense
+                              editable
+                              :items="allLoadTypes"
+                              label="Load Typ"
+                              hint="Load Typ"
+                              persistent-hint
+                              :item-text = "item => item.loadTypeID + ' - ' + item.designation"
+                              :item-value = "item => item.loadTypeID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-overflow-btn style="min-width: 250px"
@@ -218,6 +218,9 @@ export default {
         intervalService: this.intervalService,
         counterOld: this.counterOld,
         counterOldDate: this.counterOldDate,
+        counterNew: this.counterNew,
+        counterNewDate: this.counterNewDate,
+
 
         comment: this.comment,
       }

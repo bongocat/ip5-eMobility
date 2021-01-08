@@ -210,7 +210,7 @@ const actions = {
     },
 
     async fetchLoadTypes({ commit }) {
-        const response = await axios.get(baseURL +  '/api/megalog/loadTypes/')
+        const response = await axios.get(baseURL +  '/api/megalog/loadtypes/')
         commit('setLoadTypes', response.data)
     },
 
@@ -220,7 +220,7 @@ const actions = {
     },
 
     async addNewLoadType({commit}, loadtype){
-        const response = await axios.post(baseURL + '/api/megalog/loadTypes/', loadtype)
+        const response = await axios.post(baseURL + '/api/megalog/loadtypes/', loadtype)
         commit('addNewLoadType', response.data)
     },
 

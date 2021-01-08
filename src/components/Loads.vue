@@ -13,19 +13,19 @@
               dense
               style="margin-top: 20px"
               :headers="outerHeaders"
-              :items="this.allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+              :items="fillObjectKeysFacilities"
               :single-expand="singleExpand"
               :expanded.sync="expanded"
               item-key="facilityID"
               show-expand
               class="elevation-1"
           >
-            <template v-slot:expanded-item="{ headers, item }">
+            <template v-slot:expanded-item="{ headers}">
               <td :colspan="headers.length">
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
                     :headers="innerHeaders"
-                    :items="fillObjectKeys.filter(loads => loads.facilityID === item.facilityID)"
+                    :items="fillObjectKeysLoads"
                     item-key="inner"
                     class="elevation-5"
                 >
@@ -60,6 +60,7 @@ export default {
         {text: 'Name', value: 'facilityName'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Mieter', value: 'tenant'},
+        {text: 'Loadtyp', value: 'loadType'},
         {text: 'Rechnung An', value: 'invoiceTo'},
         {text: 'Letze Rechnung', value: 'firstInvoice' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
@@ -69,7 +70,7 @@ export default {
         {text: 'Aktiv', value: 'active'},
       ],
       outerHeaders: [
-        {text: 'Name', value: 'facilityName'},
+        {text: 'Name', value: 'designation'},
         {text: 'Verwaltung', value: 'administration'},
         {text: 'Strasse', value: 'street'},
         {text: 'Hausnummer', value: 'streetNumber'},
@@ -83,55 +84,66 @@ export default {
     }
   },
   computed: {
-    columnNames() {
-      let facilityHeaders = []
-      Object.keys(this.allFacilities[0]).forEach(function (item) {
-        facilityHeaders.push({text: item, value: item},)
-      })
-      facilityHeaders.push({text: 'Actions', value: 'actions', sortable: false})
-      facilityHeaders.push({text: '', value: 'data-table-expand'})
-      return facilityHeaders
-    },
-    columnInnerNames() {
-      let loadHeader = []
-      Object.keys(this.allLoads[0]).forEach(function (item) {
-        loadHeader.push({text: item, value: item},)
-      })
-      loadHeader.push({text: 'Actions', value: 'actions', sortable: false})
-      return loadHeader
-    },
     ...mapGetters({
       allLoads: 'allLoads',
-      allFacilities: 'allFacilities'
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers'
     }),
-  },
-  methods: {
-    ...mapActions(['fetchLoads']),
-    fillObjectKeys(){
+    fillObjectKeysLoads: function(){
 
       var fullLoads = this.allLoads
+      var loadTypes = this.allLoadTypes
+      var facilities = this.allFacilities
+      var users = this.allUsers
 
       fullLoads.forEach(function (item, index) {
 
-        var loadType = this.allLoadTypes.filter(loadType => loadType.loadTypeID === item.loadTypeID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === item.facilityID)
-        var user = this.allUsers.filter(user => user.userID === item.tenantID)
+        console.log(loadTypes)
 
-        var itemFacility = {facility: facility.facilityName}
-        var itemLoadType = {loadType: loadType.designation}
-        var itemUser = {tenant: user.name + ' ' + user.familyName}
+        var loadType = loadTypes.filter(loadType => loadType.loadTypeID === item.loadTypeID)
+        var facility = facilities.filter(facility => facility.facilityID === item.facilityID)
+        var user = users.filter(user => user.userID === item.tenantID)
+
+        var itemFacility = {facility: facility[0].facilityName}
+        var itemLoadType = {loadType: loadType[0].designation}
+        var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
+
+        console.log("ITEMS:", itemLoadType, itemFacility, itemUser);
 
         Object.assign(item, itemFacility)
         Object.assign(item, itemLoadType)
         Object.assign(item, itemUser)
-
       });
-
       return fullLoads
+    },
+
+    fillObjectKeysFacilities: function (){
+
+      var fullFacilities = this.allFacilities
+      var allUsers = this.allUsers
+
+      fullFacilities.forEach(function (item, index) {
+
+        var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
+        console.log(itemAdmin)
+        var itemAdministration = { administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
+
+        Object.assign(item, itemAdministration)
+      });
+      return fullFacilities
     }
   },
+  methods: {
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
+  },
   created() {
+    this.fetchUsers()
+    this.fetchLoadTypes()
+    this.fetchFacilities()
     this.fetchLoads()
+    this.fetchInvoiceTypes()
+    this.fetchInvoices()
   }
 }
 </script>
