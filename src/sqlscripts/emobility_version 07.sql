@@ -251,8 +251,8 @@ INSERT INTO `facilities` (`facilityID`, `administrationID`, `designation`, `stre
 --
 
 INSERT INTO `loads` (`loadID`, `loadTypeID`, `facilityID`, `tenantID`, `invoiceTo`, `firstInvoice`, `intervalElectricity`, `intervalService`, `counterOld`, `counterOldDate`, `counterNew`, `counterNewDate`, `created`, `lastUpdated`, `active`, `comment`) VALUES
-(1, 1, 1, 3, 1, '2021-01-31', 30, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load'),
-(2, 2, 2, 4, 2, '2021-01-31', 30, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load');
+(1, 1, 1, 3, 1, '2021-01-31', Jährlich, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load'),
+(2, 2, 2, 4, 2, '2021-01-31', Jährlich, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load');
 
 --
 -- Daten für Tabelle `invoices`
