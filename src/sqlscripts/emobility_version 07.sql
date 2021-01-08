@@ -253,3 +253,10 @@ INSERT INTO `facilities` (`facilityID`, `administrationID`, `designation`, `stre
 INSERT INTO `loads` (`loadID`, `loadTypeID`, `facilityID`, `tenantID`, `invoiceTo`, `firstInvoice`, `intervalElectricity`, `intervalService`, `counterOld`, `counterOldDate`, `counterNew`, `counterNewDate`, `created`, `lastUpdated`, `active`, `comment`) VALUES
 (1, 1, 1, 3, 1, '2021-01-31', 30, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load'),
 (2, 2, 2, 4, 2, '2021-01-31', 30, 30, 0, NULL, 0, NULL, '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'This is a test load');
+
+--
+-- Daten für Tabelle `invoices`
+--
+
+INSERT INTO `invoices` (`invoiceID`, `invoiceNumber`, `invoiceTypeID`, `customerRefID`, `invoiceToRefID`, `invoiceDate`, `toPayUntil`, `payedOn`, `name`, `familyName`, `salutation`, `company`, `phone`, `mobile`, `email`, `street`, `streetNumber`, `areaCode`, `city`, `country`, `invoiceToShippingAdress`, `shippingStreet`, `shippingStreetNumber`, `shippingAreaCode`, `shippingCity`, `shippingCountry`, `invoiceStatusID`, `created`, `lastUpdated`, `active`, `comment`) VALUES
+(1, '0101010101', 4, 3, 3, '2021-01-08', '0000-00-00', '0000-00-00', 'Anna', 'Musterfrau', 'Frau', 'Verein Claramatte', '+41 (0)67 55 34', '+41 (0)78 34 45', 'anna@gmx.ch', 'Kohlgasse', '03', '43', 'Luzern', 'Schweiz', 0, NULL, NULL, NULL, NULL, NULL, 2, '2020-12-31 23:00:00', '2021-01-08 15:33:43', 1, 'This is a miscelanious invoice for test purposes');
