@@ -79,7 +79,7 @@ export default {
       loadTypeID: "",
       designation: "",
       standardPriceWhenActive: "",
-      standardPriceWhenInactive: "",
+      standardPriceWhenInactive: "1.0",
       active: 1,
       comment: ""
     }
