@@ -26,25 +26,19 @@
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "invoiceTypeID"
                               dense
                               editable
-                              :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
+                              :items='[{text:"Diverses", value: 4},{text:"Strom", value: 3}, {text:"Serviceabo", value: 2}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
-                              item-value="string"
+                              item-value="value"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field v-model="MieterReferenz"
-                            label="Mieter ID"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "currentUser"
                               dense
                               editable
@@ -52,16 +46,18 @@
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-menu
                   ref="menuFälligAm"
                   v-model="menuFaelligAm"
                   :close-on-content-click="false"
-                  :return-value.sync=faelligAm
+                  :return-value.sync=invoiceDate
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -104,7 +100,7 @@
                   ref="menuZuZahlenBis"
                   v-model= "menuZuZahlenBis"
                   :close-on-content-click="false"
-                  :return-value.sync=zuZahlenBis
+                  :return-value.sync=toPayUntil
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -142,10 +138,8 @@
                 </v-date-picker>
               </v-menu>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
-              <v-text-field v-model="Kommentar"
+              <v-text-field v-model="comment"
                             label="Kommentar"></v-text-field>
             </v-col>
           </v-row>
@@ -170,7 +164,6 @@
                             min="0.00"
                             suffix="CHF"
               >
-
               </v-text-field>
             </v-col>
             <v-col>
@@ -257,6 +250,7 @@
 <script>
 
 import {mapGetters, mapMutations, mapActions} from "vuex";
+import {exceptionalInvoiceToPDF, normalInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 
 export default {
@@ -266,6 +260,7 @@ export default {
       menuFaelligAm: false,
       menuZuZahlenBis: false,
       dialog: false,
+
       currentUser: {},
 
       invoiceNumber: "",
@@ -275,7 +270,7 @@ export default {
       loadID: "",
       invoiceDate: "",
       toPayUntil: "",
-      isPayed: "",
+      payedOn: "",
       name: "",
       familyName: "",
       salutation: "",
@@ -289,15 +284,12 @@ export default {
       city: "",
       country: "",
       invoiceToShippingAdress: "",
-      ShippingStreet: "",
-      ShippingStreetNumber: "",
-      ShippingAreaCode: "",
-      ShippingCity: "",
-      ShippingCountry: "",
-      counterOld: "",
-      counterOldDate: "",
-      counterNew: "",
-      counterNewDate: "",
+      shippingStreet: "",
+      shippingStreetNumber: "",
+      shippingAreaCode: "",
+      shippingCity: "",
+      shippingCountry: "",
+      invoiceStatusID: "",
       active: "",
       comment: "",
 
@@ -318,40 +310,36 @@ export default {
 
         invoiceNumber: this.invoiceNumber,
         invoiceTypeID: this.invoiceTypeID,
-        customerRefID: this.currentUser.NutzerID,
-        invoiceToRefID: this.currentUser.NutzerID,
-        loadID: 4,
+        customerRefID: this.currentUser.customerRefID,
+        invoiceToRefID: this.currentUser.customerRefID,
         invoiceDate: new Date(this.invoiceDate),
         toPayUntil: new Date(this.toPayUntil),
-        isPayed: 0,
+        isPayed: 1,
         name: this.currentUser.Vorname,
         familyName: this.currentUser.Nachname,
-        salutation: this.currentUser.Anrede,
-        company: this.currentUser.Firma,
-        phone: this.currentUser.FestnetzNummer,
-        mobile: this.currentUser.HandyNummer,
-        email: this.currentUser.EMailAdresse,
-        street: this.currentUser.WStrasse,
-        streetNumber: this.currentUser.WStrassenNr,
-        areaCode: this.currentUser.WPLZ,
-        city: this.currentUser.WOrt,
-        country: this.currentUser.WLand,
-        invoiceToShippingAdress: this.currentUser.RiW,
-        ShippingStreet: this.currentUser.RStrasse,
-        ShippingStreetNumber: this.currentUser.RStrassenNr,
-        ShippingAreaCode: this.currentUser.RPLZ,
-        ShippingCity: this.currentUser.ROrt,
-        ShippingCountry: this.currentUser.RLand,
-        counterOld: "",
-        counterOldDate: "",
-        counterNew: 0,
-        counterNewDate: 0,
-        active: this.currentUser.Aktiv,
+        salutation: this.currentUser.salutation,
+        company: this.currentUser.company,
+        phone: this.currentUser.phone,
+        mobile: this.currentUser.mobile,
+        email: this.currentUser.email,
+        street: this.currentUser.street,
+        streetNumber: this.currentUser.streetNumber,
+        areaCode: this.currentUser.areaCode,
+        city: this.currentUser.city,
+        country: this.currentUser.country,
+        invoiceToShippingAdress: this.currentUser.invoiceToShippingAdress,
+        shippingStreet: this.currentUser.shippingStreet,
+        shippingStreetNumber: this.currentUser.shippingStreetNumber,
+        shippingAreaCode: this.currentUser.shippingAreaCode,
+        shippingCity: this.currentUser.shippingCity,
+        shippingCountry: this.currentUser.shippingCountry,
+
+        active: this.currentUser.active,
         comment: this.comment,
       }
       console.log(invoice)
       this.addNewInvoice(invoice)
-
+      exceptionalInvoiceToPDF(invoice, this.allUsers ,this.allFacilities )
     },
     reset() {
       this.$refs.form.reset()

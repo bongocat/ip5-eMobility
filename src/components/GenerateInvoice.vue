@@ -26,13 +26,12 @@
                                  label="Rechnungsnummer"></v-text-field>
                </v-col>
                 <v-col>
-                    <v-overflow-btn style="width: 400px"
+                    <v-overflow-btn style="min-width: 250px"
                                     v-model = "due"
                                     dense
                                     editable
                                     :items='[{text: "10 Tage", value: 10}, {text: "20 Tage", value: 20}, {text: "30 Tage", value: 30}]'
                                     label="Zahlungsfrist"
-                                    item-value="number"
                     ></v-overflow-btn>
                 </v-col>
                 <v-col>
@@ -167,8 +166,8 @@
 
 <script>
 
-import { mapGetters}  from "vuex";
-import { toPDF } from "../PDFGeneration/generatePDF"
+import {mapActions, mapGetters} from "vuex";
+import { regularInvoiceToPDF } from "../PDFGeneration/generatePDF"
 
 
 export default {
@@ -182,20 +181,22 @@ export default {
       extraPosCount: "",
       extraPosUnitPrice: "",
       invoicePositions: [],
-        due: 10,
-        comment: "",
+      due: 10,
+      comment: "",
       dialog: false,
+
       name: '',
       invoiceNumber: 0,
-        meterReadingOld: false,
-        meterReadingNew: false,
-        meterDifference: false,
+      meterReadingOld: false,
+      meterReadingNew: false,
+      meterDifference: false,
     }
   },
   methods: {
     reset() {
       this.$refs.form.reset()
     },
+    ...mapActions(['editInvoice']),
     newInvoicePosition(){
       this.invoicePositions.push({
         extraPosDescription: this.extraPosDescription,
@@ -210,42 +211,27 @@ export default {
     removeInvoicePosition(position){
       this.invoicePositions.splice(this.invoicePositions.indexOf(position),1)
     },
-    toCSV: function (item) {
-
-        item.Generiert = "true"
-        item.RechnungsNr = this.invoiceNumber
-        item.ZählerstandAlt = this.meterReadingOld
-        item.ZählerstandNeu = this.meterReadingNew
-        item.Kommentar = this.comment
-
-      const outputData = [Object.keys(item), Object.values(item)];
-
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
-
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "megalog_invoice.csv");
-        document.body.appendChild(link);
-        link.click();
-    },
     exportToPDF: function (item) {
-      item.Generiert = "true"
-      item.RechnungsNr = this.invoiceNumber
-      item.ZählerstandAlt = this.meterReadingOld
-      item.ZählerstandNeu = this.meterReadingNew
+
+
+
+      item.RechnungsNummer = this.invoiceNumber
       item.Kommentar = this.comment
+      if (this.meterReadingOld == true) {
+        item.ZählerAlt = 1
+      }
+      if (this.meterReadingNew == true) {
+        item.ZählerNeu = 1
+      }
+
+
       console.log(this.due)
-      item['Zu Zahlen Bis'] = new Date(Date.now() + (this.due + 1) * 24*60*60*1000);
-      console.log(item['Zu Zahlen Bis'].toString())
-      toPDF(item,this.allUsers, this.allFacilities)
+      item.ZuZahlenBis = new Date(Date.now() + (this.due + 1) * 24*60*60*1000);
+      console.log(item.ZuZahlenBis.toString())
+      item.Status += 1
+      this.editInvoice(item)
+      console.log(item)
+      regularInvoiceToPDF(item,this.allUsers, this.allFacilities)
     }
   },
     computed: {
@@ -261,7 +247,9 @@ export default {
             return !(this.meterReadingOld || this.meterReadingNew)
         }
     },
-  watch: {},
+  watch: {
+
+  },
 
 }
 </script>

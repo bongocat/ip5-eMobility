@@ -22,7 +22,7 @@
               <v-text-field label="Name" v-model=facilityName></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "administrationID"
                               dense
                               editable
@@ -30,7 +30,7 @@
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
@@ -46,7 +46,7 @@
               <v-text-field label="Ort" v-model=city></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=ZIPCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Land" v-model=country></v-text-field>
@@ -105,11 +105,11 @@ export default {
       administrationID: "",
       street: "",
       streetNumber: "",
-      ZIPCode: "",
+      areaCode: "",
       country: "",
       comment: "",
       city: "",
-      active: 0,
+      active: 1,
     }
   },
   methods: {
@@ -118,12 +118,12 @@ export default {
       this.dialog = false
 
       const newFacility = {
-        administratorID: this.administrationID.NutzerID,
+        administrationID: this.administrationID.userID,
         designation: this.facilityName,
         city: this.city,
         street: this.street,
         streetNumber: this.streetNumber,
-        areaCode: this.ZIPCode,
+        areaCode: this.areaCode,
         country: this.country,
         comment: this.comment,
         active: this.active

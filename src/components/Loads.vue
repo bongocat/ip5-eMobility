@@ -12,25 +12,20 @@
           <v-data-table
               dense
               style="margin-top: 20px"
-              :headers="columnNames"
-              :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+              :headers="outerHeaders"
+              :items="fillObjectKeysFacilities"
               :single-expand="singleExpand"
               :expanded.sync="expanded"
-              item-key="AnlageID"
+              item-key="facilityID"
               show-expand
               class="elevation-1"
           >
-            <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:expanded-item="{ headers, item }">
+            <template v-slot:expanded-item="{ headers}">
               <td :colspan="headers.length">
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
-                    :headers="columnInnerNames"
-                    :items="allLoads.filter(loads => loads.AnlageNr == item.AnlageID)"
+                    :headers="innerHeaders"
+                    :items="fillObjectKeysLoads"
                     item-key="inner"
                     class="elevation-5"
                 >
@@ -61,55 +56,106 @@ export default {
     return {
       expanded: [],
       singleExpand: false,
+      innerHeaders: [
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Mieter', value: 'tenant'},
+        {text: 'Loadtyp', value: 'loadType'},
+        {text: 'Rechnung An', value: 'invoiceToAsString'},
+        {text: 'Letze Rechnung', value: 'firstInvoice' },
+        {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
+        {text: 'Zahlungsintervall Service', value: 'intervalService'},
+        {text: 'letzter Zählerstand', value: 'counterNew'},
+        {text: 'Kommentar', value: 'comment'},
+        {text: 'Aktiv', value: 'active'},
+        {text: 'Actions', value: 'actions', sortable: false},
+
+      ],
+      outerHeaders: [
+        {text: 'Name', value: 'designation'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Strasse', value: 'street'},
+        {text: 'Hausnummer', value: 'streetNumber'},
+        {text: 'PLZ', value: 'areaCode' },
+        {text: 'Stadt', value: 'city'},
+        {text: 'Land', value: 'country'},
+        {text: 'Kommentar', value: 'comment'},
+        {text: 'Actions', value: 'actions', sortable: false},
+        {text: '', value: 'data-table-expand'}
+      ]
     }
   },
   computed: {
-    columnNames() {
-      let facilityHeaders = []
-      Object.keys(this.allFacilities[0]).forEach(function (item) {
-        facilityHeaders.push({text: item, value: item},)
-      })
-      facilityHeaders.push({text: 'Actions', value: 'actions', sortable: false})
-      facilityHeaders.push({text: '', value: 'data-table-expand'})
-      return facilityHeaders
-    },
-    columnInnerNames() {
-      let loadHeader = []
-      Object.keys(this.allLoads[0]).forEach(function (item) {
-        loadHeader.push({text: item, value: item},)
-      })
-      loadHeader.push({text: 'Actions', value: 'actions', sortable: false})
-      return loadHeader
-    },
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
-      allFacilities: 'allFacilities'
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
-  },
-  methods: {
-    ...mapActions(['fetchLoads']),
-    toCSV: function (item) {
+    fillObjectKeysLoads: function(){
 
-      const outputData = [Object.keys(item), Object.values(item)];
+      var fullLoads = this.allLoads
+      var loadTypes = this.allLoadTypes
+      var facilities = this.allFacilities
+      var users = this.allUsers
+      var invoiceToAsString = {}
 
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
+      fullLoads.forEach(function (item, index) {
 
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
+        var loadType = loadTypes.filter(loadType => loadType.loadTypeID === item.loadTypeID)
+        var facility = facilities.filter(facility => facility.facilityID === item.facilityID)
+        var user = users.filter(user => user.userID === item.tenantID)
+
+        var itemFacility = {facility: facility[0].designation}
+        var itemLoadType = {loadType: loadType[0].designation}
+        var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
+
+        console.log("ITEMS:", itemLoadType, itemFacility, itemUser);
+
+        Object.assign(item, itemFacility)
+        Object.assign(item, itemLoadType)
+        Object.assign(item, itemUser)
+
+        if (item.invoiceTo === 2){
+          invoiceToAsString = {invoiceToAsString: "Mieter"}
+        }
+        else {
+          invoiceToAsString = {invoiceToAsString: "Vermieter"}
+        }
+
+        Object.assign(item, invoiceToAsString)
+
       });
+      return fullLoads
+    },
 
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
+    fillObjectKeysFacilities: function (){
+
+      var fullFacilities = this.allFacilities
+      var allUsers = this.allUsers
+
+      fullFacilities.forEach(function (item, index) {
+
+        var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
+        console.log(itemAdmin)
+        var itemAdministration = { administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
+
+        Object.assign(item, itemAdministration)
+      });
+      return fullFacilities
     }
   },
+  methods: {
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
+  },
   created() {
+    this.fetchUsers()
+    this.fetchLoadTypes()
+    this.fetchFacilities()
     this.fetchLoads()
+    this.fetchInvoiceTypes()
+    this.fetchInvoices()
   }
 }
 </script>

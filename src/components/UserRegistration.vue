@@ -14,7 +14,7 @@
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">{{ formTitle }}</h1>
+        <h1 class="headline">Nutzer erfassen</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -36,7 +36,7 @@
           <v-row>
             <v-col>
               <v-select
-                  v-model="userType"
+                  v-model="userTypeID"
                   :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
@@ -45,7 +45,7 @@
               <v-text-field label="Strasse" v-model=street></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=userHouseNumber></v-text-field>
+              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Handynummer" v-model="mobile"></v-text-field>
@@ -53,13 +53,13 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=userZIPCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Ort" v-model=userLocation></v-text-field>
+              <v-text-field label="Ort" v-model=city></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=userCountry></v-text-field>
+              <v-text-field label="Land" v-model=country></v-text-field>
             </v-col>
             <v-col>
               <v-text-field label="Telefonnummer" v-model="phone"></v-text-field>
@@ -73,11 +73,11 @@
               <v-text-field label="Firma" v-model="company"></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model="userComment"></v-text-field>
+              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
             </v-col>
             <v-col>
               <v-checkbox
-                  v-model="userActive"
+                  v-model="active"
                   label="Aktiv"
                   color="success"
               ></v-checkbox>
@@ -148,15 +148,15 @@ export default {
       name: "",
       familyName: "",
       salutation: "",
-      userType: "",
+      userTypeID: "",
       company: "",
       street: "",
-      userHouseNumber: "",
-      userZIPCode: "",
-      userLocation: "",
-      userCountry: "",
-      userActive: "",
-      userComment: "",
+      streetNumber: "",
+      areaCode: "",
+      city: "",
+      country: "",
+      active: "",
+      comment: "",
       shippingStreet: "",
       shippingStreetNumber:"",
       shippingAreaCode: "",
@@ -177,16 +177,16 @@ export default {
 
         name: this.name,
         familyName: this.familyName,
-        userType: this.userType,
+        userTypeID: this.userTypeID,
         company: this.company,
         salutation: this.salutation,
         street: this.street,
-        streetNumber: this.userHouseNumber,
-        areaCode: this.userZIPCode,
-        city: this.userLocation,
-        country: this.userCountry,
-        active: this.userActive,
-        comment: this.userComment,
+        streetNumber: this.streetNumber,
+        areaCode: this.areaCode,
+        city: this.city,
+        country: this.country,
+        active: this.active,
+        comment: this.comment,
 
         phone: this.phone,
         mobile: this.mobile,
@@ -209,9 +209,6 @@ export default {
   },
   computed: {
     ...mapGetters(['allUsers']),
-    formTitle () {
-      return this.editedIndex === -1 ? 'Neuen Nuzer erfassen' : 'Nutzer bearbeiten'
-    },
   }
 }
 </script>

@@ -10,13 +10,19 @@
           <InvoiceExceptional></InvoiceExceptional>
           <v-data-table
               dense
-              :headers="columnNames"
-              :items="allInvoices"
+              :headers="invoiceHeaders"
+              :items="fillObjectKeys"
               class="elevation-1"
               :items-per-page="15"
           style="margin-top: 20px">
             <template v-slot:item.actions="{item}">
-              <InvoiceEdit :invoice="item"></InvoiceEdit>
+              <v-btn
+                  text
+                  color="success"
+                  @click="exportToPDF(item)"
+              >
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
@@ -48,12 +54,12 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import InvoiceEdit from "../components/InvoiceEdit";
 import InvoiceExceptional from "../components/InvoiceExceptional";
+import {invoiceFromDatabase} from "@/PDFGeneration/generatePDF";
 
 export default {
   name: "Invoices",
-  components: {InvoiceEdit, InvoiceExceptional},
+  components: {InvoiceExceptional},
   data() {
     return {
       selected: [],
@@ -62,6 +68,17 @@ export default {
       itemsPerPage: 10,
       dialog: false,
       dialogDelete: false,
+      invoiceHeaders: [
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'customerRefID'},
+        {text: 'Rechnung An', value: 'RechnungAn'},
+        {text: 'Anlage', value: 'facility' },
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Mieter Vorname', value: 'name'},
+        {text: 'Mieter Nachname', value: 'familyName'},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
       vorlagen: [
         {text: 'Installation', icon: 'mdi-folder-open'},
         {text: 'Strom', icon: 'mdi-folder-open'},
@@ -70,41 +87,38 @@ export default {
     };
   },
   methods: {
-    toCSV: function (item) {
-
-      const outputData = [Object.keys(item), Object.values(item)];
-
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
-
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
-    }
+    exportToPDF: function (item) {
+      invoiceFromDatabase(item)
+    },
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads']),
   },
   computed: {
-    columnNames() {
-      var computedColumnnames = []
-      Object.keys(this.allInvoices[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
-      })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false})
-      return computedColumnnames
+    fillObjectKeys(){
+      var fullInvoices = this.allInvoices
+
+      fullInvoices.forEach(function (item, index) {
+        var load = this.allLoads.filter(load => load.loadID === item.loadID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
+
+        var itemFacility = {facility: facility[0].facilityName}
+        Object.assign(item, itemFacility)
+      });
+
+      return fullInvoices
     },
     ...mapGetters({
       allInvoices: 'allInvoices',
+      allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
-    ...mapActions(['fetchInvoices']),
   },
   created() {
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
     this.fetchInvoices()
   }
 }

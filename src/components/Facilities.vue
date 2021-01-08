@@ -64,8 +64,8 @@
           </v-expansion-panels>
           <v-data-table
               dense
-              :headers="columnNames"
-              :items="allFacilities"
+              :headers="facilityHeaders"
+              :items="fillObjectKeys"
               class="elevation-1"
               :items-per-page="20">
             <template v-slot:item.actions="{item}">
@@ -90,92 +90,60 @@ export default {
   data() {
     return {
       currentItem: {},
-      selected: [],
       page: 1,
       pageCount: 0,
       itemsPerPage: 5,
       dialog: false,
       editedIndex: -1,
-      paidInvoices: [],
+      facilityHeaders: [
+        {text: 'Name', value: 'designation'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Strasse', value: 'street'},
+        {text: 'Hausnummer', value: 'streetNumber'},
+        {text: 'PLZ', value: 'areaCode' },
+        {text: 'Stadt', value: 'city'},
+        {text: 'Land', value: 'country'},
+        {text: 'Kommentar', value: 'comment'},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
     };
   },
   methods: {
-    resetSelected() {
-      this.selected = []
-    },
-    toCSV: function (item) {
-
-      const outputData = [Object.keys(item), Object.values(item)];
-
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
-
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
-
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
-    }
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
   },
   computed: {
-    ...mapActions(['fetchFacilities']),
     ...mapGetters({
-      allFacilities: 'allFacilities'
+      allInvoices: 'allInvoices',
+      allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
-    columnNames() {
-      var computedColumnnames = []
-      Object.keys(this.allFacilities[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
-      })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false})
-      return computedColumnnames
-    },
-    getUniqueProperties() {
-      var array = [];
-      this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Name)) {
-          array.push(item.Name)
-        }
-      })
-      return array
-    },
-    getUniqueAdministration() {
-      var array = [];
-      this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Immobilienverwaltung)) {
-          array.push(item.Immobilienverwaltung)
-        }
-      })
-      return array
-    },
-    getUniqueTenants() {
-      var array = [];
-      this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.PLZ)) {
-          array.push(item.PLZ)
-        }
-      })
-      return array
-    },
-    getUniqueInvoiceCategory() {
-      var array = [];
-      this.allFacilities.forEach(function (item) {
-        if (!array.includes(item.Land)) {
-          array.push(item.Land)
-        }
-      })
-      return array
-    }
 
+    fillObjectKeys: function (){
+
+      var fullFacilities = this.allFacilities
+      var allUsers = this.allUsers
+
+      fullFacilities.forEach(function (item, index) {
+
+        var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
+        var itemAdministration = {administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
+
+
+        Object.assign(item, itemAdministration)
+      });
+
+      return fullFacilities
+    }
   },
   created() {
-    this.fetchFacilities();
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchInvoices()
+    this.fetchInvoiceTypes()
   }
 }
 </script>
