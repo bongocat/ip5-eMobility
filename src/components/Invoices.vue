@@ -104,6 +104,7 @@ export default {
           var load = allLoads.filter(load => load.loadID === item.loadID)
           var facility = allFacilities.filter(facility => facility.facilityID === load.facilityID)
           var itemFacility = {facility: facility[0].facilityName}
+
           Object.assign(item, itemFacility)
         }
       });
