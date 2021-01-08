@@ -71,7 +71,7 @@ export default {
       invoiceHeaders: [
         {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'customerRefID'},
-        {text: 'Rechnung An', value: 'RechnungAn'},
+        {text: 'Rechnung An', value: 'invoiceToRefID'},
         {text: 'Anlage', value: 'facility' },
         {text: 'Load ID', value: 'loadID'},
         {text: 'Fällig Am', value: 'invoiceDate'},
@@ -94,14 +94,19 @@ export default {
   },
   computed: {
     fillObjectKeys(){
+
       var fullInvoices = this.allInvoices
+      var allLoads = this.allLoads
+      var allFacilities = this.allFacilities
 
       fullInvoices.forEach(function (item, index) {
-        var load = this.allLoads.filter(load => load.loadID === item.loadID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
+        if (item.loadID != undefined){
+          var load = allLoads.filter(load => load.loadID === item.loadID)
+          var facility = allFacilities.filter(facility => facility.facilityID === load.facilityID)
+          var itemFacility = {facility: facility[0].facilityName}
 
-        var itemFacility = {facility: facility[0].facilityName}
-        Object.assign(item, itemFacility)
+          Object.assign(item, itemFacility)
+        }
       });
 
       return fullInvoices

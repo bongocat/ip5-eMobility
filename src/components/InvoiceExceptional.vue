@@ -327,6 +327,7 @@ export default {
         areaCode: this.currentUser.areaCode,
         city: this.currentUser.city,
         country: this.currentUser.country,
+        invoiceStatusID: 2,
 
         invoiceToShippingAdress: this.currentUser.invoiceToShippingAdress,
         shippingStreet: this.currentUser.shippingStreet,

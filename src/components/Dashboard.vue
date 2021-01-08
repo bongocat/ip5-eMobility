@@ -379,13 +379,16 @@ export default {
     }),
     fillObjectKeys(){
       var fullInvoices = this.upcomingInvoices
+      var allLoads = this.allLoads
+      var allFacilities = this.allFacilities
 
       fullInvoices.forEach(function (item, index) {
-        var load = this.allLoads.filter(load => load.loadID === item.loadID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
-
-        var itemFacility = {facility: facility.facilityName}
-        Object.assign(item, itemFacility)
+        if (item.loadID != undefined){
+          var load = allLoads.filter(load => load.loadID === item.loadID)
+          var facility = allFacilities.filter(facility => facility.facilityID === load.facilityID)
+          var itemFacility = {facility: facility[0].facilityName}
+          Object.assign(item, itemFacility)
+        }
       });
 
       return fullInvoices
