@@ -134,7 +134,10 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model=comment></v-text-field>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"
