@@ -105,7 +105,7 @@
             <v-col>
               <v-select
                   v-model="intervalService"
-                  :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                  :items="['Monatlich', 'Vierteljährlich', 'Halbjährlich', 'Jährlich']"
                   label="Zahlunsintervall"
                   hint="Rechnungsintervall Strom"
                   persistent-hint
@@ -116,7 +116,7 @@
             <v-col>
               <v-select
                       v-model="intervalElectricity"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                      :items="['Monatlich', 'Vierteljährlich', 'Halbjährlich', 'Jährlich']"
                       label="Zahlunsintervall"
                       hint="Rechnungsintervall Service"
                       persistent-hint
