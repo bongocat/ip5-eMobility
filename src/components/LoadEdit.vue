@@ -39,18 +39,18 @@
                               v-model = "tenantID"
                               dense
                               editable
-                              :items="allUsers"
-                              label="Rechnung an"
-                              hint="Rechnung an"
+                              :items="this.allUsers"
+                              label="Mieter"
+                              hint="Mieter"
                               persistent-hint
-                              :item-text = "item => item.tenantID + ' - ' + item.name +'  '+ item.familyName"
-                              :item-value= "item => item.tenantID"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
+                              :item-value= "item => item.userID"
               ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-select
                       v-model="invoiceTo"
-                      :items="[{text: 'Mieter', value: 0}, {text: 'Vermieter', value: 1}]"
+                      :items="[{text: 'Vermieter', value: 1}, {text: 'Mieter', value: 2}]"
                       label="Rechnung an"
                       hint="Rechnung an"
                       persistent-hint
