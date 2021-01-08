@@ -208,7 +208,6 @@ export default {
       this.dialog = false
 
       const newLoad = {
-
         loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
         tenantID: this.tenantID,
@@ -220,11 +219,15 @@ export default {
         counterOldDate: this.counterOldDate,
         counterNew: this.counterNew,
         counterNewDate: this.counterNewDate,
-
-
         comment: this.comment,
       }
 
+      if (newLoad.invoiceTo === "Vermieter") {
+        newLoad.invoiceTo = 1
+      }
+      else {
+        newLoad.invoiceTo = 2
+      }
       console.log(newLoad)
 
       this.addNewLoad(newLoad)
