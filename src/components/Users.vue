@@ -87,7 +87,7 @@ export default {
 
       fullUsers.forEach(function (item, index) {
 
-        if (item.userType === 2){
+        if (item.userTypeID === 2){
           fullUserType = {userTypeFull: "Mieter"}
         }
         else {
