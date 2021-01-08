@@ -537,6 +537,57 @@ router.get('/loadtypes/:id', async (req, res, next) => {
 
 });
 
+/**
+ * Create a new loadtype
+ *
+ * Example for POST JSON:
+ *  {
+        "designation": "This is a test",
+        "standardPriceWhenActive": "33.33",
+        "standardPriceWhenInactive": "2.0",
+        "active": "1",
+        "comment": "This is a comment"
+    }
+ */
+router.post('/loadtypes', async (req, res, next) => {
+    console.log("Create a new loadtype");
+    try {
+        let input = req.body;
+        let results = await db.newLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Update a loadtype
+ *
+ * Example for POST JSON:
+ *  {
+        "designation": "This test a test",
+        "standardPriceWhenActive": "33.33",
+        "standardPriceWhenInactive": "2.0",
+        "active": "1",
+        "comment": "This is a comment",
+        "loadTypeID": "1"
+    }
+ */
+router.put('/loadtypes', async (req, res, next) => {
+    console.log("Update a loadtype");
+    try {
+        let input = req.body;
+        let results = await db.updateLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment, input.loadTypeID);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /******************
  * Facility
  *****************/
@@ -701,22 +752,23 @@ router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) 
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "",
-    "positionName": "",
-    "price": "",
-    "amount": "",
-   	"netto": "",
-    "vat": "",
-    "brutto": "",
-    "active": "",
-    "comment": ""
+    "invoiceNumber": "33",
+    "positionName": "hewo",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
+    "active": "1",
+    "comment": ", this is a wowobbery"
     }
  */
 router.post('/invoicepositions', async (req, res, next) => {
     console.log("Create a new invoice position");
     try {
         let input = req.body;
-        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment)
         res.json(results);
     } catch (e) {
@@ -731,15 +783,16 @@ router.post('/invoicepositions', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "1",
-    "positionName": "test",
-    "price": "23",
-    "amount": "42",
-   	"netto": "2233",
-    "vat": "22",
-    "brutto": "2323",
+    "invoiceNumber": "33",
+    "positionName": "x3",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
     "active": "1",
-    "comment": "ererererer",
+    "comment": ", it was a jowoke",
     "invoicePositionID": "1"
 }
  */
@@ -747,9 +800,11 @@ router.put('/invoicepositions', async (req, res, next) => {
     console.log("Update a invoice position");
     try {
         let input = req.body;
-        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment, input.invoicePositionID)
         res.json(results);
+        console.log(results)
+        console.log(input)
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
