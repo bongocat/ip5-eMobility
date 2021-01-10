@@ -225,7 +225,7 @@ export default {
         comment: this.comment,
       }
 
-      if (newLoad.invoiceTo === "Vermieter") {
+      if (newLoad.invoiceTo === "Verwaltung") {
         newLoad.invoiceTo = 1
       }
       else {

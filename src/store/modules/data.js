@@ -6,35 +6,13 @@ const state = {
 
     invoices: [],
     users: [],
-    facilities: [
-        {
-            facilityID: 0,
-            facilityName: "test",
-            administrationID: 1,
-            street: "TestStreet",
-            streetNumber: 4,
-            ZIPCode: 4556,
-            country: "CH",
-            comment: "",
-            city: "Stadt",
-            active: 1,
-        },
-        {
-            facilityID: 2,
-            facilityName: "test",
-            administrationID: 2,
-            street: "TestStreet",
-            streetNumber: 4,
-            ZIPCode: 4556,
-            country: "CH",
-            comment: "",
-            city: "Stadt",
-            active: 1,
-        },
-    ],
+    facilities: [],
     loads: [],
     loadTypes: [],
     invoiceTypes: [],
+    invoicePositionsFromLoads: [],
+    test: 0,
+
 }
 
 const getters = {
@@ -51,7 +29,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return (new Date(invoice.ZuZahlenBis)) >= Date.now() && new Date(invoice.ZuZahlenBis) <= inThirtyDays && invoice.Status === 1//todo generiert == false;
+            return (new Date(invoice.toPayUntil)) >= Date.now() && new Date(invoice.toPayUntil) <= inThirtyDays && invoice.Status === 1
         })
     },
 
@@ -141,6 +119,10 @@ const getters = {
 
     allLoadTypes: state => {
         return state.loadTypes
+    },
+
+    getTest: state => {
+        return state.test
     }
 }
 
@@ -278,6 +260,9 @@ const mutations = {
             state.invoices.splice(index, 1 , editedInvoice)
         }
     },
+
+    increaseTest: (state) => (state.test += 1),
+
 }
 
 export default {
