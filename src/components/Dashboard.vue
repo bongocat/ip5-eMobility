@@ -307,8 +307,7 @@ export default {
         {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Mieter Vorname', value: 'name'},
-        {text: 'Mieter Nachname', value: 'familyName'},
+        {text: 'Empfänger', value: 'recipient'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
       openInvoicesHeaders: [
@@ -316,8 +315,7 @@ export default {
         {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Mieter Vorname', value: 'name'},
-        {text: 'Mieter Nachname', value: 'familyName'},
+        {text: 'Empfänger', value: 'recipient'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     // {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
@@ -397,7 +395,10 @@ export default {
           var load = allLoads.filter(load => load.loadID === item.loadID)
           var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
           var itemFacility = {facility: facility[0].designation}
+          var recipient = {recipient: item.name + " " + item.familyName}
+
           Object.assign(item, itemFacility)
+          Object.assign(item, recipient)
         }
       });
 
@@ -454,7 +455,14 @@ export default {
           upcomingInvoicesService.push(
               {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:[
+                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
+                company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
+                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
+                shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
+                shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
+                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", invoicePositions:[
                     {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                       amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""}]}
           )
@@ -473,7 +481,14 @@ export default {
             upcomingInvoicesService.push(
                 {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:
+                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                  name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
+                  company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
+                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                  city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
+                  shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
+                  shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
+                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
                       [{invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                         amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""}]}
             )
@@ -490,7 +505,14 @@ export default {
           upcomingInvoicesElectricity.push(
               {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:
+                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
+                company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
+                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
+                shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
+                shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
+                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
                     [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: price * vat, vat: vat, brutto: price, active: 1, comment: ""}]}
           )
@@ -510,7 +532,14 @@ export default {
             upcomingInvoicesElectricity.push(
                 {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:
+                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                  name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
+                  company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
+                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                  city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
+                  shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
+                  shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
+                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
                       [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
                         amount: amount, netto: price * vat, vat: vat, brutto: price, active: 1, comment: ""}]}
             )
