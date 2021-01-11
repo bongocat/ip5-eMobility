@@ -55,7 +55,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import InvoiceExceptional from "../components/InvoiceExceptional";
-import {invoiceFromDatabase} from "@/PDFGeneration/generatePDF";
+import {regularInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 export default {
   name: "Invoices",
@@ -79,18 +79,14 @@ export default {
         {text: 'Mieter Nachname', value: 'familyName'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
-      vorlagen: [
-        {text: 'Installation', icon: 'mdi-folder-open'},
-        {text: 'Strom', icon: 'mdi-folder-open'},
-        {text: 'Serviceabonnement', icon: 'mdi-folder-open'},
-      ],
     };
   },
   methods: {
     exportToPDF: function (item) {
-      invoiceFromDatabase(item)
-    },
-    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads']),
+      var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
+      regularInvoiceToPDF(item, invoicePositions, this.allUsers, this.allFacilities)
+      },
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   computed: {
     fillObjectKeys(){
@@ -112,11 +108,16 @@ export default {
       return fullInvoices
     },
     ...mapGetters({
-      allInvoices: 'allInvoices',
-      allLoads: 'allLoads',
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
-      allLoadTypes: 'allLoadTypes',
       allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices'
     }),
   },
   created() {
@@ -125,7 +126,9 @@ export default {
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
-  }
+    this.fetchInvoiceTypes()
+    this.fetchInvoicePositions()
+  },
 }
 </script>
 

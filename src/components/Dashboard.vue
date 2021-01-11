@@ -14,148 +14,6 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
                 <v-expansion-panels style="padding-bottom: 20px">
-<!--                  <v-expansion-panel>-->
-<!--                    <v-expansion-panel-header>-->
-<!--                      Filter-->
-<!--                    </v-expansion-panel-header>-->
-<!--                    <v-expansion-panel-content>-->
-<!--                      <v-row dense>-->
-<!--                        <v-col>-->
-<!--                          <v-overflow-btn-->
-<!--                              dense-->
-<!--                              editable-->
-<!--                              full-width="false"-->
-<!--                              :items="getUniqueProperties"-->
-<!--                              label="Anlagen"-->
-<!--                              item-value="text"-->
-<!--                              v-model="filterProperties"-->
-<!--                          ></v-overflow-btn>-->
-<!--                        </v-col>-->
-<!--                        <v-col>-->
-<!--                          <v-overflow-btn-->
-<!--                              deletable-chips-->
-<!--                              dense-->
-<!--                              editable-->
-<!--                              full-width="false"-->
-<!--                              :items="getUniqueAdministration"-->
-<!--                              label="Verwaltungen"-->
-<!--                              item-value="text"-->
-<!--                              v-model="filterAdministration"-->
-<!--                          ></v-overflow-btn>-->
-<!--                        </v-col>-->
-<!--                        <v-col>-->
-<!--                          <v-overflow-btn-->
-<!--                              deletable-chips-->
-<!--                              dense-->
-<!--                              editable-->
-<!--                              full-width="false"-->
-<!--                              :items="getUniqueTenants"-->
-<!--                              label="Mieter"-->
-<!--                              item-value="text"-->
-<!--                              v-model="filterTenants"-->
-<!--                          ></v-overflow-btn>-->
-<!--                        </v-col>-->
-<!--                        <v-col>-->
-<!--                          <v-overflow-btn-->
-<!--                              deletable-chips-->
-<!--                              dense-->
-<!--                              editable-->
-<!--                              full-width="false"-->
-<!--                              :items="getUniqueInvoiceCategory"-->
-<!--                              label="Rechnungsart"-->
-<!--                              item-value="text"-->
-<!--                              v-model="filterCategory"-->
-<!--                          ></v-overflow-btn>-->
-<!--                        </v-col>-->
-<!--                        <v-col>-->
-<!--                          <v-menu-->
-<!--                              ref="menuStartingDate"-->
-<!--                              v-model="menuStartingDate"-->
-<!--                              :close-on-content-click="false"-->
-<!--                              :return-value.sync="startingDate"-->
-<!--                              transition="scale-transition"-->
-<!--                              offset-y-->
-<!--                              min-width="290px"-->
-<!--                          >-->
-<!--                            <template v-slot:activator="{ on, attrs }">-->
-<!--                              <v-text-field-->
-<!--                                  v-model="startingDate"-->
-<!--                                  label="Startdatum"-->
-<!--                                  prepend-icon="mdi-calendar"-->
-<!--                                  readonly-->
-<!--                                  v-bind="attrs"-->
-<!--                                  v-on="on"-->
-<!--                              ></v-text-field>-->
-<!--                            </template>-->
-<!--                            <v-date-picker-->
-<!--                                v-model="startingDate"-->
-<!--                                no-title-->
-<!--                                scrollable-->
-<!--                            >-->
-<!--                              <v-spacer></v-spacer>-->
-<!--                              <v-btn-->
-<!--                                  text-->
-<!--                                  color="primary"-->
-<!--                                  @click="menuStartingDate = false"-->
-<!--                              >-->
-<!--                                Cancel-->
-<!--                              </v-btn>-->
-<!--                              <v-btn-->
-<!--                                  text-->
-<!--                                  color="primary"-->
-<!--                                  @click="$refs.menuStartingDate.save(startingDate)"-->
-<!--                              >-->
-<!--                                OK-->
-<!--                              </v-btn>-->
-<!--                            </v-date-picker>-->
-<!--                          </v-menu>-->
-<!--                        </v-col>-->
-<!--                        <v-col>-->
-<!--                          <v-menu-->
-<!--                              ref="menuEndDate"-->
-<!--                              v-model="menuEndDate"-->
-<!--                              :close-on-content-click="false"-->
-<!--                              :return-value.sync="endDate"-->
-<!--                              transition="scale-transition"-->
-<!--                              offset-y-->
-<!--                              min-width="290px"-->
-<!--                          >-->
-<!--                            <template v-slot:activator="{ on, attrs }">-->
-<!--                              <v-text-field-->
-<!--                                  v-model="endDate"-->
-<!--                                  label="Enddatum"-->
-<!--                                  prepend-icon="mdi-calendar"-->
-<!--                                  readonly-->
-<!--                                  v-bind="attrs"-->
-<!--                                  v-on="on"-->
-<!--                              ></v-text-field>-->
-<!--                            </template>-->
-<!--                            <v-date-picker-->
-<!--                                v-model="endDate"-->
-<!--                                no-title-->
-<!--                                scrollable-->
-<!--                            >-->
-<!--                              <v-spacer></v-spacer>-->
-<!--                              <v-btn-->
-<!--                                  text-->
-<!--                                  color="primary"-->
-<!--                                  @click="menuEndDate = false"-->
-<!--                              >-->
-<!--                                Cancel-->
-<!--                              </v-btn>-->
-<!--                              <v-btn-->
-<!--                                  text-->
-<!--                                  color="primary"-->
-<!--                                  @click="$refs.menuEndDate.save(endDate)"-->
-<!--                              >-->
-<!--                                OK-->
-<!--                              </v-btn>-->
-<!--                            </v-date-picker>-->
-<!--                          </v-menu>-->
-<!--                        </v-col>-->
-<!--                      </v-row>-->
-<!--                    </v-expansion-panel-content>-->
-<!--                  </v-expansion-panel>-->
                 </v-expansion-panels>
                 <v-data-table
                     dense
@@ -163,7 +21,7 @@
                     :items="fillObjectKeys"
                     class="elevation-1"
                     :items-per-page="5">
-                  <template v-slot:item.actions="{item}">
+                  <template v-slot:item.actions="{ item }">
                     <GenerateInvoice :invoice="item"></GenerateInvoice>
                   </template>
                 </v-data-table>
@@ -322,7 +180,7 @@ export default {
     //     invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
     //     facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:[
     //   {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-    //     amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""}]}
+    //     amount: 1, netto: price * vat, vat:price * vat vat, brutto: price * this.amount, active: 1, comment: ""}]}
     };
   },
   methods: {
@@ -356,15 +214,7 @@ export default {
     exportToPDF: function (item) {
       regularInvoiceToPDF(item, this.allUsers, this.allFacilities)
     },
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice']),
-    addMonths(date, months) {
-      var d = date.getDate();
-      date.setMonth(date.getMonth() + +months);
-      if (date.getDate() != d) {
-        date.setDate(0);
-      }
-      return date;
-    }
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   created() {
     this.fetchLoadTypes()
@@ -373,6 +223,7 @@ export default {
     this.fetchFacilities()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
+    this.fetchInvoicePositions()
   },
   computed: {
     ...mapGetters({
@@ -383,15 +234,17 @@ export default {
       allFacilities: 'allFacilities',
       allUsers: 'allUsers',
       allLoads: 'allLoads',
-      allLoadTypes: 'allLoadTypes'
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions'
     }),
     fillObjectKeys(){
+
       var fullInvoices = this.getInvoicePositionsFromLoads
       var allLoads = this.allLoads
       var allFacilities = this.allFacilities
 
       fullInvoices.forEach(function (item, index) {
-        if (item.loadID != undefined){
+        if (item.loadID !== undefined){
           var load = allLoads.filter(load => load.loadID === item.loadID)
           var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
           var itemFacility = {facility: facility[0].designation}
@@ -402,7 +255,14 @@ export default {
         }
       });
 
-      return fullInvoices
+      var invoicesIn30Days = fullInvoices.filter(invoice => new Date(invoice.invoiceDate) <= this.todayIn30Days)
+      console.log("INVOICES IN 30 DAYS", invoicesIn30Days)
+      return invoicesIn30Days
+    },
+
+    todayIn30Days(){
+      var today = new Date()
+      return today.setDate(today.getDate() + 30)
     },
 
     getInvoicePositionsFromLoads(){
@@ -435,7 +295,7 @@ export default {
 
         var electricityInvoicePosition =
             {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
-          invoiceTo: invoiceTo, positionDate: positionDate, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
+          invoiceTo: invoiceTo, positionDate: new Date(load.counterNewDate), powerCountOld: load.counterOld, powerCountNew: load.counterNew,
           counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
           loadType: loadType[0], administration: administration[0], tenant: tenant[0], recipient: recipient}
 
@@ -450,21 +310,24 @@ export default {
 
         var price = invoicePosition.positionPricePerMonth * invoicePosition.interval
         var vat = 0.18
+        var amount = 1
+        var brutto = price * amount
+        var netto = brutto + (brutto * vat)
 
         if (upcomingInvoicesService.length === 0){
           upcomingInvoicesService.push(
-              {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                 facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
-                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
                 city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
                 shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                 shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
-                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", invoicePositions:[
+                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1, invoicePositions:[
                     {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-                      amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""}]}
+                      amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
           console.log("SERVICE ONE INVOICE", upcomingInvoicesService)
         }
@@ -474,23 +337,23 @@ export default {
             if (invoice.invoiceToRefID === invoicePosition.recipient.userID && invoice.invoiceDate.getTime() === invoicePosition.positionDate.getTime()){
               foundExistingInvoice = true
               invoice.invoicePositions.push({invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-                amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""})
+                amount: 1, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""})
             }
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesService.push(
-                {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                   facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
-                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
                   city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
                   shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                   shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
-                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
+                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1, invoicePositions:
                       [{invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-                        amount: 1, netto: price * vat, vat: vat, brutto: price * this.amount, active: 1, comment: ""}]}
+                        amount: 1, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
             )
           }
         }
@@ -500,21 +363,23 @@ export default {
         var price = 0.1926 //preis pro kwh (wird aus datenbank geladen),
         var vat = 0.12
         var amount = invoicePosition.powerCountNew - invoicePosition.powerCountOld
+        var brutto = price * amount
+        var netto = brutto + (brutto * vat)
 
         if (upcomingInvoicesElectricity.length === 0){
           upcomingInvoicesElectricity.push(
-              {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                 facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
-                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
                 city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
                 shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                 shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
-                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
+                shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1,  invoicePositions:
                     [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
-                      amount: amount, netto: price * vat, vat: vat, brutto: price, active: 1, comment: ""}]}
+                      amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
           console.log("UPCOMING INVOICES ONE ELEMENT", upcomingInvoicesService)
         }
@@ -525,23 +390,23 @@ export default {
             if (invoice.invoiceToRefID === invoicePosition.recipient.userID && invoice.invoiceDate.getTime() === invoicePosition.positionDate.getTime()){
               foundExistingInvoice = true
               invoice.invoicePositions.push({invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
-                amount: amount, netto: price * vat, vat: vat, brutto: price, active: 1, comment: ""})
+                amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""})
             }
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesElectricity.push(
-                {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                   facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
-                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, areaCode: invoicePosition.recipient.areaCode,
+                  email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
                   city: invoicePosition.recipient.city, country: invoicePosition.recipient.country, invoiceToShippingAdress: invoicePosition.recipient.invoiceToShippingAdress,
                   shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                   shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
-                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "",  invoicePositions:
+                  shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1,  invoicePositions:
                       [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
-                        amount: amount, netto: price * vat, vat: vat, brutto: price, active: 1, comment: ""}]}
+                        amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
             )
           }
         }

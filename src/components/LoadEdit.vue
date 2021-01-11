@@ -105,19 +105,9 @@
             <v-col>
               <v-select
                       v-model="intervalService"
-                      :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
+                      :items="[{text: 'monatlich', value: 1}, {text: 'vierteljährlich', value: 3}, {text: 'halbjährlich', value: 6}, {text: 'jährlich', value: 12}]"
                       label="Zahlunsintervall"
-                      hint="Rechnungsintervall Strom"
-                      persistent-hint
-                      single-line
-              ></v-select>
-            </v-col>
-            <v-col>
-              <v-select
-                      v-model="intervalElectricity"
-                      :items="[{text: 'monatlich', value: 0}, {text: 'vierteljährlich', value: 1}, {text: 'halbjährlich', value: 2}, {text: 'jährlich', value: 3}]"
-                      label="Zahlunsintervall"
-                      hint="Rechnungsintervall Service"
+                      hint="Zahlungsintervall"
                       persistent-hint
                       single-line
               ></v-select>
@@ -216,7 +206,7 @@ export default {
         invoiceTo: this.invoiceTo,
         firstInvoice: new Date (this.firstInvoice),
         intervalService: this.intervalService,
-        intervalElectricity: this.intervalElectricity,
+        intervalElectricity: this.intervalService,
         counterOld: this.counterOld,
         counterOldDate: new Date (this.counterOldDate),
         counterNew: this.counterNew,

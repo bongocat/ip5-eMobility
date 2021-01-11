@@ -11,6 +11,7 @@ const state = {
     loadTypes: [],
     invoiceTypes: [],
     invoicePositionsFromLoads: [],
+    invoicePositions: [],
     test: 0,
 
 }
@@ -121,8 +122,8 @@ const getters = {
         return state.loadTypes
     },
 
-    getTest: state => {
-        return state.test
+    allInvoicePositions: state => {
+        return state.invoicePositions
     }
 }
 
@@ -206,6 +207,15 @@ const actions = {
         commit('addNewLoadType', response.data)
     },
 
+    async addNewInvoicePosition({commit}, invoicePosition){
+        const response = await axios.post(baseURL + '/api/megalog/invoicepositions/', invoicePosition)
+        commit('addNewInvoicePosition', response.data)
+    },
+
+    async fetchInvoicePositions({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/invoicepositions/')
+        commit('setInvoicePositions', response.data)
+    },
 }
 
 const mutations = {
@@ -229,12 +239,17 @@ const mutations = {
         state.loadTypes.push(loadType)
     },
 
+    addNewInvoicePosition (state, invoicePosition){
+        state.invoicePositions.push(invoicePosition)
+    },
+
     setUsers: (state, users) => (state.users = users),
     setInvoices: (state, invoices) => (state.invoices = invoices),
     setFacilities: (state, facilities) => (state.facilities = facilities),
     setLoads: (state, loads) => (state.loads = loads),
     setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
     setInvoiceTypes: (state, invoiceTypes) => (state.invoiceTypes = invoiceTypes),
+    setInvoicePositions: (state, invoicePositions) => (state.invoicePositions = invoicePositions),
     editFacility: (state, editedFacility) => {
         const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
         if (index !== -1){
@@ -261,7 +276,6 @@ const mutations = {
         }
     },
 
-    increaseTest: (state) => (state.test += 1),
 
 }
 
