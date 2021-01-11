@@ -39,34 +39,8 @@
                                   label="Kommentar"></v-text-field>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-switch
-                            v-model = "meterReadingOld"
-                            color= "success"
-                            label = 'Zählerstand alt'
-                    >
-                    </v-switch>
-                </v-col>
-                <v-col>
-                    <v-switch
-                            v-model = "meterReadingNew"
-                            color= "success"
-                            label = 'Zählerstand neu'
-                    >
-                    </v-switch>
-                </v-col>
-                <v-col>
-                    <v-switch
-                            color ="success"
-                            v-model = "meterDifference"
-                            label = "Differenz"
-                            :disabled = meterDifferenceEnabled
-                    >
-                    </v-switch>
-                </v-col>
-            </v-row>
-          <h1 class="subtitle-1">Rechnungsposition hinzufügen</h1>
+          <h3 class="title-3">Rechnungspositionen</h3>
+          <h3 class="subtitle-2">Rechnungsposition hinzufügen</h3>
           <v-row>
             <v-col>
               <v-text-field v-model = "extraPosDescription"
@@ -88,6 +62,16 @@
                             suffix="CHF"
               >
 
+              </v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model = "extraPosVat"
+                            label="Mehrwertsteuersatz"
+                            type="number"
+                            step="0.1"
+                            min="0.00"
+                            suffix="%"
+              >
               </v-text-field>
             </v-col>
             <v-col>
@@ -116,18 +100,30 @@
                   Preis Pro Einheit
                 </th>
                 <th class="text-left">
-
-              </th>
+                  Bruttopreis
+                </th>
+                <th class="text-left">
+                  Mwst.
+                </th>
+                <th class="text-left">
+                  Nettopreis
+                </th>
+                <th class="text-left">
+                  Action
+                </th>
               </tr>
               </thead>
               <tbody>
               <tr
-                  v-for="item in invoicePositions"
-                  :key="item.name"
+                  v-for="(item) in invoicePositions"
+                  :key="item.positionName"
               >
-                <td>{{ item.extraPosDescription }}</td>
-                <td>{{ item.extraPosCount }}</td>
-                <td>{{ item.extraPosUnitPrice }}</td>
+                <td>{{ item.positionName }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.price + " CHF" }}</td>
+                <td>{{ item.brutto + " CHF" }}</td>
+                <td>{{ (item.vat * 100).toFixed(0) + "%" }}</td>
+                <td>{{ item.netto + " CHF"}}</td>
                 <td>
                   <v-btn color="error"
                          text
@@ -180,30 +176,30 @@ export default {
       extraPosDescription: "",
       extraPosCount: "",
       extraPosUnitPrice: "",
-      invoicePositions: [],
+      extraPosVat: "",
+      invoicePositions: this.invoice.invoicePositions,
       due: 10,
       comment: "",
       dialog: false,
 
       name: '',
       invoiceNumber: 0,
-      meterReadingOld: false,
-      meterReadingNew: false,
-      meterDifference: false,
     }
   },
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    ...mapActions(['editInvoice']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'addNewInvoicePosition', 'addNewInvoice', 'editLoad']),
     newInvoicePosition(){
       this.invoicePositions.push({
-        extraPosDescription: this.extraPosDescription,
-        extraPosCount: this.extraPosCount,
-        extraPosUnitPrice: this.extraPosUnitPrice
+        positionName: this.extraPosDescription,
+        loadID: "",
+        price: this.extraPosUnitPrice,
+        amount: this.extraPosCount,
+        brutto: this.extraPosUnitPrice * this.extraPosCount,
+        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * this.extraPosVat.toFixed(2)),
+        vat: this.extraPosVat,
       })
 
+      this.extraPosVat = ""
       this.extraPosDescription = ""
       this.extraPosCount = ""
       this.extraPosUnitPrice = ""
@@ -213,26 +209,31 @@ export default {
     },
     exportToPDF: function (item) {
 
+      item.toPayUntil = item.invoiceDate + this.due
+      item.comment = this.comment
+      item.invoiceNumber = this.invoiceNumber
+      item.invoiceStatusID = 2
 
+      this.addNewInvoice(item)
 
-      item.RechnungsNummer = this.invoiceNumber
-      item.Kommentar = this.comment
-      if (this.meterReadingOld == true) {
-        item.ZählerAlt = 1
-      }
-      if (this.meterReadingNew == true) {
-        item.ZählerNeu = 1
-      }
+      this.invoicePositions.forEach((invoicePosition) => {
+        invoicePosition.invoiceNumber = this.invoiceNumber
+        var currentLoad = this.allLoads.filter(load => load.loadID === invoicePosition.loadID)[0]
+        if (item.invoiceTypeID === 2) {
+          currentLoad.firstInvoice = new Date(currentLoad.firstInvoice)
+          currentLoad.firstInvoice.setMonth(currentLoad.firstInvoice.getMonth() + currentLoad.intervalService)
+        }
+        if (item.invoiceTypeID === 3){
+          currentLoad.counterNewDate = new Date(currentLoad.counterNewDate)
+          currentLoad.counterNewDate.setMonth(currentLoad.counterNewDate.getMonth() + currentLoad.counterNewDate)
+        }
 
+        this.editLoad(currentLoad)
+        this.addNewInvoicePosition(invoicePosition)
+      })
 
-      console.log(this.due)
-      item.ZuZahlenBis = new Date(Date.now() + (this.due + 1) * 24*60*60*1000);
-      console.log(item.ZuZahlenBis.toString())
-      item.Status += 1
-      this.editInvoice(item)
-      console.log(item)
-      regularInvoiceToPDF(item,this.allUsers, this.allFacilities)
-    }
+      regularInvoiceToPDF(item, this.invoicePositions,this.allUsers, this.allFacilities)
+    },
   },
     computed: {
       ...mapGetters({
@@ -243,13 +244,9 @@ export default {
         allUsers: 'allUsers',
         allLoads: 'allLoads'
       }),
-        meterDifferenceEnabled(){
-            return !(this.meterReadingOld || this.meterReadingNew)
-        }
     },
-  watch: {
-
-  },
-
+  created() {
+    console.log(this.invoice)
+  }
 }
 </script>

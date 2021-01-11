@@ -20,12 +20,12 @@
               show-expand
               class="elevation-1"
           >
-            <template v-slot:expanded-item="{ headers}">
+            <template v-slot:expanded-item="{ headers, item}">
               <td :colspan="headers.length">
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
                     :headers="innerHeaders"
-                    :items="fillObjectKeysLoads"
+                    :items="fillObjectKeysLoads.filter(load => load.facilityID == item.facilityID)"
                     item-key="inner"
                     class="elevation-5"
                 >
@@ -65,7 +65,7 @@ export default {
         {text: 'Letze Rechnung', value: 'firstInvoice' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
-        {text: 'letzter Zählerstand', value: 'counterNew'},
+        {text: 'Letzter Zählerstand', value: 'counterNew'},
         {text: 'Kommentar', value: 'comment'},
         {text: 'Aktiv', value: 'active'},
         {text: 'Actions', value: 'actions', sortable: false},

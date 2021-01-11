@@ -55,7 +55,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import InvoiceExceptional from "../components/InvoiceExceptional";
-import {invoiceFromDatabase} from "@/PDFGeneration/generatePDF";
+import {regularInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 export default {
   name: "Invoices",
@@ -71,7 +71,7 @@ export default {
       invoiceHeaders: [
         {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'customerRefID'},
-        {text: 'Rechnung An', value: 'RechnungAn'},
+        {text: 'Rechnung An', value: 'invoiceToRefID'},
         {text: 'Anlage', value: 'facility' },
         {text: 'Load ID', value: 'loadID'},
         {text: 'Fällig Am', value: 'invoiceDate'},
@@ -79,39 +79,45 @@ export default {
         {text: 'Mieter Nachname', value: 'familyName'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
-      vorlagen: [
-        {text: 'Installation', icon: 'mdi-folder-open'},
-        {text: 'Strom', icon: 'mdi-folder-open'},
-        {text: 'Serviceabonnement', icon: 'mdi-folder-open'},
-      ],
     };
   },
   methods: {
     exportToPDF: function (item) {
-      invoiceFromDatabase(item)
-    },
-    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads']),
+      var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
+      regularInvoiceToPDF(item, invoicePositions, this.allUsers, this.allFacilities)
+      },
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   computed: {
     fillObjectKeys(){
+
       var fullInvoices = this.allInvoices
+      var allLoads = this.allLoads
+      var allFacilities = this.allFacilities
 
       fullInvoices.forEach(function (item, index) {
-        var load = this.allLoads.filter(load => load.loadID === item.loadID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
+        if (item.loadID != undefined){
+          var load = allLoads.filter(load => load.loadID === item.loadID)
+          var facility = allFacilities.filter(facility => facility.facilityID === load.facilityID)
+          var itemFacility = {facility: facility[0].facilityName}
 
-        var itemFacility = {facility: facility[0].facilityName}
-        Object.assign(item, itemFacility)
+          Object.assign(item, itemFacility)
+        }
       });
 
       return fullInvoices
     },
     ...mapGetters({
-      allInvoices: 'allInvoices',
-      allLoads: 'allLoads',
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
-      allLoadTypes: 'allLoadTypes',
       allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices'
     }),
   },
   created() {
@@ -120,7 +126,9 @@ export default {
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
-  }
+    this.fetchInvoiceTypes()
+    this.fetchInvoicePositions()
+  },
 }
 </script>
 

@@ -103,26 +103,15 @@
               </v-menu>
             </v-col>
             <v-col>
-              <v-select
+              <v-overflow-btn
                   v-model="intervalService"
-                  :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                  :items="[{text: 'monatlich', value: 1}, {text: 'vierteljährlich', value: 3}, {text: 'halbjährlich', value: 6}, {text: 'jährlich', value: 12}]"
                   label="Zahlunsintervall"
-                  hint="Rechnungsintervall Strom"
+                  hint="Zahlungsintervall"
                   persistent-hint
-                  return-object
                   single-line
-              ></v-select>
-            </v-col>
-            <v-col>
-              <v-select
-                      v-model="intervalElectricity"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
-                      label="Zahlunsintervall"
-                      hint="Rechnungsintervall Service"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
+                  item-value="value"
+              ></v-overflow-btn>
             </v-col>
           </v-row>
           <v-row>
@@ -134,7 +123,10 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model=comment></v-text-field>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"
@@ -208,23 +200,26 @@ export default {
       this.dialog = false
 
       const newLoad = {
-
         loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
         tenantID: this.tenantID,
         invoiceTo: this.invoiceTo,
         firstInvoice: this.firstInvoice,
-        intervalElectricity: this.intervalElectricity,
+        intervalElectricity: this.intervalService,
         intervalService: this.intervalService,
         counterOld: this.counterOld,
         counterOldDate: this.counterOldDate,
         counterNew: this.counterNew,
-        counterNewDate: this.counterNewDate,
-
-
+        counterNewDate: this.firstInvoice,
         comment: this.comment,
       }
 
+      if (newLoad.invoiceTo === "Verwaltung") {
+        newLoad.invoiceTo = 1
+      }
+      else {
+        newLoad.invoiceTo = 2
+      }
       console.log(newLoad)
 
       this.addNewLoad(newLoad)

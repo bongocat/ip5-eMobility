@@ -19,14 +19,17 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="Name" v-model=facilityName></v-text-field>
+              <v-text-field label="Name" v-model=facilityName
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-overflow-btn style="min-width: 250px"
                               v-model = "administrationID"
                               dense
                               editable
-                              :items="allUsers"
+                              :items="allUsers.filter(user => (user.userTypeID == 1 && user.active == 1))"
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
@@ -35,24 +38,42 @@
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field label="Strasse" v-model=street></v-text-field>
+              <v-text-field label="Strasse" v-model="street"
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
+              <v-text-field label="Hausnummer" v-model=streetNumber
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="Ort" v-model=city></v-text-field>
+              <v-text-field label="Ort" v-model=city
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=country></v-text-field>
+              <v-text-field label="Land" v-model=country
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model=comment></v-text-field>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"

@@ -20,10 +20,16 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="Vorname" v-model=name></v-text-field>
+              <v-text-field label="Vorname" v-model=name
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Nachname" v-model=familyName></v-text-field>
+              <v-text-field label="Nachname" v-model=familyName
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-select
@@ -42,38 +48,68 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-text-field label="Strasse" v-model=street></v-text-field>
+              <v-text-field label="Strasse" v-model=street
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=streetNumber></v-text-field>
+              <v-text-field label="Hausnummer" v-model=streetNumber
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Handynummer" v-model="mobile"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field label="Postleitzahl" v-model=areaCode></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Ort" v-model=city></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Land" v-model=country></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Telefonnummer" v-model="phone"></v-text-field>
+              <v-text-field label="Handynummer" v-model="mobile"
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field label="E-Mail" v-model="email"></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=areaCode
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Firma" v-model="company"></v-text-field>
+              <v-text-field label="Ort" v-model=city
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
+              <v-text-field label="Land" v-model=country
+                            counter
+                            maxlength="20"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Telefonnummer" v-model="phone"
+                            counter
+                            maxlength="50"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field label="E-Mail" v-model="email"
+                            counter
+                            maxlength="100"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Firma" v-model="company"
+                            counter
+                            maxlength="50"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model="comment"
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-checkbox
@@ -92,19 +128,34 @@
           </v-row>
           <v-row v-if=invoiceToShippingAdress>
             <v-col>
-              <v-text-field label="Strasse" v-model=shippingStreet></v-text-field>
+              <v-text-field label="Strasse" v-model=shippingStreet
+                            counter
+                            maxlength="50"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Hausnummer" v-model=shippingStreetNumber></v-text-field>
+              <v-text-field label="Hausnummer" v-model=shippingStreetNumber
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Postleitzahl" v-model=shippingAreaCode></v-text-field>
+              <v-text-field label="Postleitzahl" v-model=shippingAreaCode
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Ort" v-model=shippingCity></v-text-field>
+              <v-text-field label="Ort" v-model=shippingCity
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field label="Land" v-model=shippingCountry></v-text-field>
+              <v-text-field label="Land" v-model=shippingCountry
+                            counter
+                            maxlength="20"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-form>

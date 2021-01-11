@@ -6,35 +6,14 @@ const state = {
 
     invoices: [],
     users: [],
-    facilities: [
-        {
-            facilityID: 0,
-            facilityName: "test",
-            administrationID: 1,
-            street: "TestStreet",
-            streetNumber: 4,
-            ZIPCode: 4556,
-            country: "CH",
-            comment: "",
-            city: "Stadt",
-            active: 1,
-        },
-        {
-            facilityID: 2,
-            facilityName: "test",
-            administrationID: 2,
-            street: "TestStreet",
-            streetNumber: 4,
-            ZIPCode: 4556,
-            country: "CH",
-            comment: "",
-            city: "Stadt",
-            active: 1,
-        },
-    ],
+    facilities: [],
     loads: [],
     loadTypes: [],
     invoiceTypes: [],
+    invoicePositionsFromLoads: [],
+    invoicePositions: [],
+    test: 0,
+
 }
 
 const getters = {
@@ -51,7 +30,7 @@ const getters = {
         return state.invoices.filter(invoice => {
             let inThirtyDays = new Date();
             inThirtyDays.setDate(inThirtyDays.getDate() + 30);
-            return (new Date(invoice.ZuZahlenBis)) >= Date.now() && new Date(invoice.ZuZahlenBis) <= inThirtyDays && invoice.Status === 1//todo generiert == false;
+            return (new Date(invoice.toPayUntil)) >= Date.now() && new Date(invoice.toPayUntil) <= inThirtyDays && invoice.Status === 1
         })
     },
 
@@ -141,6 +120,10 @@ const getters = {
 
     allLoadTypes: state => {
         return state.loadTypes
+    },
+
+    allInvoicePositions: state => {
+        return state.invoicePositions
     }
 }
 
@@ -224,6 +207,15 @@ const actions = {
         commit('addNewLoadType', response.data)
     },
 
+    async addNewInvoicePosition({commit}, invoicePosition){
+        const response = await axios.post(baseURL + '/api/megalog/invoicepositions/', invoicePosition)
+        commit('addNewInvoicePosition', response.data)
+    },
+
+    async fetchInvoicePositions({ commit }) {
+        const response = await axios.get(baseURL +  '/api/megalog/invoicepositions/')
+        commit('setInvoicePositions', response.data)
+    },
 }
 
 const mutations = {
@@ -247,12 +239,17 @@ const mutations = {
         state.loadTypes.push(loadType)
     },
 
+    addNewInvoicePosition (state, invoicePosition){
+        state.invoicePositions.push(invoicePosition)
+    },
+
     setUsers: (state, users) => (state.users = users),
     setInvoices: (state, invoices) => (state.invoices = invoices),
     setFacilities: (state, facilities) => (state.facilities = facilities),
     setLoads: (state, loads) => (state.loads = loads),
     setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
     setInvoiceTypes: (state, invoiceTypes) => (state.invoiceTypes = invoiceTypes),
+    setInvoicePositions: (state, invoicePositions) => (state.invoicePositions = invoicePositions),
     editFacility: (state, editedFacility) => {
         const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
         if (index !== -1){
@@ -278,6 +275,8 @@ const mutations = {
             state.invoices.splice(index, 1 , editedInvoice)
         }
     },
+
+
 }
 
 export default {
