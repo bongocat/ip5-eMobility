@@ -28,7 +28,7 @@ export function regularInvoiceToPDF(invoice, invoicePositions, users, facilities
 
         body.push(['Pos. ', 'Beschreibung ', 'Stk. ', 'Preis/Stk. ',  'Bruttopreis'])
         invoicePositions.forEach((invoicePosition, index) => {
-            body.push([index + 1, invoicePosition.positionName, invoicePosition.amount, invoicePosition.price, invoicePosition.brutto])
+            body.push([index + 1, invoicePosition.loadID + " (" + invoicePosition.positionName + ")", invoicePosition.amount, invoicePosition.price, invoicePosition.brutto])
             bruttoTotal += invoicePosition.brutto
             nettoTotal += invoicePosition.netto
         })
