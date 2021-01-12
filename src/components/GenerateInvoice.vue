@@ -183,7 +183,7 @@ export default {
       dialog: false,
 
       name: '',
-      invoiceNumber: 0,
+      invoiceNumber: "",
     }
   },
   methods: {

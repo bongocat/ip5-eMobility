@@ -192,7 +192,7 @@ export default {
           invoiceToRefID: item.invoiceToRefID,
           invoiceDate: new Date(item.invoiceDate),
           toPayUntil: new Date(item.toPayUntil),
-          isPayed: 1,
+          payedOn: payedOn,
           name: item.name,
           familyName: item.familyName,
           salutation: item.salutation,
@@ -205,8 +205,6 @@ export default {
           areaCode: item.areaCode,
           city: item.city,
           country: item.country,
-          invoiceStatusID: item.invoiceStatusID +=1,
-          payedOn: payedOn,
 
           invoiceToShippingAdress: item.invoiceToShippingAdress,
           shippingStreet: item.shippingStreet,
@@ -214,6 +212,8 @@ export default {
           shippingAreaCode: item.shippingAreaCode,
           shippingCity: item.shippingCity,
           shippingCountry: item.shippingCountry,
+
+          invoiceStatusID: item.invoiceStatusID +=1,
 
           active: item.active,
           comment: item.comment,
@@ -225,7 +225,8 @@ export default {
       for (var i = 0; i < items.length; i++) {
 
         var item = items[i]
-        console.log(item)
+        console.log(">>>>>", item)
+
         const invoice = {
 
           invoiceNumber: item.invoiceNumber,
@@ -234,7 +235,7 @@ export default {
           invoiceToRefID: item.invoiceToRefID,
           invoiceDate: new Date(item.invoiceDate),
           toPayUntil: new Date(item.toPayUntil),
-          isPayed: 1,
+          payedOn: item.payedOn,
           name: item.name,
           familyName: item.familyName,
           salutation: item.salutation,
@@ -247,7 +248,6 @@ export default {
           areaCode: item.areaCode,
           city: item.city,
           country: item.country,
-          invoiceStatusID: item.invoiceStatusID +=1,
 
           invoiceToShippingAdress: item.invoiceToShippingAdress,
           shippingStreet: item.shippingStreet,
@@ -256,10 +256,12 @@ export default {
           shippingCity: item.shippingCity,
           shippingCountry: item.shippingCountry,
 
+          invoiceStatusID: item.invoiceStatusID +=1,
+
           active: item.active,
           comment: item.comment,
         }
-        console.log(invoice)
+        console.log("UPDATED INVOICE", invoice)
         this.editInvoice(invoice)
       }
     },
@@ -340,28 +342,26 @@ export default {
       var allLoads = this.allLoads
       var allFacilities = this.allFacilities
       var invoiceTypes = this.allInvoiceTypes
-      var allUsers = this.allUsers
+      var fullUsers = this.allUsers
+
+
 
       fullInvoices.forEach(function (item, index) {
-        if (item.loadID !== undefined){
+        item.invoiceDate = new Date(item.invoiceDate)
 
-          item.invoiceDate = new Date(item.invoiceDate)
+        if (item.loadID){
 
           var load = allLoads.filter(load => load.loadID === item.loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
-          var itemFacility = {facility: facility[0].designation}
+          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)[0]
+          var itemFacility = {facility: facility.designation}
           var recipient = {recipient: item.name + " " + item.familyName}
 
           var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
           var itemInvoiceType = {invoiceType: invoiceType}
 
-          var administration = allUsers.filter(user => user.userID === item.customerRefID)[0]
-          var aministrationName = administration.name + " " + administration.familyName
+          var administrationName = item.administration
 
-          if (administration.company != ""){
-            aministrationName += (" (" + administration.company + ")")
-          }
-          var itemAdministration = {administration: aministrationName}
+          var itemAdministration = {administration: administrationName}
 
 
 
@@ -384,18 +384,35 @@ export default {
       var allFacilities = this.allFacilities
       var fullInvoicePositions = this.allInvoicePositions
       var invoiceTypes = this.allInvoiceTypes
-      var allUsers = this.allUsers
+      var fullUsers = this.allUsers
+
+      console.log(fullInvoices)
 
 
       fullInvoices.forEach(function (item, index) {
 
+        item.invoiceDate = new Date(item.invoiceDate)
+        console.log("TEST", item)
+        console.log("INVOICE TYPES", invoiceTypes)
+
         var invoicePositions = fullInvoicePositions.filter(position => position.invoiceNumber === item.invoiceNumber)
+
+        console.log("TEST2 ", invoicePositions)
 
         if (invoicePositions.length !== 0 && invoicePositions[0].loadID){
           var load = allLoads.filter(load => load.loadID === invoicePositions[0].loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
-          var itemFacility = {facility: facility[0].designation}
+          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)[0]
+          var itemFacility = {facility: facility.designation}
+          var administration = fullUsers.filter(user => user.userID === facility.administrationID)[0]
+          console.log("TEST3 ", administration)
+          var aministrationName = administration.name + " " + administration.familyName
 
+          if (administration.company != ""){
+            aministrationName += (" (" + administration.company + ")")
+          }
+          var itemAdministration = {administration: aministrationName}
+
+          Object.assign(item, itemAdministration)
           Object.assign(item, itemFacility)
         }
         else {
@@ -403,23 +420,12 @@ export default {
           Object.assign(item, itemFacility)
         }
 
-        var administration = allUsers.filter(user => user.userID === item.customerRefID)[0]
-        var aministrationName = administration.name + " " + administration.familyName
+        console.log("TEST98712364 ", item.invoiceTypeID)
 
-        if (administration.company != ""){
-          aministrationName += (" (" + administration.company + ")")
-        }
-        var itemAdministration = {administration: aministrationName}
-
-        item.invoiceDate = new Date(item.invoiceDate)
-
-        var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
-        var itemInvoiceType = {invoiceType: invoiceType}
 
         var recipient = {recipient: item.name + " " + item.familyName}
         Object.assign(item, recipient)
-        Object.assign(item, itemInvoiceType)
-        Object.assign(item, itemAdministration)
+
       });
       return fullInvoices
     },
@@ -480,7 +486,7 @@ export default {
 
         if (upcomingInvoicesService.length === 0){
           upcomingInvoicesService.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                 facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
@@ -506,7 +512,7 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesService.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                   facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
@@ -532,7 +538,7 @@ export default {
 
         if (upcomingInvoicesElectricity.length === 0){
           upcomingInvoicesElectricity.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                 facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
@@ -559,7 +565,7 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesElectricity.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
                   facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
