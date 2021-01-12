@@ -162,7 +162,7 @@ export default {
       editedIndex: -1,
       upcomingHeaders: [
         {text: 'Rechnungsart', value: 'invoiceType'},
-        {text: 'Verwaltung', value: 'customerRefID'},
+        {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
         {text: 'Empfänger', value: 'recipient'},
@@ -170,17 +170,12 @@ export default {
       ],
       openInvoicesHeaders: [
         {text: 'Rechnungsart', value: 'invoiceType'},
-        {text: 'Verwaltung', value: 'customerRefID'},
+        {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
         {text: 'Empfänger', value: 'recipient'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
-    // {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-    //     invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-    //     facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:[
-    //   {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-    //     amount: 1, netto: price * vat, vat:price * vat vat, brutto: price * this.amount, active: 1, comment: ""}]}
     };
   },
   methods: {
@@ -345,6 +340,7 @@ export default {
       var allLoads = this.allLoads
       var allFacilities = this.allFacilities
       var invoiceTypes = this.allInvoiceTypes
+      var allUsers = this.allUsers
 
       fullInvoices.forEach(function (item, index) {
         if (item.loadID !== undefined){
@@ -359,11 +355,20 @@ export default {
           var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
           var itemInvoiceType = {invoiceType: invoiceType}
 
+          var administration = allUsers.filter(user => user.userID === item.customerRefID)[0]
+          var aministrationName = administration.name + " " + administration.familyName
+
+          if (administration.company != ""){
+            aministrationName += (" (" + administration.company + ")")
+          }
+          var itemAdministration = {administration: aministrationName}
+
 
 
           Object.assign(item, itemFacility)
           Object.assign(item, recipient)
           Object.assign(item, itemInvoiceType)
+          Object.assign(item, itemAdministration)
         }
       });
 
@@ -379,6 +384,7 @@ export default {
       var allFacilities = this.allFacilities
       var fullInvoicePositions = this.allInvoicePositions
       var invoiceTypes = this.allInvoiceTypes
+      var allUsers = this.allUsers
 
 
       fullInvoices.forEach(function (item, index) {
@@ -397,6 +403,14 @@ export default {
           Object.assign(item, itemFacility)
         }
 
+        var administration = allUsers.filter(user => user.userID === item.customerRefID)[0]
+        var aministrationName = administration.name + " " + administration.familyName
+
+        if (administration.company != ""){
+          aministrationName += (" (" + administration.company + ")")
+        }
+        var itemAdministration = {administration: aministrationName}
+
         item.invoiceDate = new Date(item.invoiceDate)
 
         var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
@@ -405,6 +419,7 @@ export default {
         var recipient = {recipient: item.name + " " + item.familyName}
         Object.assign(item, recipient)
         Object.assign(item, itemInvoiceType)
+        Object.assign(item, itemAdministration)
       });
       return fullInvoices
     },
