@@ -5,7 +5,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
-              <h3>Anstehende Rechnungen  <v-badge :content="this.fillObjectKeys.length" :value="this.fillObjectKeys.length" color="success"/></h3>
+              <h3>Anstehende Rechnungen  <v-badge :content="this.fillObjectKeysUpcomingInvoices.length" :value="this.fillObjectKeysUpcomingInvoices.length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -18,7 +18,7 @@
                 <v-data-table
                     dense
                     :headers="upcomingHeaders"
-                    :items="fillObjectKeys"
+                    :items="fillObjectKeysUpcomingInvoices"
                     class="elevation-1"
                     :items-per-page="5">
                   <template v-slot:item.actions="{item}">
@@ -39,12 +39,12 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="openInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 show-select
                 :single-select="false"
                 dense
                 :headers="openInvoicesHeaders"
-                :items="openInvoices"
+                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 2)"
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.actions="{item}">
@@ -72,19 +72,19 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="sentInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 show-select
                 :single-select="false"
                 dense
                 :headers="openInvoicesHeaders"
-                :items="sentInvoices"
+                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 3)"
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
                   Als Bezahlt markieren
                 </v-btn>
-                <v-btn color="warning" x-small class="mr-2" @click="undoSending(item)">
+                <v-btn color="warning" x-small class="mr-2" @click="decrementInvoiceStatus(item)">
                   <v-icon>mdi-undo</v-icon>
               </v-btn>
               </template>
@@ -108,10 +108,10 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="sentInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 dense
                 :headers="upcomingHeaders"
-                :items="paidInvoices"
+                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 4)"
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.actions="{item}">
@@ -120,7 +120,7 @@
                     mdi-file-download
                   </v-icon>
                 </v-btn>
-                <v-btn color="warning" x-small class="mr-2" @click="undoPaid(item)">
+                <v-btn color="warning" x-small class="mr-2" @click="decrementInvoiceStatus(item)">
                   <v-icon>mdi-undo</v-icon>
                 </v-btn>
               </template>
@@ -161,7 +161,7 @@ export default {
       dialog: false,
       editedIndex: -1,
       upcomingHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Rechnungsart', value: 'invoiceType'},
         {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
@@ -169,7 +169,7 @@ export default {
         {text: 'Actions', value: 'actions', sortable: false}
       ],
       openInvoicesHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Rechnungsart', value: 'invoiceType'},
         {text: 'Verwaltung', value: 'customerRefID'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
@@ -186,15 +186,86 @@ export default {
   methods: {
     markAsPaid(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Status += 1
-        items[i].RechnungBezahlt = new Date()
-        this.editInvoice(items[i])
+        var item = items[i]
+        var payedOn = new Date(Date.now())
+
+        const invoice = {
+
+          invoiceNumber: item.invoiceNumber,
+          invoiceTypeID: item.invoiceTypeID,
+          customerRefID: item.customerRefID,
+          invoiceToRefID: item.invoiceToRefID,
+          invoiceDate: new Date(item.invoiceDate),
+          toPayUntil: new Date(item.toPayUntil),
+          isPayed: 1,
+          name: item.name,
+          familyName: item.familyName,
+          salutation: item.salutation,
+          company: item.company,
+          phone: item.phone,
+          mobile: item.mobile,
+          email: item.email,
+          street: item.street,
+          streetNumber: item.streetNumber,
+          areaCode: item.areaCode,
+          city: item.city,
+          country: item.country,
+          invoiceStatusID: item.invoiceStatusID +=1,
+          payedOn: payedOn,
+
+          invoiceToShippingAdress: item.invoiceToShippingAdress,
+          shippingStreet: item.shippingStreet,
+          shippingStreetNumber: item.shippingStreetNumber,
+          shippingAreaCode: item.shippingAreaCode,
+          shippingCity: item.shippingCity,
+          shippingCountry: item.shippingCountry,
+
+          active: item.active,
+          comment: item.comment,
+        }
+        this.editInvoice(invoice)
       }
     },
     markAsSent(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Status += 1
-        this.editInvoice(items[i])
+
+        var item = items[i]
+        console.log(item)
+        const invoice = {
+
+          invoiceNumber: item.invoiceNumber,
+          invoiceTypeID: item.invoiceTypeID,
+          customerRefID: item.customerRefID,
+          invoiceToRefID: item.invoiceToRefID,
+          invoiceDate: new Date(item.invoiceDate),
+          toPayUntil: new Date(item.toPayUntil),
+          isPayed: 1,
+          name: item.name,
+          familyName: item.familyName,
+          salutation: item.salutation,
+          company: item.company,
+          phone: item.phone,
+          mobile: item.mobile,
+          email: item.email,
+          street: item.street,
+          streetNumber: item.streetNumber,
+          areaCode: item.areaCode,
+          city: item.city,
+          country: item.country,
+          invoiceStatusID: item.invoiceStatusID +=1,
+
+          invoiceToShippingAdress: item.invoiceToShippingAdress,
+          shippingStreet: item.shippingStreet,
+          shippingStreetNumber: item.shippingStreetNumber,
+          shippingAreaCode: item.shippingAreaCode,
+          shippingCity: item.shippingCity,
+          shippingCountry: item.shippingCountry,
+
+          active: item.active,
+          comment: item.comment,
+        }
+        console.log(invoice)
+        this.editInvoice(invoice)
       }
     },
     resetSelectedOpen() {
@@ -203,13 +274,41 @@ export default {
     resetSelectedSent() {
       this.sentInvoicesSelected = []
     },
-    undoSending(item) {
-      item.Status -= 1
-      this.editInvoice(item)
-    },
-    undoPaid(item) {
-      item.Status -= 1
-      this.editInvoice(item)
+    decrementInvoiceStatus(item) {
+      const invoice = {
+
+        invoiceNumber: item.invoiceNumber,
+        invoiceTypeID: item.invoiceTypeID,
+        customerRefID: item.customerRefID,
+        invoiceToRefID: item.invoiceToRefID,
+        invoiceDate: new Date(item.invoiceDate),
+        toPayUntil: new Date(item.toPayUntil),
+        isPayed: 1,
+        name: item.name,
+        familyName: item.familyName,
+        salutation: item.salutation,
+        company: item.company,
+        phone: item.phone,
+        mobile: item.mobile,
+        email: item.email,
+        street: item.street,
+        streetNumber: item.streetNumber,
+        areaCode: item.areaCode,
+        city: item.city,
+        country: item.country,
+        invoiceStatusID: item.invoiceStatusID -=1,
+
+        invoiceToShippingAdress: item.invoiceToShippingAdress,
+        shippingStreet: item.shippingStreet,
+        shippingStreetNumber: item.shippingStreetNumber,
+        shippingAreaCode: item.shippingAreaCode,
+        shippingCity: item.shippingCity,
+        shippingCountry: item.shippingCountry,
+
+        active: item.active,
+        comment: item.comment,
+      }
+      this.editInvoice(invoice)
     },
     exportToPDF: function (item) {
       regularInvoiceToPDF(item, this.allUsers, this.allFacilities)
@@ -217,13 +316,14 @@ export default {
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   created() {
+    this.fetchInvoicePositions()
     this.fetchLoadTypes()
     this.fetchLoads()
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
-    this.fetchInvoicePositions()
+
   },
   computed: {
     ...mapGetters({
@@ -235,29 +335,78 @@ export default {
       allUsers: 'allUsers',
       allLoads: 'allLoads',
       allLoadTypes: 'allLoadTypes',
-      allInvoicePositions: 'allInvoicePositions'
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
-    fillObjectKeys(){
+    fillObjectKeysUpcomingInvoices(){
 
       var fullInvoices = this.getInvoicePositionsFromLoads
       var allLoads = this.allLoads
       var allFacilities = this.allFacilities
+      var invoiceTypes = this.allInvoiceTypes
 
       fullInvoices.forEach(function (item, index) {
         if (item.loadID !== undefined){
+
+          item.invoiceDate = new Date(item.invoiceDate)
+
           var load = allLoads.filter(load => load.loadID === item.loadID)
           var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
           var itemFacility = {facility: facility[0].designation}
           var recipient = {recipient: item.name + " " + item.familyName}
 
+          var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
+          var itemInvoiceType = {invoiceType: invoiceType}
+
+
+
           Object.assign(item, itemFacility)
           Object.assign(item, recipient)
+          Object.assign(item, itemInvoiceType)
         }
       });
 
       var invoicesIn30Days = fullInvoices.filter(invoice => new Date(invoice.invoiceDate) <= this.todayIn30Days)
       console.log("INVOICES IN 30 DAYS", invoicesIn30Days)
       return invoicesIn30Days
+    },
+    fillObjectKeysAllInvoices(){
+
+
+      var fullInvoices = this.allInvoices
+      var allLoads = this.allLoads
+      var allFacilities = this.allFacilities
+      var fullInvoicePositions = this.allInvoicePositions
+      var invoiceTypes = this.allInvoiceTypes
+
+
+      fullInvoices.forEach(function (item, index) {
+
+        var invoicePositions = fullInvoicePositions.filter(position => position.invoiceNumber === item.invoiceNumber)
+
+        if (invoicePositions.length !== 0 && invoicePositions[0].loadID){
+          var load = allLoads.filter(load => load.loadID === invoicePositions[0].loadID)
+          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
+          var itemFacility = {facility: facility[0].designation}
+
+          Object.assign(item, itemFacility)
+        }
+        else {
+          itemFacility = {facility: "-"}
+          Object.assign(item, itemFacility)
+        }
+
+        item.invoiceDate = new Date(item.invoiceDate)
+
+        var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
+        var itemInvoiceType = {invoiceType: invoiceType}
+
+        var recipient = {recipient: item.name + " " + item.familyName}
+        Object.assign(item, recipient)
+        Object.assign(item, itemInvoiceType)
+      });
+      return fullInvoices
     },
 
     todayIn30Days(){

@@ -36,19 +36,19 @@ const getters = {
 
     paidInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 4;
+            return invoice.invoiceStatusID === 4;
         })
     },
 
     openInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 2;
+            return invoice.invoiceStatusID === 2;
         })
     },
 
     sentInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 3;
+            return invoice.invoiceStatusID === 3;
         })
     },
 
@@ -124,6 +124,10 @@ const getters = {
 
     allInvoicePositions: state => {
         return state.invoicePositions
+    },
+
+    allInvoiceTypes: state => {
+        return state.invoiceTypes
     }
 }
 

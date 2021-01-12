@@ -209,7 +209,7 @@ export default {
     },
     exportToPDF: function (item) {
 
-      item.toPayUntil = item.invoiceDate + this.due
+      item.toPayUntil = new Date(item.invoiceDate + this.due)
       item.comment = this.comment
       item.invoiceNumber = this.invoiceNumber
       item.invoiceStatusID = 2
