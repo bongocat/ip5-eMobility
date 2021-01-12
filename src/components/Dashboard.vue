@@ -5,7 +5,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
-              <h3>Anstehende Rechnungen  <v-badge :content="this.fillObjectKeysUpcomingInvoices.length" :value="this.fillObjectKeysUpcomingInvoices.length" color="success"/></h3>
+              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.length" :value="this.getInvoicePositionsFromLoads.length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -17,10 +17,25 @@
                 </v-expansion-panels>
                 <v-data-table
                     dense
-                    :headers="upcomingHeaders"
-                    :items="fillObjectKeysUpcomingInvoices"
+                    :headers="invoiceHeaders"
+                    :items="getInvoicePositionsFromLoads"
                     class="elevation-1"
                     :items-per-page="5">
+                  <template v-slot:item.facility ="{item}">
+                    {{ facilityFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.administration ="{item}">
+                    {{ administrationFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.invoiceTypeID ="{item}">
+                    {{ invoiceTypeFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.invoiceToRefID ="{item}">
+                    {{ item.name + " "+ item.familyName }}
+                  </template>
+                  <template v-slot:item.invoiceDate ="{item}">
+                    {{ new Date(item.invoiceDate) }}
+                  </template>
                   <template v-slot:item.actions="{item}">
                     <GenerateInvoice :invoice="item"></GenerateInvoice>
                   </template>
@@ -43,10 +58,25 @@
                 show-select
                 :single-select="false"
                 dense
-                :headers="openInvoicesHeaders"
-                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 2)"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 2)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
                   Als verschickt markieren
@@ -76,10 +106,25 @@
                 show-select
                 :single-select="false"
                 dense
-                :headers="openInvoicesHeaders"
-                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 3)"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 3)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
                   Als Bezahlt markieren
@@ -110,10 +155,25 @@
                 v-model="sentInvoicesSelected"
                 item-key="invoiceID"
                 dense
-                :headers="upcomingHeaders"
-                :items="fillObjectKeysAllInvoices.filter(invoice => invoice.invoiceStatusID === 4)"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 4)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn x-small @click="exportToPDF(item)" color="blue" dark>
                   <v-icon>
@@ -160,25 +220,67 @@ export default {
       itemsPerPage: 5,
       dialog: false,
       editedIndex: -1,
-      upcomingHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceType'},
+      invoiceHeaders: [
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Empfänger', value: 'recipient'},
-        {text: 'Actions', value: 'actions', sortable: false}
-      ],
-      openInvoicesHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceType'},
-        {text: 'Verwaltung', value: 'administration'},
-        {text: 'Anlage', value: 'facility'},
-        {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Empfänger', value: 'recipient'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
   },
   methods: {
+
+    invoiceTypeFromInvoice(invoice){
+      return this.allInvoiceTypes.filter(type => type.invoiceTypeID === invoice.invoiceTypeID)[0].designation
+    },
+
+    administrationFromInvoice(invoice){
+
+      if (invoice.invoicePositions){
+        var invoicePositions = invoice.invoicePositions
+      }
+      else {
+          invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+        }
+
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          var administration = this.allUsers.filter(user => user.userID === facility.administrationID)[0]
+          var administrationCompany = (administration.company === "") ? "" : (" (" + administration.company + ")")
+
+          return administration.name + " " + administration.familyName + administrationCompany
+        }
+        return "-"
+      }
+      else {
+        return "-"
+      }
+    },
+    facilityFromInvoice(invoice){
+      var invoicePositions = []
+
+      if (invoice.invoicePositions){
+        invoicePositions = invoice.invoicePositions
+      }
+      else{
+        invoicePositions = invoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+      }
+
+      if (invoicePositions.length != 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          return facility.designation
+        }
+      }
+      else {
+        return "-"
+      }
+    },
     markAsPaid(items) {
       for (var i = 0; i < items.length; i++) {
         var item = items[i]
@@ -261,7 +363,6 @@ export default {
           active: item.active,
           comment: item.comment,
         }
-        console.log("UPDATED INVOICE", invoice)
         this.editInvoice(invoice)
       }
     },
@@ -336,99 +437,6 @@ export default {
       allInvoices: 'allInvoices',
       allInvoiceTypes: 'allInvoiceTypes'
     }),
-    fillObjectKeysUpcomingInvoices(){
-
-      var fullInvoices = this.getInvoicePositionsFromLoads
-      var allLoads = this.allLoads
-      var allFacilities = this.allFacilities
-      var invoiceTypes = this.allInvoiceTypes
-      var fullUsers = this.allUsers
-
-
-
-      fullInvoices.forEach(function (item, index) {
-        item.invoiceDate = new Date(item.invoiceDate)
-
-        if (item.loadID){
-
-          var load = allLoads.filter(load => load.loadID === item.loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)[0]
-          var itemFacility = {facility: facility.designation}
-          var recipient = {recipient: item.name + " " + item.familyName}
-
-          var invoiceType = invoiceTypes.filter(type => type.invoiceTypeID === item.invoiceTypeID)[0].designation
-          var itemInvoiceType = {invoiceType: invoiceType}
-
-          var administrationName = item.administration
-
-          var itemAdministration = {administration: administrationName}
-
-
-
-          Object.assign(item, itemFacility)
-          Object.assign(item, recipient)
-          Object.assign(item, itemInvoiceType)
-          Object.assign(item, itemAdministration)
-        }
-      });
-
-      var invoicesIn30Days = fullInvoices.filter(invoice => new Date(invoice.invoiceDate) <= this.todayIn30Days)
-      console.log("INVOICES IN 30 DAYS", invoicesIn30Days)
-      return invoicesIn30Days
-    },
-    fillObjectKeysAllInvoices(){
-
-
-      var fullInvoices = this.allInvoices
-      var allLoads = this.allLoads
-      var allFacilities = this.allFacilities
-      var fullInvoicePositions = this.allInvoicePositions
-      var invoiceTypes = this.allInvoiceTypes
-      var fullUsers = this.allUsers
-
-      console.log(fullInvoices)
-
-
-      fullInvoices.forEach(function (item, index) {
-
-        item.invoiceDate = new Date(item.invoiceDate)
-        console.log("TEST", item)
-        console.log("INVOICE TYPES", invoiceTypes)
-
-        var invoicePositions = fullInvoicePositions.filter(position => position.invoiceNumber === item.invoiceNumber)
-
-        console.log("TEST2 ", invoicePositions)
-
-        if (invoicePositions.length !== 0 && invoicePositions[0].loadID){
-          var load = allLoads.filter(load => load.loadID === invoicePositions[0].loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)[0]
-          var itemFacility = {facility: facility.designation}
-          var administration = fullUsers.filter(user => user.userID === facility.administrationID)[0]
-          console.log("TEST3 ", administration)
-          var aministrationName = administration.name + " " + administration.familyName
-
-          if (administration.company != ""){
-            aministrationName += (" (" + administration.company + ")")
-          }
-          var itemAdministration = {administration: aministrationName}
-
-          Object.assign(item, itemAdministration)
-          Object.assign(item, itemFacility)
-        }
-        else {
-          itemFacility = {facility: "-"}
-          Object.assign(item, itemFacility)
-        }
-
-        console.log("TEST98712364 ", item.invoiceTypeID)
-
-
-        var recipient = {recipient: item.name + " " + item.familyName}
-        Object.assign(item, recipient)
-
-      });
-      return fullInvoices
-    },
 
     todayIn30Days(){
       var today = new Date()
@@ -445,35 +453,33 @@ export default {
 
       this.allLoads.forEach((load, index) => {
 
-        var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
-        var administration = allUsers.filter(user => user.userID === facility[0].administrationID)
-        console.log("ADMINISTRATION", administration)
+        var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)[0]
 
-        var tenant = allUsers.filter(user => user.userID === load.tenantID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+        var administration = allUsers.filter(user => user.userID === facility.administrationID)[0]
+
+        var tenant = allUsers.filter(user => user.userID === load.tenantID)[0]
         var invoiceTo = load.invoiceTo
-        var recipient = (invoiceTo === 1) ? administration[0] : tenant[0]
+        var recipient = (invoiceTo === 1) ? administration : tenant
 
         var positionDate = new Date (load.firstInvoice) //Needs Date calculations
-        var positionPricePerMonth = (load.active === 1) ? loadType[0].standardPriceWhenActive : loadType[0].standardPriceWhenInactive
+        var positionPricePerMonth = (load.active === 1) ? loadType.standardPriceWhenActive : loadType.standardPriceWhenInactive
 
 
         var serviceInvoicePosition =
             {invoiceType: 2, loadID: load.loadID, facility:  load.facilityID,
           invoiceTo: invoiceTo, positionDate: positionDate, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
-          loadType: loadType[0], administration: administration[0], tenant: tenant[0], recipient: recipient}
+          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
         var electricityInvoicePosition =
             {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
           invoiceTo: invoiceTo, positionDate: new Date(load.counterNewDate), powerCountOld: load.counterOld, powerCountNew: load.counterNew,
           counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
-          loadType: loadType[0], administration: administration[0], tenant: tenant[0], recipient: recipient}
+          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
         allServiceInvoicePositions.push(serviceInvoicePosition)
         allElectricityInvoicePositions.push(electricityInvoicePosition)
 
-        console.log("SERVICE INVOICE POSITIONS", allServiceInvoicePositions)
-        console.log("ELECTRICITY INVOICE POSITIONS", allElectricityInvoicePositions)
       });
 
       allServiceInvoicePositions.forEach((invoicePosition) => {
@@ -487,8 +493,7 @@ export default {
         if (upcomingInvoicesService.length === 0){
           upcomingInvoicesService.push(
               {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
-                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                 email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -499,7 +504,6 @@ export default {
                     {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
-          console.log("SERVICE ONE INVOICE", upcomingInvoicesService)
         }
         else {
           var foundExistingInvoice = false
@@ -513,8 +517,7 @@ export default {
           if (foundExistingInvoice === false){
             upcomingInvoicesService.push(
                 {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
-                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                   email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -539,8 +542,7 @@ export default {
         if (upcomingInvoicesElectricity.length === 0){
           upcomingInvoicesElectricity.push(
               {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
-                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                 email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -551,7 +553,6 @@ export default {
                     [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
-          console.log("UPCOMING INVOICES ONE ELEMENT", upcomingInvoicesService)
         }
 
         else {
@@ -566,8 +567,7 @@ export default {
           if (foundExistingInvoice === false){
             upcomingInvoicesElectricity.push(
                 {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
-                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                   email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -582,11 +582,9 @@ export default {
         }
       })
       var allUpcomingInvoices = upcomingInvoicesService.concat(upcomingInvoicesElectricity)
-      console.log("ALL UPCOMING INVOICES", allUpcomingInvoices)
       return allUpcomingInvoices
     }
   },
-
 }
 
 Date.prototype.toString = function () {
