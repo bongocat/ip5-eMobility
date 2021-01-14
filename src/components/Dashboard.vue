@@ -17,7 +17,7 @@
                 </v-expansion-panels>
                 <v-data-table
                     dense
-                    :headers="invoiceHeaders"
+                    :headers="invoiceUpcomingHeaders"
                     :items="getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime())"
                     class="elevation-1"
                     :items-per-page="5">
@@ -77,6 +77,9 @@
               <template v-slot:item.invoiceDate ="{item}">
                 {{ new Date(item.invoiceDate) }}
               </template>
+              <template v-slot:item.toPayUntil ="{item}">
+                {{ new Date(item.toPayUntil) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
                   Als verschickt markieren
@@ -125,6 +128,9 @@
               <template v-slot:item.invoiceDate ="{item}">
                 {{ new Date(item.invoiceDate) }}
               </template>
+              <template v-slot:item.toPayUntil ="{item}">
+                {{ new Date(item.toPayUntil) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
                   Als Bezahlt markieren
@@ -155,7 +161,7 @@
                 v-model="sentInvoicesSelected"
                 item-key="invoiceID"
                 dense
-                :headers="invoiceHeaders"
+                :headers="invoicePaidHeaders"
                 :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 4)"
                 class="elevation-1"
                 :items-per-page="5">
@@ -173,6 +179,9 @@
               </template>
               <template v-slot:item.invoiceDate ="{item}">
                 {{ new Date(item.invoiceDate) }}
+              </template>
+              <template v-slot:item.payedOn ="{item}">
+                {{ new Date(item.payedOn) }}
               </template>
               <template v-slot:item.actions="{item}">
                 <v-btn x-small @click="exportToPDF(item)" color="blue" dark>
@@ -220,12 +229,32 @@ export default {
       itemsPerPage: 5,
       dialog: false,
       editedIndex: -1,
-      invoiceHeaders: [
+      invoiceUpcomingHeaders: [
         {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility'},
-        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
         {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
+      invoiceHeaders: [
+        {text: 'Rechnungsnummer', value: 'invoiceNumber'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
+        {text: 'Zu Bezahlen Bis', value: 'toPayUntil'},
+        {text: 'Actions', value: 'actions', sortable: false}
+      ],
+      invoicePaidHeaders: [
+        {text: 'Rechnungsnummer', value: 'invoiceNumber'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
+        {text: 'Bezahlt Am', value: 'payedOn'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
@@ -293,8 +322,8 @@ export default {
           invoiceTypeID: item.invoiceTypeID,
           customerRefID: item.customerRefID,
           invoiceToRefID: item.invoiceToRefID,
-          invoiceDate: new Date(item.invoiceDate),
-          toPayUntil: new Date(item.toPayUntil),
+          invoiceDate:item.invoiceDate,
+          toPayUntil: item.toPayUntil,
           payedOn: payedOn,
           name: item.name,
           familyName: item.familyName,
@@ -337,8 +366,8 @@ export default {
           invoiceTypeID: item.invoiceTypeID,
           customerRefID: item.customerRefID,
           invoiceToRefID: item.invoiceToRefID,
-          invoiceDate: new Date(item.invoiceDate),
-          toPayUntil: new Date(item.toPayUntil),
+          invoiceDate: item.invoiceDate,
+          toPayUntil: item.toPayUntil,
           payedOn: item.payedOn,
           name: item.name,
           familyName: item.familyName,
@@ -382,8 +411,8 @@ export default {
         invoiceTypeID: item.invoiceTypeID,
         customerRefID: item.customerRefID,
         invoiceToRefID: item.invoiceToRefID,
-        invoiceDate: new Date(item.invoiceDate),
-        toPayUntil: new Date(item.toPayUntil),
+        invoiceDate: item.invoiceDate,
+        toPayUntil: item.toPayUntil,
         payedOn: "",
         isPayed: 1,
         name: item.name,
