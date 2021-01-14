@@ -5,7 +5,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
-              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.length" :value="this.getInvoicePositionsFromLoads.length" color="success"/></h3>
+              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" :value="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -18,7 +18,7 @@
                 <v-data-table
                     dense
                     :headers="invoiceHeaders"
-                    :items="getInvoicePositionsFromLoads"
+                    :items="getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime())"
                     class="elevation-1"
                     :items-per-page="5">
                   <template v-slot:item.facility ="{item}">
@@ -267,7 +267,7 @@ export default {
         invoicePositions = invoice.invoicePositions
       }
       else{
-        invoicePositions = invoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+        invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
       }
 
       if (invoicePositions.length != 0){
@@ -421,7 +421,6 @@ export default {
     this.fetchFacilities()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
-
   },
   computed: {
     ...mapGetters({
@@ -457,23 +456,24 @@ export default {
 
         var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
         var administration = allUsers.filter(user => user.userID === facility.administrationID)[0]
-
         var tenant = allUsers.filter(user => user.userID === load.tenantID)[0]
+
         var invoiceTo = load.invoiceTo
         var recipient = (invoiceTo === 1) ? administration : tenant
 
-        var positionDate = new Date (load.firstInvoice) //Needs Date calculations
+        var positionDateService = new Date (load.firstInvoice)
+        var positionDateElectricity = new Date (load.counterNewDate) //Needs Date calculations
         var positionPricePerMonth = (load.active === 1) ? loadType.standardPriceWhenActive : loadType.standardPriceWhenInactive
 
 
         var serviceInvoicePosition =
             {invoiceType: 2, loadID: load.loadID, facility:  load.facilityID,
-          invoiceTo: invoiceTo, positionDate: positionDate, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
+          invoiceTo: invoiceTo, positionDate: positionDateService, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
           loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
         var electricityInvoicePosition =
             {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
-          invoiceTo: invoiceTo, positionDate: new Date(load.counterNewDate), powerCountOld: load.counterOld, powerCountNew: load.counterNew,
+          invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
           counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
           loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 

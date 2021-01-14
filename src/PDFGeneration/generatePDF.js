@@ -5,14 +5,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export function regularInvoiceToPDF(invoice, invoicePositions, users, facilities) {
 
-    var date = new Date()
-
-    console.log(date.toDateString())
-
-    console.log(invoice, invoicePositions, users, facilities)
+    var date = new Date(invoice.invoiceDate)
 
     const invoiceType = data.state.invoiceTypes.filter(invoiceType => invoiceType.invoiceTypeID === invoice.invoiceTypeID)[0]
-    const facility = facilities.filter(facility => facility.administrationID === invoice.customerRefID)[0]
+    var load = data.state.loads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+    var facility = data.state.facilities.filter(facility => facility.facilityID === load.facilityID)[0]
 
     var street = (invoice.invoiceToShippingAdress === 0) ? invoice.street : invoice.shippingStreet
     var streetNumber = (invoice.invoiceToShippingAdress === 0) ? invoice.streetNumber : invoice.shippingStreetNumber
@@ -52,7 +49,7 @@ export function regularInvoiceToPDF(invoice, invoicePositions, users, facilities
     var dd = {
         content: [
             {
-                columns: [{text: date.toString(), alignment: 'left'}, {text: 'Rechnungsnummer: ' + invoice.invoiceNumber, alignment: 'right', fontSize: 8}],
+                columns: [{text: date.toLocaleDateString(), alignment: 'left'}, {text: 'Rechnungsnummer: ' + invoice.invoiceNumber, alignment: 'right', fontSize: 8}],
             },
             {text: invoice.company, alignment: 'left'},
             {text: invoice.name + " " + invoice.familyName, alignment: 'left'},

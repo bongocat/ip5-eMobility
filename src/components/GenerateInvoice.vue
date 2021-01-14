@@ -20,41 +20,41 @@
       </v-card-title>
       <v-card-text>
         <v-form>
-            <v-row>
-               <v-col>
-                   <v-text-field v-model = "invoiceNumber"
-                                 label="Rechnungsnummer"></v-text-field>
-               </v-col>
-                <v-col>
-                    <v-overflow-btn style="min-width: 250px"
-                                    v-model = "due"
-                                    dense
-                                    editable
-                                    :items='[{text: "10 Tage", value: 10}, {text: "20 Tage", value: 20}, {text: "30 Tage", value: 30}]'
-                                    label="Zahlungsfrist"
-                    ></v-overflow-btn>
-                </v-col>
-                <v-col>
-                    <v-text-field v-model = "comment"
-                                  label="Kommentar"></v-text-field>
-                </v-col>
-            </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="invoiceNumber"
+                            label="Rechnungsnummer"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-overflow-btn style="min-width: 250px"
+                              v-model="due"
+                              dense
+                              editable
+                              :items='[{text: "10 Tage", value: 10}, {text: "20 Tage", value: 20}, {text: "30 Tage", value: 30}]'
+                              label="Zahlungsfrist"
+              ></v-overflow-btn>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="comment"
+                            label="Kommentar"></v-text-field>
+            </v-col>
+          </v-row>
           <h3 class="title-3">Rechnungspositionen</h3>
           <h3 class="subtitle-2">Rechnungsposition hinzufügen</h3>
           <v-row>
             <v-col>
-              <v-text-field v-model = "extraPosDescription"
+              <v-text-field v-model="extraPosDescription"
                             label="Beschreibung"></v-text-field>
             </v-col>
             <v-col>
-            <v-text-field v-model = "extraPosCount"
-                          label="Anzahl"
-                          type="number"
-                          min="0"
-            ></v-text-field>
-          </v-col>
+              <v-text-field v-model="extraPosCount"
+                            label="Anzahl"
+                            type="number"
+                            min="0"
+              ></v-text-field>
+            </v-col>
             <v-col>
-              <v-text-field v-model = "extraPosUnitPrice"
+              <v-text-field v-model="extraPosUnitPrice"
                             label="Preis Pro Einheit"
                             type="number"
                             step="0.01"
@@ -65,7 +65,7 @@
               </v-text-field>
             </v-col>
             <v-col>
-              <v-text-field v-model = "extraPosVat"
+              <v-text-field v-model="extraPosVat"
                             label="Mehrwertsteuersatz"
                             type="number"
                             step="0.1"
@@ -116,20 +116,20 @@
               <tbody>
               <tr
                   v-for="(item) in invoicePositions"
-                  :key="item.positionName"
+                  :key="item.invoicePositionID"
               >
-                <td>{{ item.positionName }}</td>
+                <td>{{ item.positionName + " - Load ID: " + item.loadID }}</td>
                 <td>{{ item.amount }}</td>
                 <td>{{ item.price + " CHF" }}</td>
                 <td>{{ item.brutto + " CHF" }}</td>
                 <td>{{ (item.vat * 100).toFixed(0) + "%" }}</td>
-                <td>{{ item.netto + " CHF"}}</td>
+                <td>{{ item.netto + " CHF" }}</td>
                 <td>
                   <v-btn color="error"
                          text
                          @click="removeInvoicePosition(item)"
                          fab
-                  small>
+                         small>
                     <v-icon small>mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -163,7 +163,7 @@
 <script>
 
 import {mapActions, mapGetters} from "vuex";
-import { regularInvoiceToPDF } from "../PDFGeneration/generatePDF"
+import {regularInvoiceToPDF} from "../PDFGeneration/generatePDF"
 
 
 export default {
@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'addNewInvoicePosition', 'addNewInvoice', 'editLoad']),
-    newInvoicePosition(){
+    newInvoicePosition() {
       this.invoicePositions.push({
         positionName: this.extraPosDescription,
         loadID: "",
@@ -204,12 +204,18 @@ export default {
       this.extraPosCount = ""
       this.extraPosUnitPrice = ""
     },
-    removeInvoicePosition(position){
-      this.invoicePositions.splice(this.invoicePositions.indexOf(position),1)
+    removeInvoicePosition(position) {
+      this.invoicePositions.splice(this.invoicePositions.indexOf(position), 1)
     },
     exportToPDF: function (item) {
 
-      item.toPayUntil = new Date(item.invoiceDate + this.due)
+      console.log(item.toPayUntil)
+
+      item.toPayUntil = this.addDays(item.invoiceDate, this.due)
+
+      console.log(item.invoiceDate, this.due)
+      console.log(item.toPayUntil)
+
       item.comment = this.comment
       item.invoiceNumber = this.invoiceNumber
       item.invoiceStatusID = 2
@@ -219,32 +225,57 @@ export default {
       this.invoicePositions.forEach((invoicePosition) => {
         invoicePosition.invoiceNumber = this.invoiceNumber
         var currentLoad = this.allLoads.filter(load => load.loadID === invoicePosition.loadID)[0]
+
         if (item.invoiceTypeID === 2) {
-          currentLoad.firstInvoice = new Date(currentLoad.firstInvoice)
-          currentLoad.firstInvoice.setMonth(currentLoad.firstInvoice.getMonth() + currentLoad.intervalService)
+          console.log(currentLoad.firstInvoice)
+          currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice), currentLoad.intervalService)
+          console.log(currentLoad.firstInvoice)
         }
-        if (item.invoiceTypeID === 3){
-          currentLoad.counterNewDate = new Date(currentLoad.counterNewDate)
-          currentLoad.counterNewDate.setMonth(currentLoad.counterNewDate.getMonth() + currentLoad.counterNewDate)
+        if (item.invoiceTypeID === 3) {
+          console.log(currentLoad.counterNewDate)
+          currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate), currentLoad.intervalElectricity)
+          console.log(currentLoad.counterNewDate)
         }
 
         this.editLoad(currentLoad)
         this.addNewInvoicePosition(invoicePosition)
       })
 
-      regularInvoiceToPDF(item, this.invoicePositions,this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item, this.invoicePositions, this.allUsers, this.allFacilities)
     },
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    },
+    addMonths(date, amount) {
+      const endDate = new Date(date.getTime());
+      const originalTimeZoneOffset = endDate.getTimezoneOffset();
+      endDate.setMonth(endDate.getMonth() + amount);
+      while (this.monthDiff(date, endDate) > amount) {
+        endDate.setDate(endDate.getDate() - 1);
+      }
+      const endTimeZoneOffset = endDate.getTimezoneOffset();
+      const diff = endTimeZoneOffset - originalTimeZoneOffset;
+      const finalDate = diff ? endDate.setMinutes(endDate.getMinutes() - diff) : endDate;
+      return new Date(finalDate);
+    },
+    monthDiff(from, to) {
+      const years = to.getFullYear() - from.getFullYear();
+      const months = to.getMonth() - from.getMonth();
+      return 12 * years + months;
+    }
   },
-    computed: {
-      ...mapGetters({
-        upcomingInvoices: 'upcomingInvoices',
-        paidInvoices: 'paidInvoices',
-        openInvoices: 'openInvoices',
-        allFacilities: 'allFacilities',
-        allUsers: 'allUsers',
-        allLoads: 'allLoads'
-      }),
-    },
+  computed: {
+    ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads'
+    }),
+  },
   created() {
     console.log(this.invoice)
   }

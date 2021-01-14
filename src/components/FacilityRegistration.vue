@@ -26,7 +26,7 @@
             </v-col>
             <v-col>
               <v-overflow-btn style="min-width: 250px"
-                              v-model = "administrationID"
+                              v-model = "administration"
                               dense
                               editable
                               :items="allUsers.filter(user => (user.userTypeID == 1 && user.active == 1))"
@@ -123,7 +123,7 @@ export default {
       dialog: false,
 
       facilityName: "",
-      administrationID: "",
+      administration: "",
       street: "",
       streetNumber: "",
       areaCode: "",
@@ -139,7 +139,7 @@ export default {
       this.dialog = false
 
       const newFacility = {
-        administrationID: this.administrationID.userID,
+        administrationID: this.administration.userID,
         designation: this.facilityName,
         city: this.city,
         street: this.street,
