@@ -30,6 +30,9 @@
             <template v-slot:item.invoiceDate ="{item}">
               {{ new Date(item.invoiceDate) }}
             </template>
+            <template v-slot:item.payedOn ="{item}">
+              {{ new Date(item.payedOn) }}
+            </template>
             <template v-slot:item.actions="{item}">
               <v-btn
                   text
@@ -84,11 +87,12 @@ export default {
       dialog: false,
       dialogDelete: false,
       invoiceHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Rechnungsnummer', value: 'invoiceNumber'},
         {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'administration'},
-        {text: 'Anlage', value: 'facility' },
-        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
         {text: 'Bezahlt Am', value: 'payedOn'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
