@@ -288,6 +288,7 @@ export default {
 
         const invoice = {
 
+          invoiceID: item.invoiceID,
           invoiceNumber: item.invoiceNumber,
           invoiceTypeID: item.invoiceTypeID,
           customerRefID: item.customerRefID,
@@ -331,6 +332,7 @@ export default {
 
         const invoice = {
 
+          invoiceID: item.invoiceID,
           invoiceNumber: item.invoiceNumber,
           invoiceTypeID: item.invoiceTypeID,
           customerRefID: item.customerRefID,
@@ -375,12 +377,14 @@ export default {
     decrementInvoiceStatus(item) {
       const invoice = {
 
+        invoiceID: item.invoiceID,
         invoiceNumber: item.invoiceNumber,
         invoiceTypeID: item.invoiceTypeID,
         customerRefID: item.customerRefID,
         invoiceToRefID: item.invoiceToRefID,
         invoiceDate: new Date(item.invoiceDate),
         toPayUntil: new Date(item.toPayUntil),
+        payedOn: "",
         isPayed: 1,
         name: item.name,
         familyName: item.familyName,
@@ -395,14 +399,12 @@ export default {
         city: item.city,
         country: item.country,
         invoiceStatusID: item.invoiceStatusID -=1,
-
         invoiceToShippingAdress: item.invoiceToShippingAdress,
         shippingStreet: item.shippingStreet,
         shippingStreetNumber: item.shippingStreetNumber,
         shippingAreaCode: item.shippingAreaCode,
         shippingCity: item.shippingCity,
         shippingCountry: item.shippingCountry,
-
         active: item.active,
         comment: item.comment,
       }

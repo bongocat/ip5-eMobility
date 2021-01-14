@@ -314,7 +314,7 @@ router.post('/invoices', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-     "invoiceNumber": "3",
+    "invoiceNumber": "3",
     "invoiceTypeID": "1",
     "customerRefID": "1",
     "invoiceToRefID": "1",
