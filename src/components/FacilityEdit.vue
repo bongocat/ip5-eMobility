@@ -26,7 +26,7 @@
                               v-model = "administrationID"
                               dense
                               editable
-                              :items="allUsers"
+                              :items="allUsers.filter(user => (user.userTypeID == 1 && user.active == 1))"
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint

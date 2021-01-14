@@ -36,19 +36,19 @@ const getters = {
 
     paidInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 4;
+            return invoice.invoiceStatusID === 4;
         })
     },
 
     openInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 2;
+            return invoice.invoiceStatusID === 2;
         })
     },
 
     sentInvoices: state => {
         return state.invoices.filter(invoice => {
-            return invoice.Status === 3;
+            return invoice.invoiceStatusID === 3;
         })
     },
 
@@ -124,6 +124,10 @@ const getters = {
 
     allInvoicePositions: state => {
         return state.invoicePositions
+    },
+
+    allInvoiceTypes: state => {
+        return state.invoiceTypes
     }
 }
 
@@ -216,6 +220,12 @@ const actions = {
         const response = await axios.get(baseURL +  '/api/megalog/invoicepositions/')
         commit('setInvoicePositions', response.data)
     },
+
+    async editInvoicePosition({commit}, position){
+        const response = await axios.put(baseURL + '/api/megalog/invoicepositions/', position);
+        console.log(response.data)
+        commit('editInvoicePosition', response.data)
+    },
 }
 
 const mutations = {
@@ -250,32 +260,39 @@ const mutations = {
     setLoadTypes: (state, loadTypes) => (state.loadTypes = loadTypes),
     setInvoiceTypes: (state, invoiceTypes) => (state.invoiceTypes = invoiceTypes),
     setInvoicePositions: (state, invoicePositions) => (state.invoicePositions = invoicePositions),
+
     editFacility: (state, editedFacility) => {
-        const index = state.facilities.findIndex(facility => facility.AnlageID === editedFacility.AnlageID)
+        const index = state.facilities.findIndex(facility => facility.facilityID === editedFacility.facilityID)
         if (index !== -1){
             state.facilities.splice(index, 1 , editedFacility)
         }
     },
     editUser: (state, editedUser) => {
-        const index = state.users.findIndex(user => user.NutzerID === editedUser.NutzerID)
+        const index = state.users.findIndex(user => user.userID === editedUser.userID)
         if (index !== -1){
             state.users.splice(index, 1 , editedUser)
         }
     },
     editLoad: (state, editedLoad) => {
-        const index = state.loads.findIndex(load => load.LoadID === editedLoad.LoadID)
+        const index = state.loads.findIndex(load => load.loadID === editedLoad.loadID)
         if (index !== -1){
             state.loads.splice(index, 1 , editedLoad)
         }
     },
 
     editInvoice: (state, editedInvoice) => {
-        const index = state.invoices.findIndex(invoice => invoice.LoadID === editedInvoice.LoadID)
+        const index = state.invoices.findIndex(invoice => invoice.invoiceID === editedInvoice.invoiceID)
         if (index !== -1){
             state.invoices.splice(index, 1 , editedInvoice)
         }
     },
 
+    editInvoicePosition: (state, editedInvoicePosition) => {
+        const index = state.invoicePositions.findIndex(position => position.invoicePositionID === editedInvoicePosition.invoicePositionID)
+        if (index !== -1){
+            state.facilities.splice(index, 1 , editedInvoicePosition)
+        }
+    },
 
 }
 

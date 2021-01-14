@@ -5,7 +5,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
-              <h3>Anstehende Rechnungen  <v-badge :content="this.fillObjectKeys.length" :value="this.fillObjectKeys.length" color="success"/></h3>
+              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" :value="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -17,10 +17,25 @@
                 </v-expansion-panels>
                 <v-data-table
                     dense
-                    :headers="upcomingHeaders"
-                    :items="fillObjectKeys"
+                    :headers="invoiceHeaders"
+                    :items="getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime())"
                     class="elevation-1"
                     :items-per-page="5">
+                  <template v-slot:item.facility ="{item}">
+                    {{ facilityFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.administration ="{item}">
+                    {{ administrationFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.invoiceTypeID ="{item}">
+                    {{ invoiceTypeFromInvoice(item) }}
+                  </template>
+                  <template v-slot:item.invoiceToRefID ="{item}">
+                    {{ item.name + " "+ item.familyName }}
+                  </template>
+                  <template v-slot:item.invoiceDate ="{item}">
+                    {{ new Date(item.invoiceDate) }}
+                  </template>
                   <template v-slot:item.actions="{item}">
                     <GenerateInvoice :invoice="item"></GenerateInvoice>
                   </template>
@@ -39,14 +54,29 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="openInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 show-select
                 :single-select="false"
                 dense
-                :headers="openInvoicesHeaders"
-                :items="openInvoices"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 2)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
                   Als verschickt markieren
@@ -72,19 +102,34 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="sentInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 show-select
                 :single-select="false"
                 dense
-                :headers="openInvoicesHeaders"
-                :items="sentInvoices"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 3)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
                   Als Bezahlt markieren
                 </v-btn>
-                <v-btn color="warning" x-small class="mr-2" @click="undoSending(item)">
+                <v-btn color="warning" x-small class="mr-2" @click="decrementInvoiceStatus(item)">
                   <v-icon>mdi-undo</v-icon>
               </v-btn>
               </template>
@@ -108,19 +153,34 @@
           <v-expansion-panel-content>
             <v-data-table
                 v-model="sentInvoicesSelected"
-                item-key="RechnungsID"
+                item-key="invoiceID"
                 dense
-                :headers="upcomingHeaders"
-                :items="paidInvoices"
+                :headers="invoiceHeaders"
+                :items="allInvoices.filter(invoice => invoice.invoiceStatusID === 4)"
                 class="elevation-1"
                 :items-per-page="5">
+              <template v-slot:item.facility ="{item}">
+                {{ facilityFromInvoice(item) }}
+              </template>
+              <template v-slot:item.administration ="{item}">
+                {{ administrationFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceTypeID ="{item}">
+                {{ invoiceTypeFromInvoice(item) }}
+              </template>
+              <template v-slot:item.invoiceToRefID ="{item}">
+                {{ item.name + " "+ item.familyName }}
+              </template>
+              <template v-slot:item.invoiceDate ="{item}">
+                {{ new Date(item.invoiceDate) }}
+              </template>
               <template v-slot:item.actions="{item}">
                 <v-btn x-small @click="exportToPDF(item)" color="blue" dark>
                   <v-icon>
                     mdi-file-download
                   </v-icon>
                 </v-btn>
-                <v-btn color="warning" x-small class="mr-2" @click="undoPaid(item)">
+                <v-btn color="warning" x-small class="mr-2" @click="decrementInvoiceStatus(item)">
                   <v-icon>mdi-undo</v-icon>
                 </v-btn>
               </template>
@@ -160,41 +220,150 @@ export default {
       itemsPerPage: 5,
       dialog: false,
       editedIndex: -1,
-      upcomingHeaders: [
+      invoiceHeaders: [
         {text: 'Rechnungsart', value: 'invoiceTypeID'},
-        {text: 'Verwaltung', value: 'customerRefID'},
+        {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility'},
         {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Empfänger', value: 'recipient'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
-      openInvoicesHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceTypeID'},
-        {text: 'Verwaltung', value: 'customerRefID'},
-        {text: 'Anlage', value: 'facility'},
-        {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Empfänger', value: 'recipient'},
-        {text: 'Actions', value: 'actions', sortable: false}
-      ],
-    // {invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-    //     invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-    //     facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1, invoicePositions:[
-    //   {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-    //     amount: 1, netto: price * vat, vat:price * vat vat, brutto: price * this.amount, active: 1, comment: ""}]}
     };
   },
   methods: {
+
+    invoiceTypeFromInvoice(invoice){
+      return this.allInvoiceTypes.filter(type => type.invoiceTypeID === invoice.invoiceTypeID)[0].designation
+    },
+
+    administrationFromInvoice(invoice){
+
+      if (invoice.invoicePositions){
+        var invoicePositions = invoice.invoicePositions
+      }
+      else {
+          invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+        }
+
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          var administration = this.allUsers.filter(user => user.userID === facility.administrationID)[0]
+          var administrationCompany = (administration.company === "") ? "" : (" (" + administration.company + ")")
+
+          return administration.name + " " + administration.familyName + administrationCompany
+        }
+        return "-"
+      }
+      else {
+        return "-"
+      }
+    },
+    facilityFromInvoice(invoice){
+      var invoicePositions = []
+
+      if (invoice.invoicePositions){
+        invoicePositions = invoice.invoicePositions
+      }
+      else{
+        invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+      }
+
+      if (invoicePositions.length != 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          return facility.designation
+        }
+      }
+      else {
+        return "-"
+      }
+    },
     markAsPaid(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Status += 1
-        items[i].RechnungBezahlt = new Date()
-        this.editInvoice(items[i])
+        var item = items[i]
+        var payedOn = new Date(Date.now())
+
+        const invoice = {
+
+          invoiceNumber: item.invoiceNumber,
+          invoiceTypeID: item.invoiceTypeID,
+          customerRefID: item.customerRefID,
+          invoiceToRefID: item.invoiceToRefID,
+          invoiceDate: new Date(item.invoiceDate),
+          toPayUntil: new Date(item.toPayUntil),
+          payedOn: payedOn,
+          name: item.name,
+          familyName: item.familyName,
+          salutation: item.salutation,
+          company: item.company,
+          phone: item.phone,
+          mobile: item.mobile,
+          email: item.email,
+          street: item.street,
+          streetNumber: item.streetNumber,
+          areaCode: item.areaCode,
+          city: item.city,
+          country: item.country,
+
+          invoiceToShippingAdress: item.invoiceToShippingAdress,
+          shippingStreet: item.shippingStreet,
+          shippingStreetNumber: item.shippingStreetNumber,
+          shippingAreaCode: item.shippingAreaCode,
+          shippingCity: item.shippingCity,
+          shippingCountry: item.shippingCountry,
+
+          invoiceStatusID: item.invoiceStatusID +=1,
+
+          active: item.active,
+          comment: item.comment,
+        }
+        this.editInvoice(invoice)
       }
     },
     markAsSent(items) {
       for (var i = 0; i < items.length; i++) {
-        items[i].Status += 1
-        this.editInvoice(items[i])
+
+        var item = items[i]
+        console.log(">>>>>", item)
+
+        const invoice = {
+
+          invoiceNumber: item.invoiceNumber,
+          invoiceTypeID: item.invoiceTypeID,
+          customerRefID: item.customerRefID,
+          invoiceToRefID: item.invoiceToRefID,
+          invoiceDate: new Date(item.invoiceDate),
+          toPayUntil: new Date(item.toPayUntil),
+          payedOn: item.payedOn,
+          name: item.name,
+          familyName: item.familyName,
+          salutation: item.salutation,
+          company: item.company,
+          phone: item.phone,
+          mobile: item.mobile,
+          email: item.email,
+          street: item.street,
+          streetNumber: item.streetNumber,
+          areaCode: item.areaCode,
+          city: item.city,
+          country: item.country,
+
+          invoiceToShippingAdress: item.invoiceToShippingAdress,
+          shippingStreet: item.shippingStreet,
+          shippingStreetNumber: item.shippingStreetNumber,
+          shippingAreaCode: item.shippingAreaCode,
+          shippingCity: item.shippingCity,
+          shippingCountry: item.shippingCountry,
+
+          invoiceStatusID: item.invoiceStatusID +=1,
+
+          active: item.active,
+          comment: item.comment,
+        }
+        this.editInvoice(invoice)
       }
     },
     resetSelectedOpen() {
@@ -203,13 +372,41 @@ export default {
     resetSelectedSent() {
       this.sentInvoicesSelected = []
     },
-    undoSending(item) {
-      item.Status -= 1
-      this.editInvoice(item)
-    },
-    undoPaid(item) {
-      item.Status -= 1
-      this.editInvoice(item)
+    decrementInvoiceStatus(item) {
+      const invoice = {
+
+        invoiceNumber: item.invoiceNumber,
+        invoiceTypeID: item.invoiceTypeID,
+        customerRefID: item.customerRefID,
+        invoiceToRefID: item.invoiceToRefID,
+        invoiceDate: new Date(item.invoiceDate),
+        toPayUntil: new Date(item.toPayUntil),
+        isPayed: 1,
+        name: item.name,
+        familyName: item.familyName,
+        salutation: item.salutation,
+        company: item.company,
+        phone: item.phone,
+        mobile: item.mobile,
+        email: item.email,
+        street: item.street,
+        streetNumber: item.streetNumber,
+        areaCode: item.areaCode,
+        city: item.city,
+        country: item.country,
+        invoiceStatusID: item.invoiceStatusID -=1,
+
+        invoiceToShippingAdress: item.invoiceToShippingAdress,
+        shippingStreet: item.shippingStreet,
+        shippingStreetNumber: item.shippingStreetNumber,
+        shippingAreaCode: item.shippingAreaCode,
+        shippingCity: item.shippingCity,
+        shippingCountry: item.shippingCountry,
+
+        active: item.active,
+        comment: item.comment,
+      }
+      this.editInvoice(invoice)
     },
     exportToPDF: function (item) {
       regularInvoiceToPDF(item, this.allUsers, this.allFacilities)
@@ -217,13 +414,13 @@ export default {
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   created() {
+    this.fetchInvoicePositions()
     this.fetchLoadTypes()
     this.fetchLoads()
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
-    this.fetchInvoicePositions()
   },
   computed: {
     ...mapGetters({
@@ -235,30 +432,10 @@ export default {
       allUsers: 'allUsers',
       allLoads: 'allLoads',
       allLoadTypes: 'allLoadTypes',
-      allInvoicePositions: 'allInvoicePositions'
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
-    fillObjectKeys(){
-
-      var fullInvoices = this.getInvoicePositionsFromLoads
-      var allLoads = this.allLoads
-      var allFacilities = this.allFacilities
-
-      fullInvoices.forEach(function (item, index) {
-        if (item.loadID !== undefined){
-          var load = allLoads.filter(load => load.loadID === item.loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load[0].facilityID)
-          var itemFacility = {facility: facility[0].designation}
-          var recipient = {recipient: item.name + " " + item.familyName}
-
-          Object.assign(item, itemFacility)
-          Object.assign(item, recipient)
-        }
-      });
-
-      var invoicesIn30Days = fullInvoices.filter(invoice => new Date(invoice.invoiceDate) <= this.todayIn30Days)
-      console.log("INVOICES IN 30 DAYS", invoicesIn30Days)
-      return invoicesIn30Days
-    },
 
     todayIn30Days(){
       var today = new Date()
@@ -275,35 +452,34 @@ export default {
 
       this.allLoads.forEach((load, index) => {
 
-        var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)
-        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)
-        var administration = allUsers.filter(user => user.userID === facility[0].administrationID)
-        console.log("ADMINISTRATION", administration)
+        var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)[0]
 
-        var tenant = allUsers.filter(user => user.userID === load.tenantID)
+        var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+        var administration = allUsers.filter(user => user.userID === facility.administrationID)[0]
+        var tenant = allUsers.filter(user => user.userID === load.tenantID)[0]
+
         var invoiceTo = load.invoiceTo
-        var recipient = (invoiceTo === 1) ? administration[0] : tenant[0]
+        var recipient = (invoiceTo === 1) ? administration : tenant
 
-        var positionDate = new Date (load.firstInvoice) //Needs Date calculations
-        var positionPricePerMonth = (load.active === 1) ? loadType[0].standardPriceWhenActive : loadType[0].standardPriceWhenInactive
+        var positionDateService = new Date (load.firstInvoice)
+        var positionDateElectricity = new Date (load.counterNewDate) //Needs Date calculations
+        var positionPricePerMonth = (load.active === 1) ? loadType.standardPriceWhenActive : loadType.standardPriceWhenInactive
 
 
         var serviceInvoicePosition =
             {invoiceType: 2, loadID: load.loadID, facility:  load.facilityID,
-          invoiceTo: invoiceTo, positionDate: positionDate, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
-          loadType: loadType[0], administration: administration[0], tenant: tenant[0], recipient: recipient}
+          invoiceTo: invoiceTo, positionDate: positionDateService, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
+          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
         var electricityInvoicePosition =
             {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
-          invoiceTo: invoiceTo, positionDate: new Date(load.counterNewDate), powerCountOld: load.counterOld, powerCountNew: load.counterNew,
+          invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
           counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
-          loadType: loadType[0], administration: administration[0], tenant: tenant[0], recipient: recipient}
+          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
         allServiceInvoicePositions.push(serviceInvoicePosition)
         allElectricityInvoicePositions.push(electricityInvoicePosition)
 
-        console.log("SERVICE INVOICE POSITIONS", allServiceInvoicePositions)
-        console.log("ELECTRICITY INVOICE POSITIONS", allElectricityInvoicePositions)
       });
 
       allServiceInvoicePositions.forEach((invoicePosition) => {
@@ -316,9 +492,8 @@ export default {
 
         if (upcomingInvoicesService.length === 0){
           upcomingInvoicesService.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                 email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -329,7 +504,6 @@ export default {
                     {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
-          console.log("SERVICE ONE INVOICE", upcomingInvoicesService)
         }
         else {
           var foundExistingInvoice = false
@@ -342,9 +516,8 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesService.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                   email: invoicePosition.recipient.email, street: invoicePosition.recipient.street, streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -368,9 +541,8 @@ export default {
 
         if (upcomingInvoicesElectricity.length === 0){
           upcomingInvoicesElectricity.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                 email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -381,7 +553,6 @@ export default {
                     [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
-          console.log("UPCOMING INVOICES ONE ELEMENT", upcomingInvoicesService)
         }
 
         else {
@@ -395,9 +566,8 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesElectricity.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.administration.userID,
-                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: invoicePosition.positionDate, loadID: invoicePosition.loadID,
-                  facility: invoicePosition.facility, toPayUntil: "", payedOn: "", invoiceStatusID: 1,
+                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                  invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
                   email: invoicePosition.recipient.email, street: invoicePosition.recipient.street,streetNumber: invoicePosition.recipient.streetNumber, areaCode: invoicePosition.recipient.areaCode,
@@ -412,11 +582,9 @@ export default {
         }
       })
       var allUpcomingInvoices = upcomingInvoicesService.concat(upcomingInvoicesElectricity)
-      console.log("ALL UPCOMING INVOICES", allUpcomingInvoices)
       return allUpcomingInvoices
     }
   },
-
 }
 
 Date.prototype.toString = function () {

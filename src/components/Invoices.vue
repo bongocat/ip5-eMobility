@@ -11,10 +11,25 @@
           <v-data-table
               dense
               :headers="invoiceHeaders"
-              :items="fillObjectKeys"
+              :items="this.allInvoices"
               class="elevation-1"
               :items-per-page="15"
           style="margin-top: 20px">
+            <template v-slot:item.facility ="{item}">
+              {{ facilityFromInvoice(item) }}
+            </template>
+            <template v-slot:item.administration ="{item}">
+              {{ administrationFromInvoice(item) }}
+            </template>
+            <template v-slot:item.invoiceTypeID ="{item}">
+              {{ invoiceTypeFromInvoice(item) }}
+            </template>
+            <template v-slot:item.invoiceToRefID ="{item}">
+              {{ item.name + " "+ item.familyName }}
+            </template>
+            <template v-slot:item.invoiceDate ="{item}">
+              {{ new Date(item.invoiceDate) }}
+            </template>
             <template v-slot:item.actions="{item}">
               <v-btn
                   text
@@ -70,18 +85,58 @@ export default {
       dialogDelete: false,
       invoiceHeaders: [
         {text: 'Rechnungsart', value: 'invoiceTypeID'},
-        {text: 'Verwaltung', value: 'customerRefID'},
-        {text: 'Rechnung An', value: 'invoiceToRefID'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Verwaltung', value: 'administration'},
         {text: 'Anlage', value: 'facility' },
-        {text: 'Load ID', value: 'loadID'},
         {text: 'Fällig Am', value: 'invoiceDate'},
-        {text: 'Mieter Vorname', value: 'name'},
-        {text: 'Mieter Nachname', value: 'familyName'},
+        {text: 'Bezahlt Am', value: 'payedOn'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
   },
   methods: {
+    invoiceTypeFromInvoice(invoice){
+      return this.allInvoiceTypes.filter(type => type.invoiceTypeID === invoice.invoiceTypeID)[0].designation
+    },
+
+    administrationFromInvoice(invoice){
+
+      var invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          var administration = this.allUsers.filter(user => user.userID === facility.administrationID)[0]
+          var administrationCompany = (administration.company === "") ? "" : (" (" + administration.company + ")")
+
+          return administration.name + " " + administration.familyName + administrationCompany
+        }
+        return "-"
+      }
+      else {
+        return "-"
+      }
+    },
+
+    facilityFromInvoice(invoice){
+      var invoicePositions = []
+
+      invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+
+      console.log(invoicePositions)
+
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          return facility.designation
+        }
+      }
+      else {
+        return "-"
+      }
+    },
     exportToPDF: function (item) {
       var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
       regularInvoiceToPDF(item, invoicePositions, this.allUsers, this.allFacilities)
@@ -89,24 +144,6 @@ export default {
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   computed: {
-    fillObjectKeys(){
-
-      var fullInvoices = this.allInvoices
-      var allLoads = this.allLoads
-      var allFacilities = this.allFacilities
-
-      fullInvoices.forEach(function (item, index) {
-        if (item.loadID != undefined){
-          var load = allLoads.filter(load => load.loadID === item.loadID)
-          var facility = allFacilities.filter(facility => facility.facilityID === load.facilityID)
-          var itemFacility = {facility: facility[0].facilityName}
-
-          Object.assign(item, itemFacility)
-        }
-      });
-
-      return fullInvoices
-    },
     ...mapGetters({
       upcomingInvoices: 'upcomingInvoices',
       paidInvoices: 'paidInvoices',
@@ -117,17 +154,18 @@ export default {
       allLoads: 'allLoads',
       allLoadTypes: 'allLoadTypes',
       allInvoicePositions: 'allInvoicePositions',
-      allInvoices: 'allInvoices'
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
   },
   created() {
+    this.fetchInvoicePositions()
     this.fetchLoadTypes()
     this.fetchLoads()
     this.fetchUsers()
     this.fetchFacilities()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
-    this.fetchInvoicePositions()
   },
 }
 </script>
