@@ -128,14 +128,6 @@
                             maxlength="1000"
               ></v-text-field>
             </v-col>
-            <v-col>
-              <v-switch v-model="active"
-                        label="Aktiv"
-                        color="success"
-
-              >
-              </v-switch>
-            </v-col>
           </v-row>
         </v-form>
       </v-card-text>

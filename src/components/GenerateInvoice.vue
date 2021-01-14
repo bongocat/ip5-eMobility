@@ -86,7 +86,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-simple-table dense>
+          <v-simple-table dense v-if="this.invoice.invoiceTypeID === 2">
             <template v-slot:default>
               <thead>
               <tr>
@@ -122,8 +122,8 @@
                 <td>{{ item.amount }}</td>
                 <td>{{ item.price + " CHF" }}</td>
                 <td>{{ item.brutto + " CHF" }}</td>
-                <td>{{ (item.vat * 100).toFixed(0) + "%" }}</td>
-                <td>{{ item.netto + " CHF" }}</td>
+                <td>{{ (item.vat * 100).toFixed(2) + "%" }}</td>
+                <td>{{ item.netto.toFixed(2) + " CHF" }}</td>
                 <td>
                   <v-btn color="error"
                          text
@@ -137,6 +137,89 @@
               </tbody>
             </template>
           </v-simple-table>
+          <v-simple-table dense v-if="this.invoice.invoiceTypeID === 3">
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th class="text-left">
+                Beschreibung
+              </th>
+              <th class="text-left">
+                Zählerstand Alt
+              </th>
+              <th class="text-left">
+              Zählerstand Neu
+            </th>
+              <th class="text-left">
+                Bruttopreis
+              </th>
+              <th class="text-left">
+                Mwst.
+              </th>
+              <th class="text-left">
+                Nettopreis
+              </th>
+              <th class="text-left">
+                Action
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="(item) in invoicePositions"
+                :key="item.invoicePositionID"
+            >
+              <td>{{ item.positionName + " - Load ID: " + item.loadID }}</td>
+              <td>
+                <v-text-field v-model="item.counterOld"
+                              label="Zählerstand Alt"
+                              type="number"
+                              step="0.01"
+                              min="0.00"
+                              suffix="kWh"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-text-field v-model="item.counterNew"
+                              label="Zählerstand Neu"
+                              type="number"
+                              step="0.01"
+                              min="0.00"
+                              suffix="kWh"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-text-field v-model="item.price"
+                              label="Bruttopreis"
+                              type="number"
+                              step="0.01"
+                              min="0.00"
+                              suffix="CHF"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-text-field v-model="item.vat"
+                              label="Mehrwertsteuersatz"
+                              type="number"
+                              step="0.01"
+                              min="0.00"
+                              suffix="%"
+                ></v-text-field>
+              </td>
+              <td> {{ getNettoPriceElectricity(item) }} </td>
+              <td>
+                <v-btn color="error"
+                       text
+                       @click="removeInvoicePosition(item)"
+                       fab
+                       small>
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -195,8 +278,8 @@ export default {
         price: this.extraPosUnitPrice,
         amount: this.extraPosCount,
         brutto: this.extraPosUnitPrice * this.extraPosCount,
-        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * this.extraPosVat.toFixed(2)),
-        vat: this.extraPosVat,
+        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
+        vat: this.extraPosVat * 0.01,
       })
 
       this.extraPosVat = ""
@@ -228,12 +311,14 @@ export default {
 
         if (item.invoiceTypeID === 2) {
           console.log(currentLoad.firstInvoice)
-          currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice), currentLoad.intervalService)
+          currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice).setDate(currentLoad.firstInvoice.getDate() + 1), currentLoad.intervalService)
           console.log(currentLoad.firstInvoice)
         }
         if (item.invoiceTypeID === 3) {
+          invoicePosition.amount = 1;
+          currentLoad.counterOldDate = currentLoad.counterNewDate
           console.log(currentLoad.counterNewDate)
-          currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate), currentLoad.intervalElectricity)
+          currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate).setDate(currentLoad.counterNewDate.getDate() + 1), currentLoad.intervalElectricity)
           console.log(currentLoad.counterNewDate)
         }
 
@@ -264,6 +349,13 @@ export default {
       const years = to.getFullYear() - from.getFullYear();
       const months = to.getMonth() - from.getMonth();
       return 12 * years + months;
+    },
+    getNettoPriceElectricity(item) {
+      var price = Number(item.price)
+      item.brutto = price
+      var netto = Number(price) * Number((item.vat/100 + 1))
+      item.netto = Number(netto).toFixed(2)
+      return item.netto
     }
   },
   computed: {
@@ -278,6 +370,6 @@ export default {
   },
   created() {
     console.log(this.invoice)
-  }
+  },
 }
 </script>

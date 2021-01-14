@@ -167,6 +167,16 @@
               </v-text-field>
             </v-col>
             <v-col>
+              <v-text-field v-model="extraPosVat"
+                            label="Mehrwertsteuersatz"
+                            type="number"
+                            step="0.1"
+                            min="0.00"
+                            suffix="%"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col>
               <v-btn
                   color="success"
                   @click="newInvoicePosition"
@@ -192,18 +202,30 @@
                   Preis Pro Einheit
                 </th>
                 <th class="text-left">
-
+                  Bruttopreis
+                </th>
+                <th class="text-left">
+                  Mwst.
+                </th>
+                <th class="text-left">
+                  Nettopreis
+                </th>
+                <th class="text-left">
+                  Action
                 </th>
               </tr>
               </thead>
               <tbody>
               <tr
-                  v-for="item in invoicePositions"
-                  :key="item.name"
+                  v-for="(item) in invoicePositions"
+                  :key="item.invoicePositionID"
               >
-                <td>{{ item.extraPosDescription }}</td>
-                <td>{{ item.extraPosCount }}</td>
-                <td>{{ item.extraPosUnitPrice }}</td>
+                <td>{{ item.positionName + " - Load ID: " + item.loadID }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.price + " CHF" }}</td>
+                <td>{{ item.brutto + " CHF" }}</td>
+                <td>{{ (item.vat * 100).toFixed(2) + "%" }}</td>
+                <td>{{ item.netto.toFixed(2) + " CHF" }}</td>
                 <td>
                   <v-btn color="error"
                          text
@@ -296,6 +318,7 @@ export default {
       extraPosDescription: "",
       extraPosCount: 0,
       extraPosUnitPrice: 0.0,
+      extraPosVat: "",
       invoicePositions: []
     }
   },
@@ -348,11 +371,16 @@ export default {
     },
     newInvoicePosition(){
       this.invoicePositions.push({
-        extraPosDescription: this.extraPosDescription,
-        extraPosCount: this.extraPosCount,
-        extraPosUnitPrice: this.extraPosUnitPrice
+        positionName: this.extraPosDescription,
+        loadID: "",
+        price: this.extraPosUnitPrice,
+        amount: this.extraPosCount,
+        brutto: this.extraPosUnitPrice * this.extraPosCount,
+        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
+        vat: this.extraPosVat * 0.01,
       })
 
+      this.extraPosVat = ""
       this.extraPosDescription = ""
       this.extraPosCount = ""
       this.extraPosUnitPrice = ""

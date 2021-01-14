@@ -5,7 +5,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 50px;">
-              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" :value="this.getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime()).length" color="success"/></h3>
+              <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.length" :value="this.getInvoicePositionsFromLoads.length" color="success"/></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand
@@ -18,7 +18,7 @@
                 <v-data-table
                     dense
                     :headers="invoiceUpcomingHeaders"
-                    :items="getInvoicePositionsFromLoads.filter(invoice => invoice.invoiceDate.getTime() < new Date(todayIn30Days).getTime())"
+                    :items="getInvoicePositionsFromLoads"
                     class="elevation-1"
                     :items-per-page="5">
                   <template v-slot:item.facility ="{item}">
@@ -129,7 +129,20 @@
                 {{ new Date(item.invoiceDate) }}
               </template>
               <template v-slot:item.toPayUntil ="{item}">
-                {{ new Date(item.toPayUntil) }}
+                <v-chip v-if="(new Date(item.toPayUntil).getTime()) <= (new Date(Date.now()).getTime())"
+                        color="red"
+                        text-color="white"
+                        small
+                >
+                  {{ new Date(item.toPayUntil) }}
+                </v-chip>
+                <v-chip v-else
+                        color="green"
+                        text-color="white"
+                        small
+                >
+                  {{ new Date(item.toPayUntil) }}
+                </v-chip>
               </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsPaid([item])">
@@ -260,7 +273,11 @@ export default {
     };
   },
   methods: {
-
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    },
     invoiceTypeFromInvoice(invoice){
       return this.allInvoiceTypes.filter(type => type.invoiceTypeID === invoice.invoiceTypeID)[0].designation
     },
@@ -502,14 +519,17 @@ export default {
           invoiceTo: invoiceTo, positionDate: positionDateService, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
           loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
-        var electricityInvoicePosition =
-            {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
-          invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
-          counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
-          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
+          if (load.active === 1){
+            var electricityInvoicePosition =
+                {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
+                  invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
+                  counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
+                  loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
+            allElectricityInvoicePositions.push(electricityInvoicePosition)
 
+          }
         allServiceInvoicePositions.push(serviceInvoicePosition)
-        allElectricityInvoicePositions.push(electricityInvoicePosition)
+
 
       });
 
@@ -564,8 +584,8 @@ export default {
       });
 
       allElectricityInvoicePositions.forEach((invoicePosition) => {
-        var price = 0.1926 //preis pro kwh (wird aus datenbank geladen),
-        var vat = 0.12
+        var price = 0 //preis pro kwh (wird aus datenbank geladen),
+        var vat = 0
         var amount = invoicePosition.powerCountNew - invoicePosition.powerCountOld
         var brutto = price * amount
         var netto = brutto + (brutto * vat)
@@ -581,7 +601,7 @@ export default {
                 shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                 shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
                 shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1,  invoicePositions:
-                    [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
+                    [{invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                       amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
         }
@@ -591,7 +611,7 @@ export default {
           upcomingInvoicesElectricity.forEach((invoice) => {
             if (invoice.invoiceToRefID === invoicePosition.recipient.userID && invoice.invoiceDate.getTime() === invoicePosition.positionDate.getTime()){
               foundExistingInvoice = true
-              invoice.invoicePositions.push({invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
+              invoice.invoicePositions.push({invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                 amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""})
             }
           });
@@ -606,13 +626,14 @@ export default {
                   shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                   shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
                   shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1,  invoicePositions:
-                      [{invoiceNumber: "", positionName: invoicePosition.loadType.designation + " Zählerstand hier", loadID: invoicePosition.loadID, price: price,
+                      [{invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                         amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
             )
           }
         }
       })
       var allUpcomingInvoices = upcomingInvoicesService.concat(upcomingInvoicesElectricity)
+      allUpcomingInvoices = allUpcomingInvoices.filter(invoice => invoice.invoiceDate.getTime() < new Date(this.todayIn30Days).getTime())
       return allUpcomingInvoices
     }
   },
