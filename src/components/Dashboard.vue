@@ -196,7 +196,7 @@
                 {{ new Date(item.payedOn) }}
               </template>
               <template v-slot:item.actions="{item}">
-                <v-btn x-small @click="exportToPDF(item)" color="blue" dark>
+                <v-btn x-small @click="exportPaidToPDF(item)" color="blue" dark>
                   <v-icon>
                     mdi-file-download
                   </v-icon>
@@ -482,6 +482,10 @@ export default {
     },
     exportToPDF: function (item) {
       regularInvoiceToPDF(item, item.invoicePositions)
+    },
+    exportPaidToPDF(invoice){
+      var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === invoice.invoiceNumber)
+      regularInvoiceToPDF(invoice, invoicePositions)
     },
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
