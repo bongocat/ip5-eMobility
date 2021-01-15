@@ -35,9 +35,9 @@
               {{ getPayedOn(item.payedOn) }}
             </template>
             <template v-slot:item.actions="{item}">
-              <v-btn
+              <v-btn x-small
                   text
-                  color="success"
+                  color="blue"
                   @click="exportToPDF(item)"
               >
                 <v-icon>mdi-download</v-icon>
