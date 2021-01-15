@@ -19,7 +19,20 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
+                              v-model = "loadTypeID"
+                              dense
+                              editable
+                              :items="allLoadTypes"
+                              label="Load Typ"
+                              hint="Load Typ"
+                              persistent-hint
+                              :item-text = "item => item.loadTypeID + ' - ' + item.designation"
+                              :item-value = "item => item.loadTypeID"
+              ></v-overflow-btn>
+            </v-col>
+            <v-col>
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "facilityID"
                               dense
                               editable
@@ -27,12 +40,12 @@
                               label="Anlage"
                               hint="Anlage"
                               persistent-hint
-                              :item-text = "item => item.AnlageID + ' - ' + item.Bezeichnung"
-                              :item-value= "item => item.AnlageID"
+                              :item-text = "item => item.facilityID + ' - ' + item.designation"
+                              :item-value= "item => item.facilityID"
               ></v-overflow-btn>
             </v-col>
               <v-col>
-                <v-overflow-btn style="width: 400px"
+                <v-overflow-btn style="min-width: 250px"
                                 v-model = "tenantID"
                                 dense
                                 editable
@@ -40,10 +53,12 @@
                                 label="Mieter"
                                 hint="Mieter"
                                 persistent-hint
-                                :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
-                                :item-value= "item => item.NutzerID"
+                                :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
+                                :item-value= "item => item.userID"
                 ></v-overflow-btn>
               </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-menu
                   ref="menuFirstPayment"
@@ -88,42 +103,18 @@
               </v-menu>
             </v-col>
             <v-col>
-              <v-select
+              <v-overflow-btn
                   v-model="intervalService"
-                  :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                  :items="[{text: 'jährlich', value: 12}, {text: 'halbjährlich', value: 6},{text: 'vierteljährlich', value: 3} , {text: 'monatlich', value: 1},]"
                   label="Zahlunsintervall"
-                  hint="Rechnungsintervall Strom"
+                  hint="Zahlungsintervall"
                   persistent-hint
-                  return-object
                   single-line
-              ></v-select>
+                  item-value="value"
+              ></v-overflow-btn>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
-              <v-select
-                      v-model="intervalElectricity"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
-                      label="Zahlunsintervall"
-                      hint="Rechnungsintervall Service"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
-            </v-col>
-            <v-col>
-              <v-select
-                      v-model="loadTypeID"
-                      :items="allLoadTypes"
-                      label="Load Typ"
-                      hint="Load Typ"
-                      persistent-hint
-                      return-object
-                      single-line
-                      :item-text = "item => item.LoadTypID + ' - ' + item.Bezeichnung"
-                      :item-value = "item => item.LoadTypID"
-              ></v-select>
-            </v-col>
             <v-col>
               <v-select
                   v-model="invoiceTo"
@@ -132,15 +123,10 @@
               ></v-select>
             </v-col>
             <v-col>
-              <v-text-field label="Kommentar" v-model=comment></v-text-field>
-            </v-col>
-            <v-col>
-              <v-switch v-model="active"
-                        label="Aktiv"
-                        color="success"
-
-              >
-              </v-switch>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -151,7 +137,7 @@
             text
             @click="createNewLoadFromForm"
         >
-          Anlage erfassen
+          Load erfassen
         </v-btn>
         <v-btn
             color="error"
@@ -181,6 +167,7 @@ export default {
     return {
       dialog: false,
 
+      menuFirstPayment: false,
       loadTypeID: "",
       facilityID: "",
       tenantID: "",
@@ -188,6 +175,10 @@ export default {
       firstInvoice: new Date().toISOString().substr(0, 10),
       intervalElectricity: "",
       intervalService: "",
+      counterOld: "",
+      counterOldDate: new Date().toISOString().substr(0, 10),
+      counterNew: "",
+      counterNewDate: new Date().toISOString().substr(0, 10),
       comment: "",
       active: 0
 
@@ -201,19 +192,29 @@ export default {
     createNewLoadFromForm() {
       this.dialog = false
 
+      console.log("INVOICE DATE",this.firstInvoice)
+
       const newLoad = {
-        loadTypeID: this.loadTypeID.LoadTypID,
+        loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
         tenantID: this.tenantID,
         invoiceTo: this.invoiceTo,
         firstInvoice: this.firstInvoice,
-        intervalElectricity: this.intervalElectricity,
+        intervalElectricity: this.intervalService,
         intervalService: this.intervalService,
+        counterOld: this.counterOld,
+        counterOldDate: this.counterOldDate,
+        counterNew: this.counterNew,
+        counterNewDate: this.firstInvoice,
         comment: this.comment,
       }
 
-      console.log(newLoad)
-
+      if (newLoad.invoiceTo === "Verwaltung") {
+        newLoad.invoiceTo = 1
+      }
+      else {
+        newLoad.invoiceTo = 2
+      }
       this.addNewLoad(newLoad)
     },
     reset() {
@@ -222,10 +223,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
-      allLoadTypes: 'allLoadTypes',
       allFacilities: 'allFacilities',
-      allUsers: 'allUsers'
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
   },
   created() {

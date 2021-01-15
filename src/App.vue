@@ -10,6 +10,8 @@
 <script>
 import Navigation from "./components/Navigation";
 
+process.env.TZ = 'Europe/Amsterdam'
+
 export default {
   name: 'App',
   components: {

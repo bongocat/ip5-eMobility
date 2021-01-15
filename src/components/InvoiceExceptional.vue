@@ -26,25 +26,19 @@
                             label="Rechnungsnummer"></v-text-field>
             </v-col>
             <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "invoiceTypeID"
                               dense
                               editable
-                              :items='[{text:"Diverses", value: 1},{text:"Strom", value: 1}, {text:"Serviceabo", value: 1}, {text:"Installation", value: 1}]'
+                              :items='[{text:"Diverses", value: 4},{text:"Strom", value: 3}, {text:"Serviceabo", value: 2}, {text:"Installation", value: 1}]'
                               label="Rechnungsart"
-                              item-value="string"
+                              item-value="value"
                               hint="Rechnungsart"
                               persistent-hint
               ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field v-model="MieterReferenz"
-                            label="Mieter ID"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-overflow-btn style="width: 400px"
+              <v-overflow-btn style="min-width: 250px"
                               v-model = "currentUser"
                               dense
                               editable
@@ -52,16 +46,18 @@
                               label="Rechnung an"
                               hint="Rechnung an"
                               persistent-hint
-                              :item-text = "item => item.NutzerID + ' - ' + item.Vorname +'  '+ item.Nachname"
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
                               :item-value= "item => item"
               ></v-overflow-btn>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-menu
                   ref="menuFälligAm"
                   v-model="menuFaelligAm"
                   :close-on-content-click="false"
-                  :return-value.sync=faelligAm
+                  :return-value.sync=invoiceDate
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -104,7 +100,7 @@
                   ref="menuZuZahlenBis"
                   v-model= "menuZuZahlenBis"
                   :close-on-content-click="false"
-                  :return-value.sync=zuZahlenBis
+                  :return-value.sync=toPayUntil
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -142,10 +138,8 @@
                 </v-date-picker>
               </v-menu>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col>
-              <v-text-field v-model="Kommentar"
+              <v-text-field v-model="comment"
                             label="Kommentar"></v-text-field>
             </v-col>
           </v-row>
@@ -170,7 +164,16 @@
                             min="0.00"
                             suffix="CHF"
               >
-
+              </v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="extraPosVat"
+                            label="Mehrwertsteuersatz"
+                            type="number"
+                            step="0.1"
+                            min="0.00"
+                            suffix="%"
+              >
               </v-text-field>
             </v-col>
             <v-col>
@@ -199,18 +202,30 @@
                   Preis Pro Einheit
                 </th>
                 <th class="text-left">
-
+                  Bruttopreis
+                </th>
+                <th class="text-left">
+                  Mwst.
+                </th>
+                <th class="text-left">
+                  Nettopreis
+                </th>
+                <th class="text-left">
+                  Action
                 </th>
               </tr>
               </thead>
               <tbody>
               <tr
-                  v-for="item in invoicePositions"
-                  :key="item.name"
+                  v-for="(item) in invoicePositions"
+                  :key="item.invoicePositionID"
               >
-                <td>{{ item.extraPosDescription }}</td>
-                <td>{{ item.extraPosCount }}</td>
-                <td>{{ item.extraPosUnitPrice }}</td>
+                <td>{{ item.positionName }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.price + " CHF" }}</td>
+                <td>{{ item.brutto + " CHF" }}</td>
+                <td>{{ (item.vat * 100).toFixed(2) + "%" }}</td>
+                <td>{{ item.netto.toFixed(2) + " CHF" }}</td>
                 <td>
                   <v-btn color="error"
                          text
@@ -257,6 +272,7 @@
 <script>
 
 import {mapGetters, mapMutations, mapActions} from "vuex";
+import {exceptionalInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 
 export default {
@@ -266,6 +282,7 @@ export default {
       menuFaelligAm: false,
       menuZuZahlenBis: false,
       dialog: false,
+
       currentUser: {},
 
       invoiceNumber: "",
@@ -275,7 +292,7 @@ export default {
       loadID: "",
       invoiceDate: "",
       toPayUntil: "",
-      isPayed: "",
+      payedOn: "",
       name: "",
       familyName: "",
       salutation: "",
@@ -289,80 +306,86 @@ export default {
       city: "",
       country: "",
       invoiceToShippingAdress: "",
-      ShippingStreet: "",
-      ShippingStreetNumber: "",
-      ShippingAreaCode: "",
-      ShippingCity: "",
-      ShippingCountry: "",
-      counterOld: "",
-      counterOldDate: "",
-      counterNew: "",
-      counterNewDate: "",
+      shippingStreet: "",
+      shippingStreetNumber: "",
+      shippingAreaCode: "",
+      shippingCity: "",
+      shippingCountry: "",
+      invoiceStatusID: "",
       active: "",
       comment: "",
 
       extraPosDescription: "",
       extraPosCount: 0,
       extraPosUnitPrice: 0.0,
+      extraPosVat: "",
       invoicePositions: []
     }
   },
   methods: {
-    ...mapActions(['addNewInvoice']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'addNewInvoice', 'addNewInvoicePosition']),
     createExceptionalInvoice() {
       this.dialog = false
-
-      console.log(this.currentUser);
 
       const invoice = {
 
         invoiceNumber: this.invoiceNumber,
         invoiceTypeID: this.invoiceTypeID,
-        customerRefID: this.currentUser.NutzerID,
-        invoiceToRefID: this.currentUser.NutzerID,
-        loadID: 4,
+        customerRefID: this.currentUser.userID,
+        invoiceToRefID: this.currentUser.userID,
         invoiceDate: new Date(this.invoiceDate),
         toPayUntil: new Date(this.toPayUntil),
-        isPayed: 0,
-        name: this.currentUser.Vorname,
-        familyName: this.currentUser.Nachname,
-        salutation: this.currentUser.Anrede,
-        company: this.currentUser.Firma,
-        phone: this.currentUser.FestnetzNummer,
-        mobile: this.currentUser.HandyNummer,
-        email: this.currentUser.EMailAdresse,
-        street: this.currentUser.WStrasse,
-        streetNumber: this.currentUser.WStrassenNr,
-        areaCode: this.currentUser.WPLZ,
-        city: this.currentUser.WOrt,
-        country: this.currentUser.WLand,
-        invoiceToShippingAdress: this.currentUser.RiW,
-        ShippingStreet: this.currentUser.RStrasse,
-        ShippingStreetNumber: this.currentUser.RStrassenNr,
-        ShippingAreaCode: this.currentUser.RPLZ,
-        ShippingCity: this.currentUser.ROrt,
-        ShippingCountry: this.currentUser.RLand,
-        counterOld: "",
-        counterOldDate: "",
-        counterNew: 0,
-        counterNewDate: 0,
-        active: this.currentUser.Aktiv,
+        payedOn: null,
+        name: this.currentUser.name,
+        familyName: this.currentUser.familyName,
+        salutation: this.currentUser.salutation,
+        company: this.currentUser.company,
+        phone: this.currentUser.phone,
+        mobile: this.currentUser.mobile,
+        email: this.currentUser.email,
+        street: this.currentUser.street,
+        streetNumber: this.currentUser.streetNumber,
+        areaCode: this.currentUser.areaCode,
+        city: this.currentUser.city,
+        country: this.currentUser.country,
+        invoiceStatusID: 2,
+
+        invoiceToShippingAdress: this.currentUser.invoiceToShippingAdress,
+        shippingStreet: this.currentUser.shippingStreet,
+        shippingStreetNumber: this.currentUser.shippingStreetNumber,
+        shippingAreaCode: this.currentUser.shippingAreaCode,
+        shippingCity: this.currentUser.shippingCity,
+        shippingCountry: this.currentUser.shippingCountry,
+
+        active: this.currentUser.active,
         comment: this.comment,
       }
-      console.log(invoice)
       this.addNewInvoice(invoice)
 
+      this.invoicePositions.forEach((position) => {
+        position.invoiceNumber = this.invoiceNumber
+        position.active = 1
+        position.comment = ""
+        position.loadID = null
+        this.addNewInvoicePosition(position)
+      })
+      exceptionalInvoiceToPDF(invoice, this.invoicePositions)
     },
     reset() {
       this.$refs.form.reset()
     },
     newInvoicePosition(){
       this.invoicePositions.push({
-        extraPosDescription: this.extraPosDescription,
-        extraPosCount: this.extraPosCount,
-        extraPosUnitPrice: this.extraPosUnitPrice
+        positionName: this.extraPosDescription,
+        loadID: "",
+        price: this.extraPosUnitPrice,
+        amount: this.extraPosCount,
+        brutto: this.extraPosUnitPrice * this.extraPosCount,
+        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
+        vat: this.extraPosVat * 0.01,
       })
 
+      this.extraPosVat = ""
       this.extraPosDescription = ""
       this.extraPosCount = ""
       this.extraPosUnitPrice = ""
@@ -382,6 +405,15 @@ export default {
     }),
   },
   watch: {},
+  created() {
+    this.fetchInvoicePositions()
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchInvoices()
+    this.fetchInvoiceTypes()
+  },
 
 }
 </script>

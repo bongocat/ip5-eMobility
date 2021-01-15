@@ -10,13 +10,38 @@
           <InvoiceExceptional></InvoiceExceptional>
           <v-data-table
               dense
-              :headers="columnNames"
-              :items="allInvoices"
+              :headers="invoiceHeaders"
+              :items="this.allInvoices"
               class="elevation-1"
               :items-per-page="15"
+              item-key="invoiceID"
           style="margin-top: 20px">
+            <template v-slot:item.facility ="{item}">
+              {{ facilityFromInvoice(item) }}
+            </template>
+            <template v-slot:item.administration ="{item}">
+              {{ administrationFromInvoice(item) }}
+            </template>
+            <template v-slot:item.invoiceTypeID ="{item}">
+              {{ invoiceTypeFromInvoice(item) }}
+            </template>
+            <template v-slot:item.invoiceToRefID ="{item}">
+              {{ item.name + " "+ item.familyName }}
+            </template>
+            <template v-slot:item.invoiceDate ="{item}">
+              {{ new Date(item.invoiceDate) }}
+            </template>
+            <template v-slot:item.payedOn ="{item}">
+              {{ getPayedOn(item.payedOn) }}
+            </template>
             <template v-slot:item.actions="{item}">
-              <InvoiceEdit :invoice="item"></InvoiceEdit>
+              <v-btn x-small
+                  color="blue"
+                  @click="exportToPDF(item)"
+                     dark
+              >
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
@@ -48,12 +73,12 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import InvoiceEdit from "../components/InvoiceEdit";
 import InvoiceExceptional from "../components/InvoiceExceptional";
+import {regularInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 export default {
   name: "Invoices",
-  components: {InvoiceEdit, InvoiceExceptional},
+  components: {InvoiceExceptional},
   data() {
     return {
       selected: [],
@@ -62,51 +87,98 @@ export default {
       itemsPerPage: 10,
       dialog: false,
       dialogDelete: false,
-      vorlagen: [
-        {text: 'Installation', icon: 'mdi-folder-open'},
-        {text: 'Strom', icon: 'mdi-folder-open'},
-        {text: 'Serviceabonnement', icon: 'mdi-folder-open'},
+      invoiceHeaders: [
+        {text: 'Rechnungsnummer', value: 'invoiceNumber'},
+        {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
+        {text: 'Bezahlt Am', value: 'payedOn'},
+        {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
   },
   methods: {
-    toCSV: function (item) {
+    invoiceTypeFromInvoice(invoice){
+      return this.allInvoiceTypes.filter(type => type.invoiceTypeID === invoice.invoiceTypeID)[0].designation
+    },
 
-      const outputData = [Object.keys(item), Object.values(item)];
+    administrationFromInvoice(invoice){
 
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
+      var invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
 
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
-      });
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          var administration = this.allUsers.filter(user => user.userID === facility.administrationID)[0]
+          var administrationCompany = (administration.company === "") ? "" : (" (" + administration.company + ")")
 
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
-    }
+          return administration.name + " " + administration.familyName + administrationCompany
+        }
+        return "-"
+      }
+      else {
+        return "-"
+      }
+    },
+    getPayedOn(date){
+      if (date === "0000-00-00"){
+        return "offen"
+      }
+      else if (date === null){
+        return "offen"
+      }
+      else return new Date(date)
+    },
+
+    facilityFromInvoice(invoice){
+      var invoicePositions = []
+
+      invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+
+      if (invoicePositions.length > 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          return facility.designation
+        }
+      }
+      else {
+        return "-"
+      }
+    },
+    exportToPDF: function (item) {
+      var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
+      regularInvoiceToPDF(item, invoicePositions)
+      },
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'addNewInvoice']),
   },
   computed: {
-    columnNames() {
-      var computedColumnnames = []
-      Object.keys(this.allInvoices[0]).forEach(function (item) {
-        computedColumnnames.push({text: item, value: item})
-      })
-      computedColumnnames.push({text: 'Actions', value: 'actions', sortable: false})
-      return computedColumnnames
-    },
     ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
       allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
-    ...mapActions(['fetchInvoices']),
   },
   created() {
+    this.fetchInvoicePositions()
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
     this.fetchInvoices()
-  }
+    this.fetchInvoiceTypes()
+  },
 }
 </script>
 

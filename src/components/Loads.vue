@@ -12,28 +12,38 @@
           <v-data-table
               dense
               style="margin-top: 20px"
-              :headers="columnNames"
-              :items="allFacilities.filter(anlage => anlage.Count = allLoads.filter(loads => loads.Anlage == anlage.Anlage).length)"
+              :headers="outerHeaders"
+              :items="fillObjectKeysFacilities"
               :single-expand="singleExpand"
               :expanded.sync="expanded"
-              item-key="AnlageID"
+              item-key="facilityID"
               show-expand
               class="elevation-1"
           >
-            <template v-slot:item.actions="{item}">
-              <v-btn small @click="toCSV(item)">
-                <v-icon>mdi-file-download</v-icon>
-              </v-btn>
-            </template>
-            <template v-slot:expanded-item="{ headers, item }">
+            <template v-slot:expanded-item="{ headers, item}">
               <td :colspan="headers.length">
                 <v-data-table
                     style="margin: 20px; background-color: rgba(0,0,0,0.05)"
-                    :headers="columnInnerNames"
-                    :items="allLoads.filter(loads => loads.AnlageNr == item.AnlageID)"
+                    :headers="innerHeaders"
+                    :items="fillObjectKeysLoads.filter(load => load.facilityID == item.facilityID)"
                     item-key="inner"
                     class="elevation-5"
                 >
+                  <template v-slot:item.intervalElectricity="{item}">
+                    {{ item.intervalElectricity + " Monate" }}
+                  </template>
+                  <template v-slot:item.counterNewDate="{item}">
+                    {{ new Date(item.counterNewDate) }}
+                  </template>
+                  <template v-slot:item.firstInvoice="{item}">
+                    {{ new Date(item.firstInvoice) }}
+                  </template>
+                  <template v-slot:item.intervalService="{item}">
+                    {{ item.intervalService + " Monate" }}
+                  </template>
+                  <template v-slot:item.counterNew="{item}">
+                    {{ item.counterNew + " kWh" }}
+                  </template>
                   <template v-slot:item.actions="{item}">
                     <LoadEdit :load = "item"></LoadEdit>
                   </template>
@@ -61,55 +71,110 @@ export default {
     return {
       expanded: [],
       singleExpand: false,
+      innerHeaders: [
+        {text: 'Load ID', value: 'loadID'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Mieter', value: 'tenant'},
+        {text: 'Loadtyp', value: 'loadType'},
+        {text: 'Rechnung An', value: 'invoiceToAsString'},
+        {text: 'Nächste Rechnung Serviceabo', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung Strom', value: 'counterNewDate' },
+        {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
+        {text: 'Zahlungsintervall Service', value: 'intervalService'},
+        {text: 'Letzter Zählerstand', value: 'counterNew'},
+        {text: 'Kommentar', value: 'comment'},
+        {text: 'Aktiv', value: 'active'},
+        {text: 'Actions', value: 'actions', sortable: false},
+
+      ],
+      outerHeaders: [
+        {text: 'Name', value: 'designation'},
+        {text: 'Verwaltung', value: 'administration'},
+        {text: 'Strasse', value: 'street'},
+        {text: 'Hausnummer', value: 'streetNumber'},
+        {text: 'PLZ', value: 'areaCode' },
+        {text: 'Stadt', value: 'city'},
+        {text: 'Land', value: 'country'},
+        {text: 'Kommentar', value: 'comment'},
+        {text: 'Actions', value: 'actions', sortable: false},
+        {text: '', value: 'data-table-expand'}
+      ]
     }
   },
   computed: {
-    columnNames() {
-      let facilityHeaders = []
-      Object.keys(this.allFacilities[0]).forEach(function (item) {
-        facilityHeaders.push({text: item, value: item},)
-      })
-      facilityHeaders.push({text: 'Actions', value: 'actions', sortable: false})
-      facilityHeaders.push({text: '', value: 'data-table-expand'})
-      return facilityHeaders
-    },
-    columnInnerNames() {
-      let loadHeader = []
-      Object.keys(this.allLoads[0]).forEach(function (item) {
-        loadHeader.push({text: item, value: item},)
-      })
-      loadHeader.push({text: 'Actions', value: 'actions', sortable: false})
-      return loadHeader
-    },
     ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
       allLoads: 'allLoads',
-      allFacilities: 'allFacilities'
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
-  },
-  methods: {
-    ...mapActions(['fetchLoads']),
-    toCSV: function (item) {
+    fillObjectKeysLoads: function(){
 
-      const outputData = [Object.keys(item), Object.values(item)];
+      var fullLoads = this.allLoads
+      var loadTypes = this.allLoadTypes
+      var facilities = this.allFacilities
+      var users = this.allUsers
+      var invoiceToAsString = {}
 
-      console.log(outputData);
-      let csvContent = "data:text/csv;charset=utf-8,";
+      fullLoads.forEach(function (item, index) {
 
-      outputData.forEach(function (outputData) {
-        let row = outputData.join(",");
-        csvContent += row + ";\r\n";
+        var loadType = loadTypes.filter(loadType => loadType.loadTypeID === item.loadTypeID)
+        var facility = facilities.filter(facility => facility.facilityID === item.facilityID)
+        var user = users.filter(user => user.userID === item.tenantID)
+
+        var itemFacility = {facility: facility[0].designation}
+        var itemLoadType = {loadType: loadType[0].designation}
+        var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
+
+        Object.assign(item, itemFacility)
+        Object.assign(item, itemLoadType)
+        Object.assign(item, itemUser)
+
+        if (item.invoiceTo === 2){
+          invoiceToAsString = {invoiceToAsString: "Mieter"}
+        }
+        else {
+          invoiceToAsString = {invoiceToAsString: "Verwaltung"}
+        }
+
+        Object.assign(item, invoiceToAsString)
+
       });
+      return fullLoads
+    },
 
-      let encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "megalog_invoice.csv");
-      document.body.appendChild(link);
-      link.click();
+    fillObjectKeysFacilities: function (){
+
+      var fullFacilities = this.allFacilities
+      var allUsers = this.allUsers
+
+      fullFacilities.forEach(function (item, index) {
+
+        var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
+        var itemAdministration = { administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
+
+        Object.assign(item, itemAdministration)
+      });
+      return fullFacilities
     }
   },
+  methods: {
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
+  },
   created() {
+    this.fetchUsers()
+    this.fetchLoadTypes()
+    this.fetchFacilities()
     this.fetchLoads()
+    this.fetchInvoiceTypes()
+    this.fetchInvoices()
   }
 }
 </script>

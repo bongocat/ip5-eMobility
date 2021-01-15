@@ -21,25 +21,38 @@
         <v-form ref="form">
           <v-row>
             <v-col>
-              <v-text-field label="AnlageID" v-model=anlageID></v-text-field>
+              <v-overflow-btn style="min-width: 250px"
+                              v-model = "facilityID"
+                              dense
+                              editable
+                              :items="allFacilities"
+                              label="Anlage"
+                              hint="Anlage"
+                              persistent-hint
+                              :item-text = "item => item.facilityID + ' - ' + item.designation"
+                              :item-value= "item => item.facilityID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-text-field label="Anlagenname" v-model=anlageName></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Verwalter" v-model=anlageVermieter></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field label="Mieter" v-model=anlageMieter></v-text-field>
+              <v-overflow-btn style="min-width: 250px"
+                              v-model = "tenantID"
+                              dense
+                              editable
+                              :items="this.allUsers"
+                              label="Mieter"
+                              hint="Mieter"
+                              persistent-hint
+                              :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
+                              :item-value= "item => item.userID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
               <v-select
                       v-model="invoiceTo"
-                      :items="['Mieter', 'Vermieter']"
+                      :items="[{text: 'Vermieter', value: 1}, {text: 'Mieter', value: 2}]"
                       label="Rechnung an"
                       hint="Rechnung an"
                       persistent-hint
-                      return-object
                       single-line
               ></v-select>
             </v-col>
@@ -50,14 +63,14 @@
                       ref="menuFirstPayment"
                       v-model="menuFirstPayment"
                       :close-on-content-click="false"
-                      :return-value.sync=firstPayment
+                      :return-value.sync=firstInvoice
                       transition="scale-transition"
                       offset-y
                       min-width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                          v-model="firstPayment"
+                          v-model="firstInvoice"
                           label="Erste Zahlung"
                           prepend-icon="mdi-calendar"
                           readonly
@@ -66,7 +79,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                        v-model="firstPayment"
+                        v-model="firstInvoice"
                         no-title
                         scrollable
                 >
@@ -81,7 +94,7 @@
                   <v-btn
                           text
                           color="primary"
-                          @click="$refs.menuFirstPayment.save(firstPayment)"
+                          @click="$refs.menuFirstPayment.save(firstInvoice)"
                   >
                     OK
                   </v-btn>
@@ -90,36 +103,29 @@
             </v-col>
             <v-col>
               <v-select
-                      v-model="paymentIntervalService"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
+                      v-model="intervalService"
+                      :items="[{text: 'jährlich', value: 12},{text: 'halbjährlich', value: 6}, {text: 'vierteljährlich', value: 3},{text: 'monatlich', value: 1}]"
                       label="Zahlunsintervall"
-                      hint="Rechnungsintervall Strom"
+                      hint="Zahlungsintervall"
                       persistent-hint
-                      return-object
                       single-line
               ></v-select>
             </v-col>
             <v-col>
-              <v-select
-                      v-model="paymentIntervalElectricity"
-                      :items="['monatlich', 'vierteljährlich', 'halbjährlich', 'jährlich']"
-                      label="Zahlunsintervall"
-                      hint="Rechnungsintervall Serviece"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
+              <v-overflow-btn style="min-width: 250px"
+                              v-model="loadTypeID"
+                              dense
+                              editable
+                              :items="allLoadTypes"
+                              label="Load Typ"
+                              hint="Load Typ"
+                              persistent-hint
+                              :item-text = "item => item.loadTypeID + ' - ' + item.designation"
+                              :item-value= "item => item.loadTypeID"
+              ></v-overflow-btn>
             </v-col>
             <v-col>
-              <v-select
-                      v-model="loadType"
-                      :items="['LoadType A', 'LoadType XY', 'LoadType 123', 'LoadType HASD']"
-                      label="Load Typ"
-                      hint="Load Typ"
-                      persistent-hint
-                      return-object
-                      single-line
-              ></v-select>
+              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"
@@ -138,7 +144,7 @@
                 text
                 @click="saveLoadChanges"
         >
-          Anlage erfassen
+          Load anpassen
         </v-btn>
         <v-btn
                 color="error"
@@ -160,8 +166,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "LoadEdit",
@@ -171,60 +176,70 @@ export default {
   data() {
     return {
       dialog: false,
-      loadID: this.load.LoadID,
-      anlageName: this.load.Anlage,
-      anlageVermieter: this.load.Vermieter,
-      anlageMieter: this.load.Mieter,
-      rechnungAn: this.load['Rechnung an'],
-      anlageID: this.load.AnlageID,
-      invoiceTo: this.load.RechnungAn,
       menuFirstPayment: false,
-      firstPayment: this.load.ErstesZahlungsdatum.toISOString().substr(0,10),
-      paymentIntervalService: this.load.RechnungsIntervallService,
-      paymentIntervalElectricity: this.load.RechnungsIntervallStrom,
-      loadType: this.load.LoadTyp,
-      active: this.load.active
+
+      loadID: this.load.loadID,
+      loadTypeID: this.load.loadTypeID,
+      facilityID: this.load.facilityID,
+      tenantID: this.load.tenantID,
+      invoiceTo: this.load.invoiceTo,
+      firstInvoice: new Date (this.load.firstInvoice).toISOString().substr(0,10),
+      intervalElectricity: this.load.intervalElectricity,
+      intervalService: this.load.intervalService,
+      counterOld: this.load.counterOld,
+      counterOldDate: new Date (this.load.counterOldDate).toISOString().substr(0,10),
+      counterNew: this.load.counterNew,
+      counterNewDate: new Date (this.load.counterNewDate).toISOString().substr(0,10),
+      active: this.load.active,
+      comment: this.load.comment
+
     }
   },
   methods: {
-    ...mapMutations({
-      addNewLoad: "addNewLoad"
-    }),
     saveLoadChanges() {
       this.dialog = false
-      this.load.LoadID = this.loadID,
-      this.load.AnlageID = this.anlageID,
-      this.load.Anlage = this.anlageName,
-      this.load.Vermieter = this.anlageVermieter,
-      this.load.Mieter = this.anlageMieter,
-      this.load['Rechnung an'] =  this.invoiceTo,
-      this.load.ErstesZahlungsdatum = this.firstPayment,
-      this.load.RechnungsIntervallService = this.paymentIntervalService
-      this.load.RechnungsIntervallStrom = this.paymentIntervalElectricity
-      this.load.LoadTyp = this.loadType
-      this.load.active = this.active
+
+      const newLoad = {
+
+        loadID: this.loadID,
+        loadTypeID: this.loadTypeID,
+        facilityID: this.facilityID,
+        tenantID: this.tenantID,
+        invoiceTo: this.invoiceTo,
+        firstInvoice: new Date (this.firstInvoice),
+        intervalService: this.intervalService,
+        intervalElectricity: this.intervalService,
+        counterOld: this.counterOld,
+        counterOldDate: new Date (this.counterOldDate),
+        counterNew: this.counterNew,
+        counterNewDate: new Date (this.counterNewDate),
+        active: this.active,
+        comment: this.comment
+      }
+
+      this.editLoad(newLoad)
+
+      this.fetchUsers()
+      this.fetchLoadTypes()
+      this.fetchFacilities()
+      this.fetchLoads()
+      this.fetchInvoiceTypes()
+      this.fetchInvoices()
+
     },
-    reset() {
-      this.loadNummer = this.load.LoadID
-      this.anlageID = this.load.AnlageID
-      this.anlageName = this.load.Anlage
-      this.anlageVermieter = this.load.Vermieter
-      this.anlageMieter = this.load.Mieter
-      this.invoiceTo = this.load['Rechnung an']
-      this.firstPayment = this.load.ErstesZahlungsdatum
-      this.paymentIntervalService = this.load.RechnungsIntervallService
-      this.paymentIntervalElectricity = this.load.RechnungsIntervallStrom
-      this.loadType = this.load.LoadTyp
-      this.active = this.load.active
-    },
+    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes', 'editLoad']),
+
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
-    loadNummer() {
-      return this.allLoads.length + 1
-    },
   },
+  created() {
+  }
 }
 </script>

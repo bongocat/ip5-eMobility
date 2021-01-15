@@ -14,7 +14,7 @@
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">{{ formTitle }}</h1>
+        <h1 class="headline">Nutzer bearbeiten</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -36,8 +36,8 @@
           <v-row>
             <v-col>
               <v-select
-                  v-model="userType"
-                  :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
+                  v-model="userTypeID"
+                  :items='[{text: "Verwaltung", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
             </v-col>
@@ -149,47 +149,44 @@ export default {
       editedIndex: -1,
       dialog: false,
 
-      userID: this.user.NutzerID,
-      name: this.user.Vorname,
-      familyName: this.user.Nachname,
-      userType: this.user.NutzerTypID,
-      company: this.user.Firma,
-      salutation: this.user.Anrede,
-      street: this.user.WStrasse,
-      streetNumber: this.user.WStrassenNr,
-      areaCode: this.user.WPLZ,
-      city: this.user.WOrt,
-      country: this.user.WLand,
-      active: this.user.Aktiv,
-      comment: this.user.Kommentar,
+      userID: this.user.userID,
+      name: this.user.name,
+      familyName: this.user.familyName,
+      userTypeID: this.user.userTypeID,
+      company: this.user.company,
+      salutation: this.user.salutation,
+      street: this.user.street,
+      streetNumber: this.user.streetNumber,
+      areaCode: this.user.areaCode,
+      city: this.user.city,
+      country: this.user.country,
+      active: this.user.active,
+      comment: this.user.comment,
 
-      phone: this.user.FestnetzNummer,
-      mobile: this.user.HandyNummer,
-      email: this.user.EMailAdresse,
+      phone: this.user.phone,
+      mobile: this.user.mobile,
+      email: this.user.email,
 
-      shippingStreet: this.user.RStrasse,
-      shippingStreetNumber: this.user.RStrassenNr,
-      shippingAreaCode: this.user.RPLZ,
-      shippingCity: this.user.ROrt,
-      shippingCountry: this.user.RLand,
+      shippingStreet: this.user.shippingStreet,
+      shippingStreetNumber: this.user.shippingStreetNumber,
+      shippingAreaCode: this.user.shippingAreaCode,
+      shippingCity: this.user.shippingCity,
+      shippingCountry: this.user.shippingCountry,
 
-      invoiceToShippingAdress: this.RiW,
+      invoiceToShippingAdress: this.invoiceToShippingAdress,
     }
   },
   methods: {
-    ...mapMutations({
-      addNewUser: "addNewUser"
-    }),
-    ...mapActions(['editUser']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'editUser']),
 
     saveEditedUser() {
       this.dialog = false
 
           const updatedUser = {
-          userID: this.userID,
+            userID: this.user.userID,
+            userTypeID: this.userTypeID,
             name: this.name,
             familyName: this.familyName,
-            userType: this.userType,
             company :this.company,
             salutation :  this.salutation,
             street:  this.street,
@@ -201,7 +198,7 @@ export default {
             comment :  this.comment,
             phone : this.phone,
             email : this.email,
-            mobile : this.email,
+            mobile : this.mobile,
             shippingStreetNumber:  this.shippingStreetNumber,
             shippingCountry :  this.shippingCountry,
             shippingAreaCode : this.shippingAreaCode,
@@ -210,40 +207,32 @@ export default {
             invoiceToShippingAdress:  this.invoiceToShippingAdress
           }
       this.editUser(updatedUser)
-
-    },
-    reset() {
-      this.userFirstName = this.user.name,
-          this.familyName = this.user.familyName,
-          this.userType = this.user.userType,
-          this.company = this.user.company,
-          this.salutation = this.user.salutation,
-          this.street = this.user.street,
-          this.streetNumber = this.user.streetNumber,
-          this.areaCode = this.user.areaCode,
-          this.city = this.user.city,
-          this.country = this.user.country,
-          this.active = this.user.active,
-          this.comment = this.user.comment,
-          this.phone = this.user.phone,
-          this.email = this.user.email,
-          this.email = this.user.mobile,
-          this.shippingStreetNumber = this.user.shippingStreetNumber,
-          this.shippingCountry = this.user.shippingCountry,
-          this.shippingAreaCode = this.user.shippingAreaCode,
-          this.shippingStreet = this.user.shippingStreet,
-          this.shippingCity = this.user.shippingCity,
-          this.invoiceToShippingAdress = this.user.invoiceToShippingAdress
+      this.fetchUsers()
     },
   },
   computed: {
-    ...mapGetters(['allUsers']),
-    formTitle () {
-      return 'Nutzer bearbeiten'
-    },
+    ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
+    }),
   },
-  created() {
-    console.log(this.user)
-  }
+    created() {
+      this.fetchInvoicePositions()
+      this.fetchUsers()
+      this.fetchFacilities()
+      this.fetchLoadTypes()
+      this.fetchInvoices()
+      this.fetchInvoiceTypes()
+      this.fetchLoads()
+    },
 }
 </script>

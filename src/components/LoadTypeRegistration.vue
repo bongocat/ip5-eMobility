@@ -7,26 +7,49 @@
           dark
           v-bind="attrs"
           v-on="on"
+          style="margin-left: 10px"
       >
         Neuen Loadtyp erfassen
       </v-btn>
     </template>
     <v-card style="padding: 20px">
       <v-card-title>
-        <h1 class="headline">Load erfassen</h1>
+        <h1 class="headline">Loadtyp erfassen</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
+          <v-row>
             <v-col>
-              <v-text-field label="Name" v-model=loadTypeName></v-text-field>
+              <v-text-field label="Name" v-model=designation></v-text-field>
             </v-col>
+            <v-col>
+              <v-text-field label="Preis Serviceabo Aktiv" v-model=standardPriceWhenActive
+                            type="number"
+                            step="0.01"
+                            min="0.00"
+                            suffix="CHF"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Preis Serviceabo Inaktiv" v-model=standardPriceWhenInactive
+                            type="number"
+                            step="0.01"
+                            min="0.00"
+                            suffix="CHF"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-btn
             color="success"
             text
-            @click="createNewLoadFromForm"
+            @click="createNewLoadTypeFromForm"
         >
           Loadtyp erfassen
         </v-btn>
@@ -50,7 +73,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapMutations, mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -58,15 +81,32 @@ export default {
   data() {
     return {
       dialog: false,
-      loadTypeName: "",
+      loadTypeID: "",
+      designation: "",
+      standardPriceWhenActive: "",
+      standardPriceWhenInactive: "1.0",
+      active: 1,
+      comment: ""
     }
   },
   methods: {
     ...mapMutations({
       addNewLoad: "addNewLoad"
     }),
-    createNewLoadFromForm() {
+    ...mapActions(['fetchLoadTypes', 'addNewLoad', 'addNewLoadType']),
+    createNewLoadTypeFromForm() {
       this.dialog = false
+
+      const newLoadType = {
+        designation: this.designation,
+        standardPriceWhenActive: this.standardPriceWhenActive,
+        standardPriceWhenInactive: this.standardPriceWhenInactive,
+        active: this.active,
+        comment: this.comment,
+      }
+
+      this.addNewLoadType(newLoadType)
+
     },
     reset() {
       this.$refs.form.reset()
@@ -74,8 +114,13 @@ export default {
   },
   computed: {
     ...mapGetters({
+      allInvoices: 'allInvoices',
       allLoads: 'allLoads',
+      allFacilities: 'allFacilities',
+      allLoadTypes: 'allLoadTypes',
+      allUsers: 'allUsers',
     }),
   },
 }
+
 </script>

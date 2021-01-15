@@ -45,7 +45,7 @@ router.get('/users/:id', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name" : "Metro",
     "familyName" : "Deamon",
     "salutation": "Mister",
@@ -72,7 +72,7 @@ router.post('/users', async (req, res, next) => {
     console.log("Create new user");
     try {
         let input = req.body;
-        let results = await db.newUser(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
+        let results = await db.newUser(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -86,7 +86,7 @@ router.post('/users', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "userType": "1",
+    "userTypeID": "1",
     "name": "Metro",
     "familyName": "Deamon",
     "salutation": "Mister",
@@ -114,7 +114,7 @@ router.put('/users', async (req, res, next) => {
     console.log("Update a users");
     try {
         let input = req.body;
-        let results = await db.updateUserByID(input.userType, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
+        let results = await db.updateUserByID(input.userTypeID, input.name, input.familyName, input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress, input.shippingStreet, input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.active, input.comment, input.userID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -225,6 +225,40 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
 
 });
 
+/******************
+ * Invoice Status
+ *****************/
+
+/**
+ * Get all invoice status
+ */
+router.get('/invoicestatus', async (req, res, next) => {
+    console.log("Get all invoice status");
+    try {
+        let results = await db.invoicetype();
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Get a invoice status by their id
+ */
+router.get('/invoicestatus/:id', async (req, res, next) => {
+    console.log("Get a invoice status by id");
+    try {
+        let results = await db.invoicetypeByID(req.params.id);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /**
  * Create a new invoice
  *
@@ -234,10 +268,9 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
     "invoiceTypeID": "1",
     "customerRefID": "1",
     "invoiceToRefID": "1",
-    "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "1",
+    "payedOn": "1",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -251,26 +284,23 @@ router.get('/invoicetypes/:id', async (req, res, next) => {
     "city": "1",
     "country": "1",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "1",
-    "ShippingStreetNumber": "1",
-    "ShippingAreaCode": "1",
-    "ShippingCity": "2",
-    "ShippingCountry": "1",
-    "counterOld": "1",
-    "counterOldDate": "1",
-    "counterNew": "1",
-    "counterNewDate": "1",
+    "shippingStreet": "1",
+    "shippingStreetNumber": "1",
+    "shippingAreaCode": "1",
+    "shippingCity": "2",
+    "shippingCountry": "1",
+    "invoiceStatusID": "1",
     "active": "1",
-    "comment": "1"
+    "comment": "Your mom is nice"
     }
  */
 router.post('/invoices', async (req, res, next) => {
     console.log("create a new invoice");
     try {
         let input = req.body;
-        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment);
+        let results = await db.newInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.invoiceDate, input.toPayUntil, input.payedOn, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress,input.shippingStreet,
+            input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.invoiceStatusID, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -288,10 +318,9 @@ router.post('/invoices', async (req, res, next) => {
     "invoiceTypeID": "1",
     "customerRefID": "1",
     "invoiceToRefID": "1",
-    "loadID": "4",
     "invoiceDate": "1",
     "toPayUntil": "1",
-    "isPayed": "no",
+    "payedOn": "1",
     "name": "1",
     "familyName": "1",
     "salutation": "1",
@@ -305,15 +334,12 @@ router.post('/invoices', async (req, res, next) => {
     "city": "1",
     "country": "1",
     "invoiceToShippingAdress": "1",
-    "ShippingStreet": "1",
-    "ShippingStreetNumber": "1",
-    "ShippingAreaCode": "1",
-    "ShippingCity": "2",
-    "ShippingCountry": "1",
-    "counterOld": "1",
-    "counterOldDate": "1",
-    "counterNew": "1",
-    "counterNewDate": "1",
+    "shippingStreet": "1",
+    "shippingStreetNumber": "1",
+    "shippingAreaCode": "1",
+    "shippingCity": "2",
+    "shippingCountry": "1",
+    "invoiceStatusID": "1",
     "active": "1",
     "comment": "Your mom is nice",
     "invoiceID": "8"
@@ -323,9 +349,9 @@ router.put('/invoices', async (req, res, next) => {
     console.log("update a invoice");
     try {
         let input = req.body;
-        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.loadID, input.invoiceDate, input.toPayUntil, input.isPayed, input.name, input.familyName,
-            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.ShippingStreet,
-            input.ShippingStreetNumber, input.ShippingAreaCode, input.ShippingCity, input.ShippingCountry, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.invoiceID);
+        let results = await db.updateInvoice(input.invoiceNumber, input.invoiceTypeID, input.customerRefID, input.invoiceToRefID, input.invoiceDate, input.toPayUntil, input.payedOn, input.name, input.familyName,
+            input.salutation, input.company, input.phone, input.mobile, input.email, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.invoiceToShippingAdress,input.shippingStreet,
+            input.shippingStreetNumber, input.shippingAreaCode, input.shippingCity, input.shippingCountry, input.invoiceStatusID, input.active, input.comment, input.invoiceID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -378,8 +404,12 @@ router.get('/loads/:id', async (req, res, next) => {
     "tenantID": "1",
     "invoiceTo": "1",
     "firstInvoice": "null",
-    "intervalElectricity": "23",
-    "intervalService": "23",
+    "intervalElectricity": "6",
+    "intervalService": "6",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
     "comment": "blabla"
     }
  */
@@ -387,7 +417,7 @@ router.post('/loads', async (req, res, next) => {
     console.log("Create a new inactive load");
     try {
         let input = req.body;
-        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.comment);
+        let results = await db.newInactiveLoad(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate,input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -404,13 +434,17 @@ router.post('/loads', async (req, res, next) => {
  * {
     "loadTypeID": "1",
     "facilityID": "1",
-    "tenantID": "eeee",
-    "invoiceTo": "sdfsdf",
-    "firstInvoice": "2020-10-10",
+    "tenantID": "1",
+    "invoiceTo": "1",
+    "firstInvoice": "null",
     "intervalElectricity": "23",
-    "intervalService": "43",
-    "active": "0",
-    "comment": "ba",
+    "intervalService": "23",
+    "counterOld": "12",
+    "counterOldDate": "null",
+    "counterNew": "34",
+    "counterNewDate": "null",
+    "active": "1",
+    "comment": "blabla",
     "loadID": "13"
 }
  */
@@ -418,7 +452,7 @@ router.put('/loads', async (req, res, next) => {
     console.log("Update a load by id");
     try {
         let input = req.body;
-        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.active, input.comment, input.loadID);
+        let results = await db.updateLoadByID(input.loadTypeID, input.facilityID, input.tenantID, input.invoiceTo, input.firstInvoice, input.intervalElectricity, input.intervalService, input.counterOld, input.counterOldDate, input.counterNew, input.counterNewDate, input.active, input.comment, input.loadID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -503,6 +537,57 @@ router.get('/loadtypes/:id', async (req, res, next) => {
 
 });
 
+/**
+ * Create a new loadtype
+ *
+ * Example for POST JSON:
+ *  {
+        "designation": "This is a test",
+        "standardPriceWhenActive": "33.33",
+        "standardPriceWhenInactive": "2.0",
+        "active": "1",
+        "comment": "This is a comment"
+    }
+ */
+router.post('/loadtypes', async (req, res, next) => {
+    console.log("Create a new loadtype");
+    try {
+        let input = req.body;
+        let results = await db.newLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
+/**
+ * Update a loadtype
+ *
+ * Example for POST JSON:
+ *  {
+        "designation": "This test a test",
+        "standardPriceWhenActive": "33.33",
+        "standardPriceWhenInactive": "2.0",
+        "active": "1",
+        "comment": "This is a comment",
+        "loadTypeID": "1"
+    }
+ */
+router.put('/loadtypes', async (req, res, next) => {
+    console.log("Update a loadtype");
+    try {
+        let input = req.body;
+        let results = await db.updateLoadtype(input.designation, input.standardPriceWhenActive, input.standardPriceWhenInactive, input.active, input.comment, input.loadTypeID);
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+});
+
 /******************
  * Facility
  *****************/
@@ -537,13 +622,12 @@ router.get('/facilities/:id', async (req, res, next) => {
 
 });
 
-
 /**
  * Create a new facility
  *
  * Example for POST JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -558,7 +642,7 @@ router.post('/facilities', async (req, res, next) => {
     console.log("Create a new facility");
     try {
         let input = req.body;
-        let results = await db.newFacility(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
+        let results = await db.newFacility(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -572,7 +656,7 @@ router.post('/facilities', async (req, res, next) => {
  *
  * Example for PUT JSON:
  * {
-    "administratorID" : "1",
+    "administrationID" : "1",
     "designation": "tesrtrefd",
     "street": "Teststrasse",
     "streetNumber": "2",
@@ -588,7 +672,7 @@ router.put('/facilities', async (req, res, next) => {
     console.log("Update facility by id");
     try {
         let input = req.body;
-        let results = await db.updateFacilityByID(input.administratorID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
+        let results = await db.updateFacilityByID(input.administrationID, input.designation, input.street, input.streetNumber, input.areaCode, input.city, input.country, input.active, input.comment, input.facilityID);
         res.json(results);
     } catch (e) {
         console.log(e);
@@ -668,22 +752,23 @@ router.get('/invoices/:invoiceid/positions/:positionid', async (req, res, next) 
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "",
-    "positionName": "",
-    "price": "",
-    "amount": "",
-   	"netto": "",
-    "vat": "",
-    "brutto": "",
-    "active": "",
-    "comment": ""
+    "invoiceNumber": "33",
+    "positionName": "hewo",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
+    "active": "1",
+    "comment": ", this is a wowobbery"
     }
  */
 router.post('/invoicepositions', async (req, res, next) => {
     console.log("Create a new invoice position");
     try {
         let input = req.body;
-        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.newInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment)
         res.json(results);
     } catch (e) {
@@ -698,15 +783,16 @@ router.post('/invoicepositions', async (req, res, next) => {
  *
  * Example for POST JSON:
  * {
-    "invoiceNumber": "1",
-    "positionName": "test",
-    "price": "23",
-    "amount": "42",
-   	"netto": "2233",
-    "vat": "22",
-    "brutto": "2323",
+    "invoiceNumber": "33",
+    "positionName": "x3",
+    "loadID": "2",
+    "price": "100",
+    "amount": "1",
+   	"netto": "100",
+    "vat": "8.0",
+    "brutto": "108",
     "active": "1",
-    "comment": "ererererer",
+    "comment": ", it was a jowoke",
     "invoicePositionID": "1"
 }
  */
@@ -714,9 +800,11 @@ router.put('/invoicepositions', async (req, res, next) => {
     console.log("Update a invoice position");
     try {
         let input = req.body;
-        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.price, input.amount,
+        let results = await db.updateInvoicePosition(input.invoiceNumber, input.positionName, input.loadID, input.price, input.amount,
             input.netto, input.vat, input.brutto, input.active, input.comment, input.invoicePositionID)
         res.json(results);
+        console.log(results)
+        console.log(input)
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
