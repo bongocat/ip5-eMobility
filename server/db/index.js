@@ -7,6 +7,7 @@ const connection = mysql.createPool({
     database: 'emobility2',
     host: 'localhost',
     port: '3306',
+    timezone: 'utc',
 });
 
 let megadb = {}
