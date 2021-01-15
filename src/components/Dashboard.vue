@@ -77,7 +77,20 @@
                 {{ new Date(item.invoiceDate) }}
               </template>
               <template v-slot:item.toPayUntil ="{item}">
-                {{ new Date(item.toPayUntil) }}
+                <v-chip v-if="(new Date(item.toPayUntil).getTime()) <= (new Date(Date.now()).getTime())"
+                        color="red"
+                        text-color="white"
+                        small
+                >
+                  {{ new Date(item.toPayUntil) }}
+                </v-chip>
+                <v-chip v-else
+                        color="green"
+                        text-color="white"
+                        small
+                >
+                  {{ new Date(item.toPayUntil) }}
+                </v-chip>
               </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
@@ -492,10 +505,10 @@ export default {
   created() {
     this.fetchInvoicePositions()
     this.fetchUsers()
+    this.fetchInvoiceTypes()
     this.fetchFacilities()
     this.fetchLoadTypes()
     this.fetchInvoices()
-    this.fetchInvoiceTypes()
     this.fetchLoads()
   },
 

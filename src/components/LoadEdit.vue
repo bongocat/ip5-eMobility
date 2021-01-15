@@ -125,6 +125,9 @@
               ></v-overflow-btn>
             </v-col>
             <v-col>
+              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
+            </v-col>
+            <v-col>
               <v-switch v-model="active"
                         label="Aktiv"
                         color="success"

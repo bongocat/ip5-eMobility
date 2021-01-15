@@ -43,7 +43,7 @@
             <v-col>
               <v-select
                   v-model="userTypeID"
-                  :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
+                  :items='[{text: "Verwaltung", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
             </v-col>

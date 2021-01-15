@@ -91,7 +91,7 @@ export default {
           fullUserType = {userTypeFull: "Mieter"}
         }
         else {
-          fullUserType = {userTypeFull: "Vermieter"}
+          fullUserType = {userTypeFull: "Verwaltung"}
         }
 
         Object.assign(item, fullUserType)
