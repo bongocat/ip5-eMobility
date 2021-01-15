@@ -104,7 +104,7 @@
             <v-col>
               <v-select
                       v-model="intervalService"
-                      :items="[{text: 'monatlich', value: 1}, {text: 'vierteljährlich', value: 3}, {text: 'halbjährlich', value: 6}, {text: 'jährlich', value: 12}]"
+                      :items="[{text: 'jährlich', value: 12},{text: 'halbjährlich', value: 6}, {text: 'vierteljährlich', value: 3},{text: 'monatlich', value: 1}]"
                       label="Zahlunsintervall"
                       hint="Zahlungsintervall"
                       persistent-hint

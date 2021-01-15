@@ -29,6 +29,15 @@
                     item-key="inner"
                     class="elevation-5"
                 >
+                  <template v-slot:item.intervalElectricity="{item}">
+                    {{ item.intervalElectricity + " Monate" }}
+                  </template>
+                  <template v-slot:item.intervalService="{item}">
+                    {{ item.intervalService + " Monate" }}
+                  </template>
+                  <template v-slot:item.counterNew="{item}">
+                    {{ item.counterNew + " kWh" }}
+                  </template>
                   <template v-slot:item.actions="{item}">
                     <LoadEdit :load = "item"></LoadEdit>
                   </template>
@@ -62,7 +71,7 @@ export default {
         {text: 'Mieter', value: 'tenant'},
         {text: 'Loadtyp', value: 'loadType'},
         {text: 'Rechnung An', value: 'invoiceToAsString'},
-        {text: 'Letze Rechnung', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung', value: 'firstInvoice' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
         {text: 'Letzter Zählerstand', value: 'counterNew'},
@@ -87,11 +96,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      allInvoices: 'allInvoices',
-      allLoads: 'allLoads',
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
-      allLoadTypes: 'allLoadTypes',
       allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
     fillObjectKeysLoads: function(){
 

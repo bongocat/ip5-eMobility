@@ -109,15 +109,21 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['fetchInvoices', 'fetchLoadTypes', 'fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchInvoiceTypes']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
   computed: {
     ...mapGetters({
-      allInvoices: 'allInvoices',
-      allLoads: 'allLoads',
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
-      allLoadTypes: 'allLoadTypes',
       allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
 
     fillObjectKeys: function (){
@@ -138,12 +144,13 @@ export default {
     }
   },
   created() {
-    this.fetchLoadTypes()
-    this.fetchLoads()
+    this.fetchInvoicePositions()
     this.fetchUsers()
     this.fetchFacilities()
+    this.fetchLoadTypes()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
+    this.fetchLoads()
   }
 }
 </script>

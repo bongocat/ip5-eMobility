@@ -177,10 +177,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      addNewUser: "addNewUser"
-    }),
-    ...mapActions(['editUser']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
 
     saveEditedUser() {
       this.dialog = false
@@ -210,6 +207,7 @@ export default {
             invoiceToShippingAdress:  this.invoiceToShippingAdress
           }
       this.editUser(updatedUser)
+      this.fetchUsers()
     },
   },
   computed: {

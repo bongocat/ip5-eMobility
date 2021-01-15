@@ -18,7 +18,8 @@
                     :headers="invoiceUpcomingHeaders"
                     :items="getInvoicePositionsFromLoads"
                     class="elevation-1"
-                    :items-per-page="5">
+                    :items-per-page="5"
+                    item-key="invoiceID">
                   <template v-slot:item.facility ="{item}">
                     {{ facilityDesignationFromInvoice(item) }}
                   </template>

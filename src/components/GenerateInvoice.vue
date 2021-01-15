@@ -316,10 +316,12 @@ export default {
         }
         if (item.invoiceTypeID === 3) {
           invoicePosition.amount = 1;
+          console.log("COUNTER OLD", invoicePosition.counterOld)
+          console.log("COUNTER New", invoicePosition.counterNew)
+          currentLoad.counterOld = invoicePosition.counterOld
+          currentLoad.counterNew = invoicePosition.counterNew
           currentLoad.counterOldDate = currentLoad.counterNewDate
-          console.log(currentLoad.counterNewDate)
           currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate), currentLoad.intervalElectricity)
-          console.log(currentLoad.counterNewDate)
         }
 
         this.editLoad(currentLoad)

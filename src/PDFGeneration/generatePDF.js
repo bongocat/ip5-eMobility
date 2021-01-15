@@ -4,7 +4,7 @@ import data from "@/store/modules/data";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-export function regularInvoiceToPDF(invoice, invoicePositions) {
+export function regularInvoiceToPDF(invoice, invoicePositions, due) {
 
     var date = new Date(invoice.invoiceDate)
 
@@ -35,12 +35,12 @@ export function regularInvoiceToPDF(invoice, invoicePositions) {
         })
         difference = nettoTotal - bruttoTotal
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
-        body.push(['', (invoicePositions[0].vat * 100).toFixed(2) + " %", '', '', difference.toFixed(2) + " CHF"],)
+        body.push(['', Number((invoicePositions[0].vat)*100).toFixed(2) + " %", '', '', difference.toFixed(2) + " CHF"],)
         body.push(['', {
-            text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(new Date(), new Date(invoice.toPayUntil)).toString() + " Tagen"),
+            text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(invoice.invoiceDate, new Date(invoice.toPayUntil)).toString()) + " Tagen",
             bold: true
         }, '', '', {
-            text: nettoTotal.toFixed(2) + " CHF",
+            text: Number(nettoTotal).toFixed(2) + " CHF",
             bold: true
         }])
         return body
@@ -164,12 +164,12 @@ export function exceptionalInvoiceToPDF(invoice, invoicePositions) {
         })
         difference = nettoTotal - bruttoTotal
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
-        body.push(['', (invoicePositions[0].vat * 100).toFixed(2) + " %", '', '', difference + " CHF"],)
+        body.push(['', (invoicePositions[0].vat).toFixed(2) + " %", '', '', difference + " CHF"],)
         body.push(['', {
             text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(new Date(), new Date(invoice.toPayUntil)).toString() + " Tagen"),
             bold: true
         }, '', '', {
-            text: nettoTotal.toFixed(2) + " CHF",
+            text: Number(nettoTotal).toFixed(2) + " CHF",
             bold: true
         }])
         return body
