@@ -198,7 +198,7 @@
               <template v-slot:item.actions="{item}">
                 <v-btn x-small @click="exportPaidToPDF(item)" color="blue" dark>
                   <v-icon>
-                    mdi-file-download
+                    mdi-download
                   </v-icon>
                 </v-btn>
                 <v-btn color="warning" x-small class="mr-2" @click="decrementInvoiceStatus(item)">
