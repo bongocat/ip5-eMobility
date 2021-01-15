@@ -2,8 +2,8 @@
   <v-main>
     <v-container fluid>
       <v-card style="margin-top: 20px" :elevation="5">
-      <v-expansion-panels multiple>
-        <v-expansion-panel>
+      <v-expansion-panels multiple v-model="panel">
+        <v-expansion-panel >
           <v-expansion-panel-header style="height: 50px;">
               <h3>Anstehende Rechnungen  <v-badge :content="this.getInvoicePositionsFromLoads.length" :value="this.getInvoicePositionsFromLoads.length" color="success"/></h3>
             <template v-slot:actions>
@@ -13,8 +13,6 @@
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-                <v-expansion-panels style="padding-bottom: 20px">
-                </v-expansion-panels>
                 <v-data-table
                     dense
                     :headers="invoiceUpcomingHeaders"
@@ -226,6 +224,8 @@ export default {
   components: {GenerateInvoice},
   data() {
     return {
+      panel: [0],
+      componentLoaded: false,
       filterProperties: String,
       filterAdministration: String,
       filterTenants: String,
@@ -271,6 +271,9 @@ export default {
         {text: 'Actions', value: 'actions', sortable: false}
       ],
     };
+  },
+  mounted() {
+    this.componentLoaded = true;
   },
   methods: {
     addDays(date, days) {
@@ -484,13 +487,14 @@ export default {
   },
   created() {
     this.fetchInvoicePositions()
-    this.fetchLoadTypes()
-    this.fetchLoads()
     this.fetchUsers()
     this.fetchFacilities()
+    this.fetchLoadTypes()
     this.fetchInvoices()
     this.fetchInvoiceTypes()
+    this.fetchLoads()
   },
+
   computed: {
     ...mapGetters({
       upcomingInvoices: 'upcomingInvoices',
@@ -510,8 +514,10 @@ export default {
       var today = new Date()
       return today.setDate(today.getDate() + 30)
     },
-
     getInvoicePositionsFromLoads(){
+
+      if(! this.componentLoaded)
+        return [];
 
       var upcomingInvoicesService = []
       var upcomingInvoicesElectricity = []
@@ -522,10 +528,15 @@ export default {
       this.allLoads.forEach((load, index) => {
 
         var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)[0]
-
+        console.log("LOAD", load)
+        console.log("loadType", loadType)
+        console.log("all Facilities", this.allFacilities)
         var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+        console.log("Facility: ",facility)
         var administration = allUsers.filter(user => user.userID === facility.administrationID)[0]
+        console.log("administration: ",administration)
         var tenant = allUsers.filter(user => user.userID === load.tenantID)[0]
+        console.log("tenant: ",tenant)
 
         var invoiceTo = load.invoiceTo
         var recipient = (invoiceTo === 1) ? administration : tenant
@@ -537,18 +548,18 @@ export default {
 
         var serviceInvoicePosition =
             {invoiceType: 2, loadID: load.loadID, facility:  load.facilityID,
-          invoiceTo: invoiceTo, positionDate: positionDateService, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
-          loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
+              invoiceTo: invoiceTo, positionDate: positionDateService, positionPricePerMonth: positionPricePerMonth, interval: load.intervalService,
+              loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
 
-          if (load.active === 1){
-            var electricityInvoicePosition =
-                {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
-                  invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
-                  counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
-                  loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
-            allElectricityInvoicePositions.push(electricityInvoicePosition)
+        if (load.active === 1){
+          var electricityInvoicePosition =
+              {invoiceType: 3, loadID: load.loadID, facility: load.facilityID,
+                invoiceTo: invoiceTo, positionDate: positionDateElectricity, powerCountOld: load.counterOld, powerCountNew: load.counterNew,
+                counterOldDate: load.counterOldDate, counterNewDate: load.counterNewDate, interval: load.intervalElectricity,
+                loadType: loadType, administration: administration, tenant: tenant, recipient: recipient}
+          allElectricityInvoicePositions.push(electricityInvoicePosition)
 
-          }
+        }
         allServiceInvoicePositions.push(serviceInvoicePosition)
 
 
@@ -573,8 +584,8 @@ export default {
                 shippingStreet: invoicePosition.recipient.shippingStreet, shippingStreetNumber: invoicePosition.recipient.shippingStreetNumber,
                 shippingAreaCode: invoicePosition.recipient.shippingAreaCode, shippingCity: invoicePosition.recipient.shippingCity,
                 shippingCountry: invoicePosition.recipient.shippingCountry, comment: "", active: 1, invoicePositions:[
-                    {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
-                      amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
+                  {invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
+                    amount: amount, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""}]}
           )
         }
         else {

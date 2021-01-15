@@ -167,6 +167,7 @@ export default {
     return {
       dialog: false,
 
+      menuFirstPayment: false,
       loadTypeID: "",
       facilityID: "",
       tenantID: "",
