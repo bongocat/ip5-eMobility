@@ -192,6 +192,8 @@ export default {
     createNewLoadFromForm() {
       this.dialog = false
 
+      console.log("INVOICE DATE",this.firstInvoice)
+
       const newLoad = {
         loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,

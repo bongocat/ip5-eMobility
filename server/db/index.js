@@ -205,6 +205,7 @@ megadb.getAllLoads = () => {
             if (err) {
                 return reject(err);
             }
+            console.log(results)
             return resolve(results);
         });
     });
