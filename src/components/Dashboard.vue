@@ -398,7 +398,6 @@ export default {
       for (var i = 0; i < items.length; i++) {
 
         var item = items[i]
-        console.log(">>>>>", item)
 
         const invoice = {
 
@@ -528,15 +527,10 @@ export default {
       this.allLoads.forEach((load, index) => {
 
         var loadType = this.allLoadTypes.filter(loadtype => loadtype.loadTypeID === load.loadTypeID)[0]
-        console.log("LOAD", load)
-        console.log("loadType", loadType)
-        console.log("all Facilities", this.allFacilities)
         var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
-        console.log("Facility: ",facility)
         var administration = allUsers.filter(user => user.userID === facility.administrationID)[0]
-        console.log("administration: ",administration)
         var tenant = allUsers.filter(user => user.userID === load.tenantID)[0]
-        console.log("tenant: ",tenant)
+
 
         var invoiceTo = load.invoiceTo
         var recipient = (invoiceTo === 1) ? administration : tenant

@@ -213,8 +213,6 @@ export default {
       else {
         newLoad.invoiceTo = 2
       }
-      console.log(newLoad)
-
       this.addNewLoad(newLoad)
     },
     reset() {

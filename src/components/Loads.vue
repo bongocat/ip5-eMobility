@@ -111,8 +111,6 @@ export default {
         var itemLoadType = {loadType: loadType[0].designation}
         var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
 
-        console.log("ITEMS:", itemLoadType, itemFacility, itemUser);
-
         Object.assign(item, itemFacility)
         Object.assign(item, itemLoadType)
         Object.assign(item, itemUser)
@@ -138,7 +136,6 @@ export default {
       fullFacilities.forEach(function (item, index) {
 
         var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
-        console.log(itemAdmin)
         var itemAdministration = { administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
 
         Object.assign(item, itemAdministration)

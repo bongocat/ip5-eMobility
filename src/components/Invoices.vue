@@ -128,8 +128,6 @@ export default {
 
       invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
 
-      console.log(invoicePositions)
-
       if (invoicePositions.length > 0){
         if (invoicePositions[0].loadID){
           var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]

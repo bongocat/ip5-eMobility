@@ -363,13 +363,25 @@ export default {
       upcomingInvoices: 'upcomingInvoices',
       paidInvoices: 'paidInvoices',
       openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
       allUsers: 'allUsers',
-      allLoads: 'allLoads'
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
+
   },
   created() {
-    console.log(this.invoice)
+    this.fetchInvoicePositions()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchLoadTypes()
+    this.fetchInvoices()
+    this.fetchInvoiceTypes()
+    this.fetchLoads()
   },
 }
 </script>

@@ -360,7 +360,6 @@ export default {
         active: this.currentUser.active,
         comment: this.comment,
       }
-      console.log("EXCEPTIONAL INVOICE", invoice, this.invoicePositions)
       this.addNewInvoice(invoice)
 
       this.invoicePositions.forEach((position) => {

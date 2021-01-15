@@ -7,7 +7,6 @@
           dark
           v-bind="attrs"
           v-on="on"
-          @click="console.log('loadID: ', this.loadID)"
       >
         <v-icon small>
           mdi-pencil
@@ -214,8 +213,6 @@ export default {
         active: this.active,
         comment: this.comment
       }
-
-      console.log(newLoad)
 
       this.editLoad(newLoad)
 

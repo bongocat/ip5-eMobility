@@ -105,8 +105,6 @@ export default {
         comment: this.comment,
       }
 
-      console.log(newLoadType)
-
       this.addNewLoadType(newLoadType)
 
     },

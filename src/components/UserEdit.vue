@@ -213,10 +213,28 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allUsers']),
+    ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
+    }),
   },
-  created() {
-    console.log(this.user)
-  }
+    created() {
+      this.fetchInvoicePositions()
+      this.fetchUsers()
+      this.fetchFacilities()
+      this.fetchLoadTypes()
+      this.fetchInvoices()
+      this.fetchInvoiceTypes()
+      this.fetchLoads()
+    },
 }
 </script>
