@@ -40,8 +40,13 @@ ip5-eMobility-Verzeichnis navigieren. Dort können Sie mit dem Befehl
 3) Für die Datenbank benötigen Sie einen MySQL-Server. Hier bietet sich XAMPP an, 
 welches Sie unter https://www.apachefriends.org/index.html herunterladen können. 
 Wenn Sie XAMPP installiert und gestartet haben, starten Sie im XAMPP-Control Panel 
-den Apache-Server und den MySQL-Server. Über den Button "Admin" des MySQL-Servers 
-gelangen Sie auf die phpMyAdmin-Seite. Wählen Sie hier auf der linken Seit "Neu" an. 
+den Apache-Server und den MySQL-Server. 
+Unter Windows gelangen Sie über den Button "Admin" des MySQL-Servers 
+auf die phpMyAdmin-Seite.
+Unter macOS müssen Sie zunächst im Tab "Netwerk" die Portweiterleitung für localhost:8080 -> 80 erlauben.
+Dies müssen Sie nach der Konfiguration der Datenbank wieder deaktivieren.
+Danach könne Sie phpMyadmin im Browser unter localhost:8080/phpmyadmin aufrufen.
+Wählen Sie nun auf der linken Seit "Neu" an.
 Danach klicken Sie in der oberen Menüleiste auf "Importieren". 
 Nun wählen Sie "Datei auswählen" an und navigieren Sie im Projektordner in 
 den Unterordner src -> sqlscripts und wählen dort das emobility_version 07.sql-Script aus. 
