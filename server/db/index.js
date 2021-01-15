@@ -4,7 +4,7 @@ const connection = mysql.createPool({
     connectionLimit: 10,
     password: '',
     user: 'root',
-    database: 'emobility2',
+    database: 'emobility',
     host: 'localhost',
     port: '3306',
     timezone: 'utc',

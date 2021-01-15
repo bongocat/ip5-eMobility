@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `emobility2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `emobility2`;
+CREATE DATABASE IF NOT EXISTS `emobility` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `emobility`;
 
 SET GLOBAL time_zone = "+02:00";
 
