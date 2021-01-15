@@ -3,8 +3,6 @@ const apiRouter = require('./routes');
 
 const app = express();
 
-process.env.TZ = 'Europe/Berlin'
-
 app.use(express.json());
 app.use('/api/megalog', apiRouter);
 

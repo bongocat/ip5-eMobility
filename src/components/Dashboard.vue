@@ -81,20 +81,20 @@
               </template>
               <template v-slot:item.actions="{item}">
                 <v-btn color="success" x-small class="mr-2" @click="markAsSent([item])">
-                  Als verschickt markieren
+                  Als versendet markieren
                 </v-btn>
               </template>
             </v-data-table>
             <v-card-actions>
               <v-btn small color="blue" @click="markAsSent(openInvoicesSelected), resetSelectedOpen()" :disabled="(openInvoicesSelected.length === 0)">
-                Ausgewählte als verschickt markieren
+                Ausgewählte als versendet markieren
               </v-btn>
             </v-card-actions>
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header style="height: 55px">
-            <h3>Verschickte Rechnungen <v-badge :content="sentInvoices.length" :value="sentInvoices.length" color="success" /></h3>
+            <h3>Versendete Rechnungen <v-badge :content="sentInvoices.length" :value="sentInvoices.length" color="success" /></h3>
             <template v-slot:actions>
               <v-icon color="primary">
                 $expand

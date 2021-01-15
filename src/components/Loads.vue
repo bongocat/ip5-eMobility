@@ -32,6 +32,9 @@
                   <template v-slot:item.intervalElectricity="{item}">
                     {{ item.intervalElectricity + " Monate" }}
                   </template>
+                  <template v-slot:item.firstInvoice="{item}">
+                    {{ new Date(item.firstInvoice) }}
+                  </template>
                   <template v-slot:item.intervalService="{item}">
                     {{ item.intervalService + " Monate" }}
                   </template>
