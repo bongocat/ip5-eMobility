@@ -37,7 +37,7 @@ export function regularInvoiceToPDF(invoice, invoicePositions) {
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
         body.push(['', Number((invoicePositions[0].vat)*100).toFixed(2) + " %", '', '', difference.toFixed(2) + " CHF"],)
         body.push(['', {
-            text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(invoice.invoiceDate, new Date(invoice.toPayUntil)).toString()) + " Tagen",
+            text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(new Date(invoice.invoiceDate), new Date(invoice.toPayUntil)).toString()) + " Tagen",
             bold: true
         }, '', '', {
             text: Number(nettoTotal).toFixed(2) + " CHF",
@@ -166,7 +166,7 @@ export function exceptionalInvoiceToPDF(invoice, invoicePositions) {
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
         body.push(['', (invoicePositions[0].vat).toFixed(2) + " %", '', '', difference + " CHF"],)
         body.push(['', {
-            text: 'Total inkl. MwSt, zahlbar innert ' + (inDays(new Date(), new Date(invoice.toPayUntil)).toString() + " Tagen"),
+            text: 'Total inkl. MwSt, zahlbar innert ' + inDays(new Date(Date.now()), new Date(invoice.toPayUntil)) + " Tagen",
             bold: true
         }, '', '', {
             text: Number(nettoTotal).toFixed(2) + " CHF",
