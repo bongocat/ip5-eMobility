@@ -270,7 +270,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'addNewInvoicePosition', 'addNewInvoice', 'editLoad']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'addNewInvoicePosition', 'addNewInvoice', 'editLoad', "fetchInvoicePositions"]),
     newInvoicePosition() {
       this.invoicePositions.push({
         positionName: this.extraPosDescription,
