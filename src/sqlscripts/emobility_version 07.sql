@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `emobility2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `emobility2`;
 
-GLOBAL time_zone = ‘+2:00’;
+SET GLOBAL time_zone = "+02:00";
 
 CREATE TABLE `facilities` (
   `facilityID` int(11) NOT NULL AUTO_INCREMENT,
