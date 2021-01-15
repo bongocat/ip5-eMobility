@@ -250,7 +250,7 @@
               <td>
                 <v-btn color="error"
                        text
-                       @click="removeInvoicePosition(item)"
+                       @click="removeExtraInvoicePosition(item)"
                        fab
                        small>
                   <v-icon small>mdi-delete</v-icon>
@@ -306,7 +306,6 @@ export default {
       comment: "",
       dialog: false,
 
-      name: '',
       invoiceNumber: "",
     }
   },
@@ -344,23 +343,29 @@ export default {
     removeInvoicePosition(position) {
       this.invoicePositions.splice(this.invoicePositions.indexOf(position), 1)
     },
+    removeExtraInvoicePosition(position){
+      this.extraInvoicePositions.splice(this.extraInvoicePositions.indexOf(position), 1)
+
+    },
     exportToPDF: function (item) {
 
-      item.toPayUntil = this.addDays(item.invoiceDate, this.due)
+      item.toPayUntil = this.addDays(item.invoiceDate, this.due) //adds the days of "due" to the invoice date
       item.comment = this.comment
       item.invoiceNumber = this.invoiceNumber
       item.invoiceStatusID = 2
-
       this.addNewInvoice(item)
 
       this.invoicePositions.forEach((invoicePosition) => {
         invoicePosition.invoiceNumber = this.invoiceNumber
+        invoicePosition.active = 1
+        invoicePosition.comment = ""
         var currentLoad = this.allLoads.filter(load => load.loadID === invoicePosition.loadID)[0]
 
         if (item.invoiceTypeID === 2) {
           currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice), currentLoad.intervalService)
         }
         if (item.invoiceTypeID === 3) {
+          invoicePosition.vat = invoicePosition.vat / 100
           invoicePosition.amount = 1;
           currentLoad.counterOld = invoicePosition.counterOld
           currentLoad.counterNew = invoicePosition.counterNew
@@ -373,10 +378,14 @@ export default {
       })
 
       this.extraInvoicePositions.forEach((invoicePosition) => {
+        invoicePosition.invoiceNumber = this.invoiceNumber
+        invoicePosition.active = 1
+        invoicePosition.comment = ""
+        invoicePosition.loadID = null
         this.addNewInvoicePosition(invoicePosition)
       })
 
-      regularInvoiceToPDF(item, this.invoicePositions)
+      regularInvoiceToPDF(item, this.invoicePositions.concat(this.extraInvoicePositions))
     },
     addDays(date, days) {
       var result = new Date(date);

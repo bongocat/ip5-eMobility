@@ -335,7 +335,7 @@ export default {
         invoiceToRefID: this.currentUser.userID,
         invoiceDate: new Date(this.invoiceDate),
         toPayUntil: new Date(this.toPayUntil),
-        isPayed: 1,
+        payedOn: null,
         name: this.currentUser.name,
         familyName: this.currentUser.familyName,
         salutation: this.currentUser.salutation,
@@ -366,7 +366,7 @@ export default {
         position.invoiceNumber = this.invoiceNumber
         position.active = 1
         position.comment = ""
-        position.loadID = 0
+        position.loadID = null
         this.addNewInvoicePosition(position)
       })
       exceptionalInvoiceToPDF(invoice, this.invoicePositions)

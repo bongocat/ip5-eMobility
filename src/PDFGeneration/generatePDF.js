@@ -7,14 +7,21 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export function regularInvoiceToPDF(invoice, invoicePositions) {
 
     var date = new Date(invoice.invoiceDate)
+    var facility = null
 
     const invoiceType = data.state.invoiceTypes.filter(invoiceType => invoiceType.invoiceTypeID === invoice.invoiceTypeID)[0]
 
-    if (invoicePositions[0].loadID !== undefined){
+    console.log("invoicepositions", invoicePositions)
+
+    if (invoicePositions[0].loadID !== undefined && invoicePositions[0].loadID !== null){
+        console.log("LOADS", data.state.loads)
         var load = data.state.loads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
-        var facility = data.state.facilities.filter(facility => facility.facilityID === load.facilityID)[0]
+        console.log("FACILITIES", data.state.facilities)
+
+        facility = data.state.facilities.filter(facility => facility.facilityID === load.facilityID)[0]
     }
 
+    var facilityDesignation = (facility !== null) ? facility.designation : "-"
     var street = (invoice.invoiceToShippingAdress === 0) ? invoice.street : invoice.shippingStreet
     var streetNumber = (invoice.invoiceToShippingAdress === 0) ? invoice.streetNumber : invoice.shippingStreetNumber
     var areaCode = (invoice.invoiceToShippingAdress === 0) ? invoice.areaCode : invoice.shippingAreaCode
@@ -29,10 +36,15 @@ export function regularInvoiceToPDF(invoice, invoicePositions) {
 
         body.push(['Pos. ', 'Beschreibung ', 'Stk. ', 'Preis/Stk. ', 'Bruttopreis'])
         invoicePositions.forEach((invoicePosition, index) => {
-            body.push([index + 1, (invoicePosition.loadID ? invoicePosition.loadID : "") + " (" + invoicePosition.positionName + ")", invoicePosition.amount, invoicePosition.price, invoicePosition.brutto])
+            invoicePosition.brutto = Number(invoicePosition.brutto)
+            invoicePosition.netto = Number(invoicePosition.netto)
+            invoicePosition.vat = Number(invoicePosition.vat)
+            body.push([index + 1, (invoicePosition.loadID ? invoicePosition.loadID : " - ") + " " +invoicePosition.positionName, invoicePosition.amount, invoicePosition.price, invoicePosition.brutto])
             bruttoTotal += invoicePosition.brutto
             nettoTotal += invoicePosition.netto
         })
+        console.log(bruttoTotal, nettoTotal)
+
         difference = nettoTotal - bruttoTotal
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
         body.push(['', Number((invoicePositions[0].vat)*100).toFixed(2) + " %", '', '', difference.toFixed(2) + " CHF"],)
@@ -80,9 +92,7 @@ export function regularInvoiceToPDF(invoice, invoicePositions) {
                     widths: ['*', '*', '*'],
                     heights: [30, 30, 30],
                     body: [
-                        ['Objekt', facility.designation, '-'],
-                        ['Projekt', 'Projektname', '-'],
-                        ['Abrechnungsperiode', '-', '-']
+                        ['Objekt', facilityDesignation],
                     ]
                 }
             },
@@ -164,7 +174,7 @@ export function exceptionalInvoiceToPDF(invoice, invoicePositions) {
         })
         difference = nettoTotal - bruttoTotal
         body.push(['', {text: 'Total exkl. MwSt', bold: true}, '', '', {text: bruttoTotal.toFixed(2) + " CHF", bold: true}],)
-        body.push(['', (invoicePositions[0].vat).toFixed(2) + " %", '', '', difference + " CHF"],)
+        body.push(['', (invoicePositions[0].vat * 100).toFixed(2) + " %", '', '', difference + " CHF"],)
         body.push(['', {
             text: 'Total inkl. MwSt, zahlbar innert ' + inDays(new Date(Date.now()), new Date(invoice.toPayUntil)) + " Tagen",
             bold: true

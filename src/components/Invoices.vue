@@ -127,6 +127,9 @@ export default {
       if (date === "0000-00-00"){
         return "offen"
       }
+      else if (date === null){
+        return "offen"
+      }
       else return new Date(date)
     },
 
