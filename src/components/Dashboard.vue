@@ -492,10 +492,10 @@ export default {
   created() {
     this.fetchInvoicePositions()
     this.fetchUsers()
+    this.fetchInvoiceTypes()
     this.fetchFacilities()
     this.fetchLoadTypes()
     this.fetchInvoices()
-    this.fetchInvoiceTypes()
     this.fetchLoads()
   },
 
