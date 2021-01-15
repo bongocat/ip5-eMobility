@@ -328,7 +328,7 @@ export default {
         this.addNewInvoicePosition(invoicePosition)
       })
 
-      regularInvoiceToPDF(item, this.invoicePositions, this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item, this.invoicePositions)
     },
     addDays(date, days) {
       var result = new Date(date);

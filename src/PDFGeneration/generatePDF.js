@@ -4,7 +4,7 @@ import data from "@/store/modules/data";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-export function regularInvoiceToPDF(invoice, invoicePositions, due) {
+export function regularInvoiceToPDF(invoice, invoicePositions) {
 
     var date = new Date(invoice.invoiceDate)
 
@@ -190,10 +190,10 @@ export function exceptionalInvoiceToPDF(invoice, invoicePositions) {
                     alignment: 'left'
                 }, {text: 'Rechnungsnummer: ' + invoice.invoiceNumber, alignment: 'right', fontSize: 8}],
             },
-            {text: invoice.company, alignment: 'left'},
-            {text: invoice.name + " " + invoice.familyName, alignment: 'left'},
-            {text: street + ' ' + streetNumber, alignment: 'left'},
-            {text: areaCode + " " + city, alignment: 'left'},
+            {text: invoice.company, alignment: 'left', margin: [380, 0, 0, 0]},
+            {text: invoice.name + " " + invoice.familyName, alignment: 'left',margin: [380, 0, 0, 0]},
+            {text: street + ' ' + streetNumber, alignment: 'left', margin: [380, 0, 0, 0]},
+            {text: areaCode + " " + city, alignment: 'left', margin: [380, 0, 0, 0]},
 
 
             {

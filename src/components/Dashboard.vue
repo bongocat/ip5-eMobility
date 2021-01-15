@@ -19,7 +19,7 @@
                     :items="getInvoicePositionsFromLoads"
                     class="elevation-1"
                     :items-per-page="5"
-                    item-key="invoiceID">
+                    item-key="id">
                   <template v-slot:item.facility ="{item}">
                     {{ facilityDesignationFromInvoice(item) }}
                   </template>
@@ -560,7 +560,10 @@ export default {
 
       });
 
+      var id = 0
+
       allServiceInvoicePositions.forEach((invoicePosition) => {
+
 
         var price = invoicePosition.positionPricePerMonth * invoicePosition.interval
         var vat = 0.18
@@ -570,7 +573,7 @@ export default {
 
         if (upcomingInvoicesService.length === 0){
           upcomingInvoicesService.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+              {id: id,invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
@@ -594,7 +597,7 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesService.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                {id: id, invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
@@ -608,6 +611,7 @@ export default {
             )
           }
         }
+        id += 1
       });
 
       allElectricityInvoicePositions.forEach((invoicePosition) => {
@@ -619,7 +623,7 @@ export default {
 
         if (upcomingInvoicesElectricity.length === 0){
           upcomingInvoicesElectricity.push(
-              {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+              {id: id, invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                 invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                 name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                 company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
@@ -644,7 +648,7 @@ export default {
           });
           if (foundExistingInvoice === false){
             upcomingInvoicesElectricity.push(
-                {invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
+                {id: id, invoiceNumber: "", invoiceTypeID: invoicePosition.invoiceType, customerRefID: invoicePosition.tenant.userID,
                   invoiceToRefID: invoicePosition.recipient.userID, invoiceDate: new Date(invoicePosition.positionDate), toPayUntil: "", payedOn: "", invoiceStatusID: 1,
                   name: invoicePosition.recipient.name, familyName: invoicePosition.recipient.familyName, salutation:invoicePosition.recipient.salutation,
                   company: invoicePosition.recipient.company, phone: invoicePosition.recipient.phone, mobile: invoicePosition.recipient.mobile,
@@ -658,6 +662,7 @@ export default {
             )
           }
         }
+        id += 1
       })
       var allUpcomingInvoices = upcomingInvoicesService.concat(upcomingInvoicesElectricity)
       allUpcomingInvoices = allUpcomingInvoices.filter(invoice => invoice.invoiceDate.getTime() < new Date(this.todayIn30Days).getTime())

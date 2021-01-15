@@ -14,6 +14,7 @@
               :items="this.allInvoices"
               class="elevation-1"
               :items-per-page="15"
+              item-key="invoiceID"
           style="margin-top: 20px">
             <template v-slot:item.facility ="{item}">
               {{ facilityFromInvoice(item) }}
@@ -31,7 +32,7 @@
               {{ new Date(item.invoiceDate) }}
             </template>
             <template v-slot:item.payedOn ="{item}">
-              {{ new Date(item.payedOn) }}
+              {{ getPayedOn(item.payedOn) }}
             </template>
             <template v-slot:item.actions="{item}">
               <v-btn
@@ -121,6 +122,12 @@ export default {
       else {
         return "-"
       }
+    },
+    getPayedOn(date){
+      if (date === "0000-00-00"){
+        return "offen"
+      }
+      else return new Date(date)
     },
 
     facilityFromInvoice(invoice){
