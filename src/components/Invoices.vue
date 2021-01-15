@@ -143,9 +143,9 @@ export default {
     },
     exportToPDF: function (item) {
       var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
-      regularInvoiceToPDF(item, invoicePositions, this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item, invoicePositions)
       },
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'addNewInvoice']),
   },
   computed: {
     ...mapGetters({

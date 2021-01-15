@@ -18,29 +18,31 @@
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
+          <v-row>
             <v-col>
               <v-text-field label="Name" v-model=designation></v-text-field>
             </v-col>
-          <v-col>
-            <v-text-field label="Preis Serviceabo Aktiv" v-model=standardPriceWhenActive
-                          type="number"
-                          step="0.01"
-                          min="0.00"
-                          suffix="CHF"></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field label="Preis Serviceabo Inaktiv" v-model=standardPriceWhenInactive
-                          type="number"
-                          step="0.01"
-                          min="0.00"
-                          suffix="CHF"></v-text-field>
-          </v-col>
-          <v-col>
-            <v-text-field label="Kommentar" v-model=comment
-                          counter
-                          maxlength="1000"
-            ></v-text-field>
-          </v-col>
+            <v-col>
+              <v-text-field label="Preis Serviceabo Aktiv" v-model=standardPriceWhenActive
+                            type="number"
+                            step="0.01"
+                            min="0.00"
+                            suffix="CHF"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Preis Serviceabo Inaktiv" v-model=standardPriceWhenInactive
+                            type="number"
+                            step="0.01"
+                            min="0.00"
+                            suffix="CHF"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model=comment
+                            counter
+                            maxlength="1000"
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>

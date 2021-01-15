@@ -220,7 +220,7 @@
                   v-for="(item) in invoicePositions"
                   :key="item.invoicePositionID"
               >
-                <td>{{ item.positionName + " - Load ID: " + item.loadID }}</td>
+                <td>{{ item.positionName }}</td>
                 <td>{{ item.amount }}</td>
                 <td>{{ item.price + " CHF" }}</td>
                 <td>{{ item.brutto + " CHF" }}</td>
@@ -272,7 +272,7 @@
 <script>
 
 import {mapGetters, mapMutations, mapActions} from "vuex";
-import {exceptionalInvoiceToPDF, normalInvoiceToPDF} from "@/PDFGeneration/generatePDF";
+import {exceptionalInvoiceToPDF} from "@/PDFGeneration/generatePDF";
 
 
 export default {
@@ -323,11 +323,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addNewInvoice']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'addNewInvoice', 'addNewInvoicePosition']),
     createExceptionalInvoice() {
       this.dialog = false
-
-      console.log("CURRENT USER", this.currentUser);
 
       const invoice = {
 
@@ -362,9 +360,17 @@ export default {
         active: this.currentUser.active,
         comment: this.comment,
       }
-      console.log(invoice)
+      console.log("EXCEPTIONAL INVOICE", invoice, this.invoicePositions)
       this.addNewInvoice(invoice)
-      exceptionalInvoiceToPDF(invoice, this.allUsers ,this.allFacilities )
+
+      this.invoicePositions.forEach((position) => {
+        position.invoiceNumber = this.invoiceNumber
+        position.active = 1
+        position.comment = ""
+        position.loadID = 0
+        this.addNewInvoicePosition(position)
+      })
+      exceptionalInvoiceToPDF(invoice, this.invoicePositions)
     },
     reset() {
       this.$refs.form.reset()
@@ -400,6 +406,15 @@ export default {
     }),
   },
   watch: {},
+  created() {
+    this.fetchInvoicePositions()
+    this.fetchLoadTypes()
+    this.fetchLoads()
+    this.fetchUsers()
+    this.fetchFacilities()
+    this.fetchInvoices()
+    this.fetchInvoiceTypes()
+  },
 
 }
 </script>

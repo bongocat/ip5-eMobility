@@ -22,7 +22,7 @@
                     class="elevation-1"
                     :items-per-page="5">
                   <template v-slot:item.facility ="{item}">
-                    {{ facilityFromInvoice(item) }}
+                    {{ facilityDesignationFromInvoice(item) }}
                   </template>
                   <template v-slot:item.administration ="{item}">
                     {{ administrationFromInvoice(item) }}
@@ -63,7 +63,7 @@
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.facility ="{item}">
-                {{ facilityFromInvoice(item) }}
+                {{ facilityDesignationFromInvoice(item) }}
               </template>
               <template v-slot:item.administration ="{item}">
                 {{ administrationFromInvoice(item) }}
@@ -114,7 +114,7 @@
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.facility ="{item}">
-                {{ facilityFromInvoice(item) }}
+                {{ facilityDesignationFromInvoice(item) }}
               </template>
               <template v-slot:item.administration ="{item}">
                 {{ administrationFromInvoice(item) }}
@@ -179,7 +179,7 @@
                 class="elevation-1"
                 :items-per-page="5">
               <template v-slot:item.facility ="{item}">
-                {{ facilityFromInvoice(item) }}
+                {{ facilityDesignationFromInvoice(item) }}
               </template>
               <template v-slot:item.administration ="{item}">
                 {{ administrationFromInvoice(item) }}
@@ -306,7 +306,7 @@ export default {
         return "-"
       }
     },
-    facilityFromInvoice(invoice){
+    facilityDesignationFromInvoice(invoice){
       var invoicePositions = []
 
       if (invoice.invoicePositions){
@@ -321,6 +321,27 @@ export default {
           var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
           var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
           return facility.designation
+        }
+      }
+      else {
+        return "-"
+      }
+    },
+    facilityFromInvoice(invoice){
+      var invoicePositions = []
+
+      if (invoice.invoicePositions){
+        invoicePositions = invoice.invoicePositions
+      }
+      else{
+        invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
+      }
+
+      if (invoicePositions.length != 0){
+        if (invoicePositions[0].loadID){
+          var load = this.allLoads.filter(load => load.loadID === invoicePositions[0].loadID)[0]
+          var facility = this.allFacilities.filter(facility => facility.facilityID === load.facilityID)[0]
+          return facility
         }
       }
       else {
@@ -457,7 +478,7 @@ export default {
       this.editInvoice(invoice)
     },
     exportToPDF: function (item) {
-      regularInvoiceToPDF(item, this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item, item.invoicePositions)
     },
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
   },
@@ -559,7 +580,7 @@ export default {
         else {
           var foundExistingInvoice = false
           upcomingInvoicesService.forEach((invoice) => {
-            if (invoice.invoiceToRefID === invoicePosition.recipient.userID && invoice.invoiceDate.getTime() === invoicePosition.positionDate.getTime()){
+            if (invoice.invoiceToRefID === invoicePosition.recipient.userID && invoice.invoiceDate.getTime() === invoicePosition.positionDate.getTime() && this.facilityFromInvoice(invoice).facilityID === invoicePosition.facility){
               foundExistingInvoice = true
               invoice.invoicePositions.push({invoiceNumber: "", positionName: invoicePosition.loadType.designation, loadID: invoicePosition.loadID, price: price,
                 amount: 1, netto: netto, vat: vat, brutto: brutto, active: 1, comment: ""})

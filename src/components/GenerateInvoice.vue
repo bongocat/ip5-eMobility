@@ -311,14 +311,14 @@ export default {
 
         if (item.invoiceTypeID === 2) {
           console.log(currentLoad.firstInvoice)
-          currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice).setDate(currentLoad.firstInvoice.getDate() + 1), currentLoad.intervalService)
+          currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice), currentLoad.intervalService)
           console.log(currentLoad.firstInvoice)
         }
         if (item.invoiceTypeID === 3) {
           invoicePosition.amount = 1;
           currentLoad.counterOldDate = currentLoad.counterNewDate
           console.log(currentLoad.counterNewDate)
-          currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate).setDate(currentLoad.counterNewDate.getDate() + 1), currentLoad.intervalElectricity)
+          currentLoad.counterNewDate = this.addMonths(new Date(currentLoad.counterNewDate), currentLoad.intervalElectricity)
           console.log(currentLoad.counterNewDate)
         }
 
