@@ -36,9 +36,9 @@
             </template>
             <template v-slot:item.actions="{item}">
               <v-btn x-small
-                  text
                   color="blue"
                   @click="exportToPDF(item)"
+                     dark
               >
                 <v-icon>mdi-download</v-icon>
               </v-btn>

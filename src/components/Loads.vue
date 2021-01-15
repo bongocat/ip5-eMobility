@@ -32,6 +32,9 @@
                   <template v-slot:item.intervalElectricity="{item}">
                     {{ item.intervalElectricity + " Monate" }}
                   </template>
+                  <template v-slot:item.counterNewDate="{item}">
+                    {{ new Date(item.counterNewDate) }}
+                  </template>
                   <template v-slot:item.firstInvoice="{item}">
                     {{ new Date(item.firstInvoice) }}
                   </template>
@@ -74,7 +77,8 @@ export default {
         {text: 'Mieter', value: 'tenant'},
         {text: 'Loadtyp', value: 'loadType'},
         {text: 'Rechnung An', value: 'invoiceToAsString'},
-        {text: 'Nächste Rechnung', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung Serviceabo', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung Strom', value: 'counterNewDate' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
         {text: 'Letzter Zählerstand', value: 'counterNew'},
@@ -137,7 +141,7 @@ export default {
           invoiceToAsString = {invoiceToAsString: "Mieter"}
         }
         else {
-          invoiceToAsString = {invoiceToAsString: "Vermieter"}
+          invoiceToAsString = {invoiceToAsString: "Verwaltung"}
         }
 
         Object.assign(item, invoiceToAsString)

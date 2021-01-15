@@ -30,8 +30,8 @@
                               dense
                               editable
                               :items="allUsers.filter(user => (user.userTypeID == 1 && user.active == 1))"
-                              label="Rechnung an"
-                              hint="Rechnung an"
+                              label="Verwaltung an"
+                              hint="Verwaltung"
                               persistent-hint
                               :item-text = "item => item.userID + ' - ' + item.name +'  '+ item.familyName"
                               :item-value= "item => item"

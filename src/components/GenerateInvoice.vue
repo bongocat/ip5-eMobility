@@ -218,6 +218,46 @@
               </td>
             </tr>
             </tbody>
+            <thead>
+            <tr>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+              <th class="text-left">
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="(item) in extraInvoicePositions"
+                :key="item.invoicePositionID"
+            >
+              <td>{{ item.positionName }}</td>
+              <td>{{ item.amount }}</td>
+              <td>{{ item.price + " CHF" }}</td>
+              <td>{{ item.brutto + " CHF" }}</td>
+              <td>{{ (item.vat * 100).toFixed(2) + "%" }}</td>
+              <td>{{ item.netto.toFixed(2) + " CHF" }}</td>
+              <td>
+                <v-btn color="error"
+                       text
+                       @click="removeInvoicePosition(item)"
+                       fab
+                       small>
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+              </td>
+            </tr>
+            </tbody>
           </template>
         </v-simple-table>
         </v-form>
@@ -261,6 +301,7 @@ export default {
       extraPosUnitPrice: "",
       extraPosVat: "",
       invoicePositions: this.invoice.invoicePositions,
+      extraInvoicePositions: [],
       due: 10,
       comment: "",
       dialog: false,
@@ -272,15 +313,28 @@ export default {
   methods: {
     ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'addNewInvoicePosition', 'addNewInvoice', 'editLoad', "fetchInvoicePositions"]),
     newInvoicePosition() {
-      this.invoicePositions.push({
-        positionName: this.extraPosDescription,
-        loadID: "",
-        price: this.extraPosUnitPrice,
-        amount: this.extraPosCount,
-        brutto: this.extraPosUnitPrice * this.extraPosCount,
-        netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
-        vat: this.extraPosVat * 0.01,
-      })
+      if (this.invoice.invoiceTypeID === 2){
+        this.invoicePositions.push({
+          positionName: this.extraPosDescription,
+          loadID: "",
+          price: this.extraPosUnitPrice,
+          amount: this.extraPosCount,
+          brutto: this.extraPosUnitPrice * this.extraPosCount,
+          netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
+          vat: this.extraPosVat * 0.01,
+        })
+      }
+      else {
+        this.extraInvoicePositions.push({
+          positionName: this.extraPosDescription,
+          loadID: "",
+          price: this.extraPosUnitPrice,
+          amount: this.extraPosCount,
+          brutto: this.extraPosUnitPrice * this.extraPosCount,
+          netto: this.extraPosUnitPrice * this.extraPosCount + (this.extraPosUnitPrice * this.extraPosCount * Number(this.extraPosVat*0.01).toFixed(2)),
+          vat: this.extraPosVat * 0.01,
+        })
+      }
 
       this.extraPosVat = ""
       this.extraPosDescription = ""
@@ -292,13 +346,7 @@ export default {
     },
     exportToPDF: function (item) {
 
-      console.log(item.toPayUntil)
-
       item.toPayUntil = this.addDays(item.invoiceDate, this.due)
-
-      console.log(item.invoiceDate, this.due)
-      console.log(item.toPayUntil)
-
       item.comment = this.comment
       item.invoiceNumber = this.invoiceNumber
       item.invoiceStatusID = 2
@@ -310,14 +358,10 @@ export default {
         var currentLoad = this.allLoads.filter(load => load.loadID === invoicePosition.loadID)[0]
 
         if (item.invoiceTypeID === 2) {
-          console.log(currentLoad.firstInvoice)
           currentLoad.firstInvoice = this.addMonths(new Date(currentLoad.firstInvoice), currentLoad.intervalService)
-          console.log(currentLoad.firstInvoice)
         }
         if (item.invoiceTypeID === 3) {
           invoicePosition.amount = 1;
-          console.log("COUNTER OLD", invoicePosition.counterOld)
-          console.log("COUNTER New", invoicePosition.counterNew)
           currentLoad.counterOld = invoicePosition.counterOld
           currentLoad.counterNew = invoicePosition.counterNew
           currentLoad.counterOldDate = currentLoad.counterNewDate
@@ -325,6 +369,10 @@ export default {
         }
 
         this.editLoad(currentLoad)
+        this.addNewInvoicePosition(invoicePosition)
+      })
+
+      this.extraInvoicePositions.forEach((invoicePosition) => {
         this.addNewInvoicePosition(invoicePosition)
       })
 
