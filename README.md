@@ -21,9 +21,6 @@ Webapplikation für das Verwalten von Ladestationen für elektronische Fahrzeuge
 ## Installation
 ### Project setup
 
-Um die Applikation lokal laufen zu lassen, wird eine Installation von node.js benötigt. 
-Auf https://nodejs.org/de/ kann die neuste Version heruntergeladen werden.
-
 1) Wenn Sie das Projekt heruntergeladen und entpack haben, 
 öffnen Sie eine Kommandozeile (unter Windows nach "cmd" suchen, 
 unter macOS nach "terminal") und navigieren Sie in das Grundverzeichnis 
