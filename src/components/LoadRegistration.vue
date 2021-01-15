@@ -105,7 +105,7 @@
             <v-col>
               <v-overflow-btn
                   v-model="intervalService"
-                  :items="[{text: 'monatlich', value: 1}, {text: 'vierteljährlich', value: 3}, {text: 'halbjährlich', value: 6}, {text: 'jährlich', value: 12}]"
+                  :items="[{text: 'jährlich', value: 12}, {text: 'halbjährlich', value: 6},{text: 'vierteljährlich', value: 3} , {text: 'monatlich', value: 1},]"
                   label="Zahlunsintervall"
                   hint="Zahlungsintervall"
                   persistent-hint
@@ -128,14 +128,6 @@
                             maxlength="1000"
               ></v-text-field>
             </v-col>
-            <v-col>
-              <v-switch v-model="active"
-                        label="Aktiv"
-                        color="success"
-
-              >
-              </v-switch>
-            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
@@ -145,7 +137,7 @@
             text
             @click="createNewLoadFromForm"
         >
-          Anlage erfassen
+          Load erfassen
         </v-btn>
         <v-btn
             color="error"
@@ -175,6 +167,7 @@ export default {
     return {
       dialog: false,
 
+      menuFirstPayment: false,
       loadTypeID: "",
       facilityID: "",
       tenantID: "",
@@ -199,6 +192,8 @@ export default {
     createNewLoadFromForm() {
       this.dialog = false
 
+      console.log("INVOICE DATE",this.firstInvoice)
+
       const newLoad = {
         loadTypeID: this.loadTypeID,
         facilityID: this.facilityID,
@@ -220,8 +215,6 @@ export default {
       else {
         newLoad.invoiceTo = 2
       }
-      console.log(newLoad)
-
       this.addNewLoad(newLoad)
     },
     reset() {

@@ -15,7 +15,7 @@
     >
       <v-tab
               v-for="item in items"
-              :key="item"
+              :key="item.name"
               :to = "item.link"
       >
         {{item.name}}
@@ -30,7 +30,8 @@ export default {
   data() {
     return {
       tab: null,
-      items: [{name: 'Dashboard', link: '/dashboard'},
+      items: [
+        {name: 'Dashboard', link: '/dashboard'},
         {name: 'Rechnungen', link: '/invoices'},
         {name: 'Loads', link: '/loads'},
         {name: 'Anlagen', link: '/facilities'},

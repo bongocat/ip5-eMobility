@@ -14,6 +14,7 @@
               :items="this.allInvoices"
               class="elevation-1"
               :items-per-page="15"
+              item-key="invoiceID"
           style="margin-top: 20px">
             <template v-slot:item.facility ="{item}">
               {{ facilityFromInvoice(item) }}
@@ -30,11 +31,14 @@
             <template v-slot:item.invoiceDate ="{item}">
               {{ new Date(item.invoiceDate) }}
             </template>
+            <template v-slot:item.payedOn ="{item}">
+              {{ getPayedOn(item.payedOn) }}
+            </template>
             <template v-slot:item.actions="{item}">
-              <v-btn
-                  text
-                  color="success"
+              <v-btn x-small
+                  color="blue"
                   @click="exportToPDF(item)"
+                     dark
               >
                 <v-icon>mdi-download</v-icon>
               </v-btn>
@@ -84,11 +88,12 @@ export default {
       dialog: false,
       dialogDelete: false,
       invoiceHeaders: [
-        {text: 'Rechnungsart', value: 'invoiceTypeID'},
+        {text: 'Rechnungsnummer', value: 'invoiceNumber'},
         {text: 'Empfänger', value: 'invoiceToRefID'},
+        {text: 'Rechnungsart', value: 'invoiceTypeID'},
         {text: 'Verwaltung', value: 'administration'},
-        {text: 'Anlage', value: 'facility' },
-        {text: 'Fällig Am', value: 'invoiceDate'},
+        {text: 'Anlage', value: 'facility'},
+        {text: 'Rechnungsdatum', value: 'invoiceDate'},
         {text: 'Bezahlt Am', value: 'payedOn'},
         {text: 'Actions', value: 'actions', sortable: false}
       ],
@@ -118,13 +123,20 @@ export default {
         return "-"
       }
     },
+    getPayedOn(date){
+      if (date === "0000-00-00"){
+        return "offen"
+      }
+      else if (date === null){
+        return "offen"
+      }
+      else return new Date(date)
+    },
 
     facilityFromInvoice(invoice){
       var invoicePositions = []
 
       invoicePositions = this.allInvoicePositions.filter(position => position.invoiceNumber === invoice.invoiceNumber)
-
-      console.log(invoicePositions)
 
       if (invoicePositions.length > 0){
         if (invoicePositions[0].loadID){
@@ -139,9 +151,9 @@ export default {
     },
     exportToPDF: function (item) {
       var invoicePositions = this.allInvoicePositions.filter(invoicePosition => invoicePosition.invoiceNumber === item.invoiceNumber)
-      regularInvoiceToPDF(item, invoicePositions, this.allUsers, this.allFacilities)
+      regularInvoiceToPDF(item, invoicePositions)
       },
-    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'addNewInvoice']),
   },
   computed: {
     ...mapGetters({

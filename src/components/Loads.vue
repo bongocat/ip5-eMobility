@@ -29,6 +29,21 @@
                     item-key="inner"
                     class="elevation-5"
                 >
+                  <template v-slot:item.intervalElectricity="{item}">
+                    {{ item.intervalElectricity + " Monate" }}
+                  </template>
+                  <template v-slot:item.counterNewDate="{item}">
+                    {{ new Date(item.counterNewDate) }}
+                  </template>
+                  <template v-slot:item.firstInvoice="{item}">
+                    {{ new Date(item.firstInvoice) }}
+                  </template>
+                  <template v-slot:item.intervalService="{item}">
+                    {{ item.intervalService + " Monate" }}
+                  </template>
+                  <template v-slot:item.counterNew="{item}">
+                    {{ item.counterNew + " kWh" }}
+                  </template>
                   <template v-slot:item.actions="{item}">
                     <LoadEdit :load = "item"></LoadEdit>
                   </template>
@@ -62,7 +77,8 @@ export default {
         {text: 'Mieter', value: 'tenant'},
         {text: 'Loadtyp', value: 'loadType'},
         {text: 'Rechnung An', value: 'invoiceToAsString'},
-        {text: 'Letze Rechnung', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung Serviceabo', value: 'firstInvoice' },
+        {text: 'Nächste Rechnung Strom', value: 'counterNewDate' },
         {text: 'Zahlungsintervall Strom', value: 'intervalElectricity'},
         {text: 'Zahlungsintervall Service', value: 'intervalService'},
         {text: 'Letzter Zählerstand', value: 'counterNew'},
@@ -87,11 +103,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      allInvoices: 'allInvoices',
-      allLoads: 'allLoads',
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
       allFacilities: 'allFacilities',
-      allLoadTypes: 'allLoadTypes',
       allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
     }),
     fillObjectKeysLoads: function(){
 
@@ -111,8 +133,6 @@ export default {
         var itemLoadType = {loadType: loadType[0].designation}
         var itemUser = {tenant: user[0].name + ' ' + user[0].familyName}
 
-        console.log("ITEMS:", itemLoadType, itemFacility, itemUser);
-
         Object.assign(item, itemFacility)
         Object.assign(item, itemLoadType)
         Object.assign(item, itemUser)
@@ -121,7 +141,7 @@ export default {
           invoiceToAsString = {invoiceToAsString: "Mieter"}
         }
         else {
-          invoiceToAsString = {invoiceToAsString: "Vermieter"}
+          invoiceToAsString = {invoiceToAsString: "Verwaltung"}
         }
 
         Object.assign(item, invoiceToAsString)
@@ -138,7 +158,6 @@ export default {
       fullFacilities.forEach(function (item, index) {
 
         var itemAdmin = allUsers.filter(user => user.userID === item.administrationID)
-        console.log(itemAdmin)
         var itemAdministration = { administration: itemAdmin[0].name + ' ' + itemAdmin[0].familyName}
 
         Object.assign(item, itemAdministration)

@@ -37,7 +37,7 @@
             <v-col>
               <v-select
                   v-model="userTypeID"
-                  :items='[{text: "Vermieter", value: 1}, {text: "Mieter", value: 2}]'
+                  :items='[{text: "Verwaltung", value: 1}, {text: "Mieter", value: 2}]'
                   label="Nutzer Typ"
               ></v-select>
             </v-col>
@@ -177,10 +177,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      addNewUser: "addNewUser"
-    }),
-    ...mapActions(['editUser']),
+    ...mapActions(['fetchUsers', 'fetchInvoices', 'fetchFacilities', 'fetchLoads', 'fetchLoadTypes', 'fetchInvoiceTypes', 'editInvoice', 'fetchInvoicePositions', 'editUser']),
 
     saveEditedUser() {
       this.dialog = false
@@ -210,13 +207,32 @@ export default {
             invoiceToShippingAdress:  this.invoiceToShippingAdress
           }
       this.editUser(updatedUser)
+      this.fetchUsers()
     },
   },
   computed: {
-    ...mapGetters(['allUsers']),
+    ...mapGetters({
+      upcomingInvoices: 'upcomingInvoices',
+      paidInvoices: 'paidInvoices',
+      openInvoices: 'openInvoices',
+      sentInvoices: 'sentInvoices',
+      allFacilities: 'allFacilities',
+      allUsers: 'allUsers',
+      allLoads: 'allLoads',
+      allLoadTypes: 'allLoadTypes',
+      allInvoicePositions: 'allInvoicePositions',
+      allInvoices: 'allInvoices',
+      allInvoiceTypes: 'allInvoiceTypes'
+    }),
   },
-  created() {
-    console.log(this.user)
-  }
+    created() {
+      this.fetchInvoicePositions()
+      this.fetchUsers()
+      this.fetchFacilities()
+      this.fetchLoadTypes()
+      this.fetchInvoices()
+      this.fetchInvoiceTypes()
+      this.fetchLoads()
+    },
 }
 </script>

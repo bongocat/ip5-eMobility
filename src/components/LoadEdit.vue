@@ -7,7 +7,6 @@
           dark
           v-bind="attrs"
           v-on="on"
-          @click="console.log('loadID: ', this.loadID)"
       >
         <v-icon small>
           mdi-pencil
@@ -105,7 +104,7 @@
             <v-col>
               <v-select
                       v-model="intervalService"
-                      :items="[{text: 'monatlich', value: 1}, {text: 'vierteljährlich', value: 3}, {text: 'halbjährlich', value: 6}, {text: 'jährlich', value: 12}]"
+                      :items="[{text: 'jährlich', value: 12},{text: 'halbjährlich', value: 6}, {text: 'vierteljährlich', value: 3},{text: 'monatlich', value: 1}]"
                       label="Zahlunsintervall"
                       hint="Zahlungsintervall"
                       persistent-hint
@@ -124,6 +123,9 @@
                               :item-text = "item => item.loadTypeID + ' - ' + item.designation"
                               :item-value= "item => item.loadTypeID"
               ></v-overflow-btn>
+            </v-col>
+            <v-col>
+              <v-text-field label="Kommentar" v-model="comment"></v-text-field>
             </v-col>
             <v-col>
               <v-switch v-model="active"
@@ -214,8 +216,6 @@ export default {
         active: this.active,
         comment: this.comment
       }
-
-      console.log(newLoad)
 
       this.editLoad(newLoad)
 

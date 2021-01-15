@@ -1,6 +1,8 @@
 CREATE DATABASE IF NOT EXISTS `emobility2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `emobility2`;
 
+SET GLOBAL time_zone = "+02:00";
+
 CREATE TABLE `facilities` (
   `facilityID` int(11) NOT NULL AUTO_INCREMENT,
   `administrationID` int(11) NOT NULL,
@@ -192,8 +194,8 @@ ALTER TABLE `invoicepositions`
 INSERT INTO `invoicetypes` (`invoiceTypeID`, `designation`, `created`, `lastUpdated`, `active`, `comment`) VALUES
 (1, 'Installation', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Installation costs for a load Load'),
 (2, 'Service', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Service costs for a load Load'),
-(3, 'Electricity', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Electricity for a load Load'),
-(4, 'Miscellaneous', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Miscellaneous costs for a load Load');
+(3, 'Stromkosten', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Electricity for a load Load'),
+(4, 'Diverses', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1, 'Miscellaneous costs for a load Load');
 
 
 --
